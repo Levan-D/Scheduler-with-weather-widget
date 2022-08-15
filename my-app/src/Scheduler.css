@@ -1,0 +1,167 @@
+.schedulerWrapper {
+  margin: 2rem;
+  max-width: 500px;
+  height: 800px;
+  background-color: #c4d7e0;
+  border-radius: 1rem;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+}
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #b2c8df;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #6e85b7;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #445479;
+}
+/* scrollbar */
+h1 {
+  text-align: center;
+  font-size: 24px;
+  color: #354259;
+  padding: 30px 0 0 0;
+  margin: 0;
+}
+input[type="text"] {
+  box-sizing: border-box;
+  width: 450px;
+  height: 40px;
+  border-radius: 15px;
+  margin: 20px 20px 20px 20px;
+  padding: 0 15px;
+  border: none;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  color: #354259;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+}
+input[type="text"]:focus {
+  outline: none;
+  filter: brightness(0.98);
+}
+input[type="submit"] {
+  width: 450px;
+  height: 40px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  margin: 0 20px;
+  border-radius: 15px;
+  border: none;
+  background-color: #80558c;
+  color: #f0f0f0;
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+input[type="submit"]:hover {
+  filter: brightness(1.1);
+}
+input[type="submit"]:active {
+  filter: brightness(0.95);
+}
+.todoWrapper {
+  width: 450px;
+  height: 570px;
+  margin: 20px auto;
+  border-radius: 20px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  background-color: rgba(53, 66, 89, 0.2);
+  overflow-y: scroll;
+}
+.todoWrapper::-webkit-scrollbar-track {
+  background: #b2c8df;
+  border-radius: 5px;
+  margin: 0.9rem 0;
+}
+
+.todoContainer {
+  padding: 15px 20px;
+  display: flex;
+}
+.todo {
+  padding: 0 20px;
+  width: 280px;
+  min-height: 35px;
+  max-height: 250px;
+  line-height: 34px;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  color: #354259;
+  overflow-y: auto;
+}
+.todo::-webkit-scrollbar-thumb {
+  width: 10px;
+  background: #80ad80;
+}
+.todo::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin: 0.5rem 0;
+  background: #b3e2b3;
+}
+.todoComplete {
+  background-color: #92ba92;
+  color: #f0f0f0;
+}
+.todoNotComplete {
+  background-color: #f0f0f0;
+  color: #354259;
+}
+
+.todoDelete {
+  margin: auto 0 auto 20px;
+  width: 55px;
+  height: 35px;
+  background-color: #ff7878;
+  color: #f0f0f0;
+  line-height: 30px;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  font-size: 1.8rem;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+}
+.todoDelete:hover {
+  filter: brightness(1.1);
+}
+.todoDelete:active {
+  filter: brightness(0.95);
+}
+.todoCheck {
+  margin: auto 20px auto 0;
+  padding: auto 0;
+  width: 55px;
+  height: 35px;
+  background-color: #92ba92;
+  color: #f0f0f0;
+  line-height: 35px;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  font-size: 1.4rem;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+}
+.todoCheck:hover {
+  filter: brightness(1.1);
+}
+.todoCheck:active {
+  filter: brightness(0.95);
+}
