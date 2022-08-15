@@ -1,9 +1,12 @@
 /** @format */
 import { ACTIONS } from "./Scheduler"
 
-function Todo({ todo, toggle }) {
+function Todo({ todo, toggle, id }) {
+  const dateArray = Date(todo.id).split(" ")
+  const dataObject = dateArray.map((str, index) => ({ value: str, id: index + 1 }))
+  console.log(dataObject[4].value)
   return (
-    <div className="azazaz">
+    <div className="todoBackground">
       <div className="todoContainer">
         <div className={`todo ${todo.complete ? "todoComplete" : "todoNotComplete"}`}>
           {todo.name}
@@ -24,6 +27,12 @@ function Todo({ todo, toggle }) {
             }}
           >
             &#8211;
+          </div>
+          <div className="timeStampWrapper">
+            <div>{dataObject[4].value.slice(0, 5)}</div>
+            <div>
+              {dataObject[0].value} {dataObject[1].value} {dataObject[2].value}
+            </div>
           </div>
         </div>
       </div>

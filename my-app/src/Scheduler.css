@@ -90,7 +90,7 @@ input[type="submit"]:active {
 }
 
 .todoContainer {
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
   margin: 0.2rem 0 0 0;
   background-color: #c4d7e0;
   border-radius: 15px;
@@ -99,7 +99,7 @@ input[type="submit"]:active {
   padding: 10px 0;
   display: flex;
 }
-.azazaz {
+.todoBackground {
   padding: 15px 20px;
 }
 .todo {
@@ -133,7 +133,7 @@ input[type="submit"]:active {
 }
 
 .todoDelete {
-  margin: auto 0 auto 10px;
+  margin: auto 0 auto 1rem;
   width: 55px;
   height: 35px;
   background-color: #ff7878;
@@ -155,8 +155,7 @@ input[type="submit"]:active {
   filter: brightness(0.95);
 }
 .todoCheck {
-  margin: auto 10px auto 0;
-  padding: auto 0;
+  margin: auto 0;
   width: 55px;
   height: 35px;
   background-color: #92ba92;
@@ -176,4 +175,19 @@ input[type="submit"]:active {
 }
 .todoCheck:active {
   filter: brightness(0.95);
+}
+.timeStampWrapper {
+  background-color: #f0f0f0;
+  height: 35px;
+  width: 100px;
+  line-height: 16px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #354259;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  margin: 0 1rem;
+  padding: auto 1rem;
+  text-align: center;
+  user-select: none;
 }
