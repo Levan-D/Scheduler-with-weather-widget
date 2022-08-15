@@ -1,7 +1,7 @@
 /** @format */
 import { ACTIONS } from "./Scheduler";
 
-function Todo({ todo, toggle, pushData }) {
+function Todo({ todo, toggle }) {
   return (
     <div className="todoContainer">
       <div
