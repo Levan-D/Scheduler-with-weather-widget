@@ -2,10 +2,29 @@
 
 .schedulerWrapper {
   margin: 2rem;
+  display: flex;
+}
+.leftSide {
+  width: 120px;
+  padding: 25px;
+  height: 750px;
+  background-color: #354259;
+  border-radius: 1rem 0 0 1rem;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.leftSide h2 {
+  font-size: 24px;
+  padding: 0;
+  margin: 0;
+  color: #c4d7e0;
+}
+.rightSide {
   max-width: 500px;
   height: 800px;
   background-color: #c4d7e0;
-  border-radius: 1rem;
+  border-radius: 0 1rem 1rem 0;
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
 }
 /* scrollbar */
@@ -30,7 +49,7 @@
   background: #445479;
 }
 /* scrollbar */
-h1 {
+.rightSide h2 {
   text-align: center;
   font-size: 24px;
   color: #354259;
@@ -81,7 +100,7 @@ input[type="submit"]:active {
   border-radius: 20px;
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
   background-color: rgba(53, 66, 89, 0.2);
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .todoWrapper::-webkit-scrollbar-track {
   background: #b2c8df;
@@ -190,4 +209,9 @@ input[type="submit"]:active {
   padding: auto 1rem;
   text-align: center;
   user-select: none;
+}
+.todoListWrapper {
+  max-width: 500px;
+  height: 800px;
+  background-color: #6e85b7;
 }

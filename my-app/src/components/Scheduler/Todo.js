@@ -15,7 +15,7 @@ function Todo({ todo, toggle }) {
             todo.complete ? "todoComplete" : "todoNotComplete"
           }`}
         >
-          {todo.name}
+          {todo.taskName}
         </div>
         <div className="todoButtonsFlex">
           <div

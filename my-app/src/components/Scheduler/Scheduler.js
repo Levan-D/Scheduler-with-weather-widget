@@ -2,6 +2,7 @@
 import "../../Scheduler.css";
 import React, { useReducer, useState, useEffect } from "react";
 import Todo from "./Todo";
+import List from "./List";
 
 export const ACTIONS = {
   FETCH_TODODATA: "fetch-todoData",
@@ -15,7 +16,7 @@ function todoReducer(todos, action) {
     case ACTIONS.FETCH_TODODATA:
       return (todos = JSON.parse(localStorage.getItem("todoDate")));
     case ACTIONS.ADD_TODO:
-      return [...todos, newTodo(action.payload.name)];
+      return [...todos, newTodo(action.payload.taskName)];
     case ACTIONS.DELETE_TODO:
       return todos.filter((x) => x.id !== action.payload.id);
     case ACTIONS.TOGGLE_TODO:
@@ -30,18 +31,18 @@ function todoReducer(todos, action) {
   }
 }
 
-function newTodo(name) {
+function newTodo(taskName) {
   return {
     id: Date.now(),
     time: Date(Date.now()),
-    name: name,
+    taskName: taskName,
     complete: false,
   };
 }
 
 function Scheduler() {
   const [todos, todoDispatch] = useReducer(todoReducer, "");
-  const [name, setName] = useState("");
+  const [taskName, setTaskName] = useState("");
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("todoDate")) !== null) {
@@ -63,29 +64,40 @@ function Scheduler() {
     e.preventDefault();
     todoDispatch({
       type: ACTIONS.ADD_TODO,
-      payload: { name: name },
+      payload: { taskName: taskName },
     });
-    setName("");
+    setTaskName("");
   }
-console.log(todos)
+  // console.log(todos);
   return (
     <div className="schedulerWrapper">
-      <h1>Add a new task below!</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          required
-          placeholder="Enter task here!"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input type="submit" value="+" />
-      </form>
-      <div className="todoWrapper">
-        {typeof todos === "object" &&
-          todos.map((x) => {
-            return <Todo key={x.id} todo={x} toggle={todoDispatch} />;
-          })}
+      <div className="leftSide">
+        <h2>Your Lists:</h2>
+        <div className="listWrapper">
+          {typeof todos === "object" &&
+            todos.map((x) => {
+              return <Todo key={x.id} todo={x} toggle={todoDispatch} />;
+            })}
+        </div>
+      </div>
+      <div className="rightSide">
+        <h2>Add a new task below!</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            required
+            placeholder="Enter task here!"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+          />
+          <input type="submit" value="+" />
+        </form>
+        <div className="todoWrapper">
+          {typeof todos === "object" &&
+            todos.map((x) => {
+              return <Todo key={x.id} todo={x} toggle={todoDispatch} />;
+            })}
+        </div>
       </div>
     </div>
   );
