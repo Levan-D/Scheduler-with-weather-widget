@@ -1,21 +1,27 @@
 /** @format */
-import { ACTIONS } from "./Scheduler"
+import { ACTIONS } from "./Scheduler";
 
-function Todo({ todo, toggle, id }) {
-  const dateArray = Date(todo.id).split(" ")
-  const dataObject = dateArray.map((str, index) => ({ value: str, id: index + 1 }))
-  console.log(dataObject[4].value)
+function Todo({ todo, toggle }) {
+  const dateArray = todo.time.split(" ");
+  const dataObject = dateArray.map((str, index) => ({
+    value: str,
+    id: index + 1,
+  }));
   return (
     <div className="todoBackground">
       <div className="todoContainer">
-        <div className={`todo ${todo.complete ? "todoComplete" : "todoNotComplete"}`}>
+        <div
+          className={`todo ${
+            todo.complete ? "todoComplete" : "todoNotComplete"
+          }`}
+        >
           {todo.name}
         </div>
         <div className="todoButtonsFlex">
           <div
             className="todoCheck"
             onClick={() => {
-              toggle({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } })
+              toggle({ type: ACTIONS.TOGGLE_TODO, payload: { id: todo.id } });
             }}
           >
             &#10004;
@@ -23,7 +29,7 @@ function Todo({ todo, toggle, id }) {
           <div
             className="todoDelete"
             onClick={() => {
-              toggle({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })
+              toggle({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } });
             }}
           >
             &#8211;
@@ -37,7 +43,7 @@ function Todo({ todo, toggle, id }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Todo
+export default Todo;
