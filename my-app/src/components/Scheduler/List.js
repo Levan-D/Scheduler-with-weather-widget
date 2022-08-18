@@ -1,5 +1,11 @@
-function List() {
-  return <div>s</div>;
+/** @format */
+
+function List({ name, listSelect }) {
+  return (
+    <div onClick={listSelect} className={name}>
+      {name}
+    </div>
+  )
 }
 
-export default List;
+export default List

@@ -20,6 +20,10 @@
   margin: 0;
   color: #c4d7e0;
 }
+.newListButton {
+  background-color: #f0f0f0;
+  
+}
 .rightSide {
   max-width: 500px;
   height: 800px;
