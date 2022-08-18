@@ -17,28 +17,14 @@ function todoReducer(todos, action) {
     case ACTIONS.FETCH_TODODATA:
       return (todos = JSON.parse(localStorage.getItem("todoDate")))
     case ACTIONS.ADD_TODO:
-      let mike = [
-        ...todos,
-        (todos[action.payload.index] = {
+      let newObject = [
+        {
           ...todos[action.payload.index],
           list: [...todos[action.payload.index].list, newTodo(action.payload.taskName)],
-        }),
+        },
       ]
-      let kiki = todos.split("")
-      console.log("lala", kiki)
-      return mike
-    // todos[action.payload.index] = {
-    //   ...todos[action.payload.index],
-    //   list: [...todos[action.payload.index].list, newTodo(action.payload.taskName)],
-    // }
-    // [
-    //   ...todos,
-
-    // (todos[action.payload.index] = {
-    //   ...todos[action.payload.index],
-    //   list: [...todos[action.payload.index].list, newTodo(action.payload.taskName)],
-    // }),
-    // ]
+      let tata = todos.map(obj => newObject.find(o => o.listName === obj.listName) || obj)
+      return tata
 
     case ACTIONS.ADD_LIST:
       return [...todos, newList(`list${todos.length + 1}`)]
