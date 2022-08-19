@@ -28,7 +28,10 @@ function Todo({ todo, toggle, index }) {
           <div
             className="todoDelete"
             onClick={() => {
-              toggle({ type: ACTIONS.DELETE_TODO, payload: { id: todo.id } })
+              toggle({
+                type: ACTIONS.DELETE_TODO,
+                payload: { id: todo.id, index: index },
+              })
             }}
           >
             &#8211;

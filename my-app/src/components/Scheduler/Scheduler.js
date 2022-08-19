@@ -15,33 +15,52 @@ export const ACTIONS = {
 function todoReducer(todos, action) {
   switch (action.type) {
     case ACTIONS.FETCH_TODODATA:
-      return (todos = JSON.parse(localStorage.getItem("todoDate")))
+      return JSON.parse(localStorage.getItem("todoData"))
+
     case ACTIONS.ADD_TODO:
-      let newObject = [
+      let newObject1 = [
         {
           ...todos[action.payload.index],
-          list: [...todos[action.payload.index].list, newTodo(action.payload.taskName)],
+          todoArray: [
+            ...todos[action.payload.index].todoArray,
+            newTodo(action.payload.taskName),
+          ],
         },
       ]
-      let tata = todos.map(obj => newObject.find(o => o.listName === obj.listName) || obj)
-      return tata
+
+      return todos.map(obj => newObject1.find(o => o.listName === obj.listName) || obj)
 
     case ACTIONS.ADD_LIST:
       return [...todos, newList(`list${todos.length + 1}`)]
+
     case ACTIONS.DELETE_TODO:
-      return [
-        ...todos,
-        (todos[action.payload.index].list = todos[action.payload.index].list.filter(
-          x => x.id !== action.payload.id
-        )),
+      let newObject2 = [
+        {
+          ...todos[action.payload.index],
+          todoArray: [
+            ...todos[action.payload.index].todoArray.filter(
+              x => x.id !== action.payload.id
+            ),
+          ],
+        },
       ]
+      return todos.map(obj => newObject2.find(o => o.listName === obj.listName) || obj)
+
     case ACTIONS.TOGGLE_TODO:
-      return todos.map(x => {
-        if (x.id === action.payload.id) {
-          return { ...x, complete: !x.complete }
-        }
-        return x
-      })
+      let newObject3 = [
+        {
+          ...todos[action.payload.index],
+          todoArray: [
+            ...todos[action.payload.index].todoArray.map(x => {
+              if (x.id === action.payload.id) {
+                return { ...x, complete: !x.complete }
+              }
+              return x
+            }),
+          ],
+        },
+      ]
+      return todos.map(obj => newObject3.find(o => o.listName === obj.listName) || obj)
     default:
       return todos
   }
@@ -58,7 +77,7 @@ function newTodo(taskName) {
 function newList(listName) {
   return {
     listName: listName,
-    list: [],
+    todoArray: [],
   }
 }
 
@@ -66,23 +85,34 @@ function Scheduler() {
   const [todos, todoDispatch] = useReducer(todoReducer, [
     {
       listName: "list1",
-      list: [],
+      todoArray: [],
     },
   ])
   const [taskName, setTaskName] = useState("")
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("todoDate")) !== null) {
+    if (
+      JSON.parse(localStorage.getItem("todoData")) !== null &&
+      JSON.parse(localStorage.getItem("todoData")).length > 0
+    ) {
       todoDispatch({
         type: ACTIONS.FETCH_TODODATA,
       })
     }
   }, [])
+
+  console.log(JSON.parse(localStorage.getItem("todoData")))
+
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("todoDate")) !== null && todos.length > 0) {
-      localStorage.setItem("todoDate", JSON.stringify(todos))
+    if (
+      JSON.parse(localStorage.getItem("todoData")) !== null &&
+      JSON.parse(localStorage.getItem("todoData")).length === 0
+    ) {
+      localStorage.setItem("todoData", JSON.stringify(todos))
     }
+    if (todos[index].todoArray.length > 0)
+      localStorage.setItem("todoData", JSON.stringify(todos))
   }, [todos])
 
   function handleSubmit(e) {
@@ -96,7 +126,7 @@ function Scheduler() {
   function handleList(e) {
     setIndex(todos.map(x => x.listName).indexOf(e.target.classList[0]))
   }
-  console.log(todos)
+
   return (
     <div className="schedulerWrapper">
       <div className="leftSide">
@@ -139,9 +169,9 @@ function Scheduler() {
         </form>
         <div className="todoWrapper">
           {typeof todos === "object" &&
-            todos[index].list.length > 0 &&
-            todos[index].list.map(x => {
-              return <Todo key={x.id} todo={x} toggle={todoDispatch} />
+            todos[index].todoArray.length > 0 &&
+            todos[index].todoArray.map(x => {
+              return <Todo key={x.id} todo={x} toggle={todoDispatch} index={index} />
             })}
         </div>
       </div>
