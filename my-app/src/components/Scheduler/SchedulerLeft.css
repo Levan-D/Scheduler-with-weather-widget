@@ -1,6 +1,6 @@
 .leftSide {
-  width: 120px;
-  padding: 25px;
+  width: 140px;
+  padding: 25px 15px;
   height: 750px;
   background-color: #354259;
   border-radius: 1rem 0 0 1rem;
@@ -13,6 +13,7 @@
   padding: 0;
   margin: 0;
   color: #c4d7e0;
+  text-align: center;
 }
 .newListButton {
   background-color: #f0f0f0;
@@ -40,11 +41,14 @@
   background-color: #c4d7e0;
   display: flex;
   justify-content: space-between;
-  margin: 0.5rem 0.2rem;
+  margin: 0.5rem 0.2rem 0.1rem 0.2rem;
   border-radius: 15px;
   padding: 0 10px;
   cursor: pointer;
   transition: 0.3s;
+}
+.selectedList {
+  background-color: #92ba92;
 }
 .containerList:hover {
   filter: brightness(1.1);
@@ -52,16 +56,20 @@
 .containerList:active {
   filter: brightness(0.95);
 }
-.listName {
+.nameList {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
+  min-width: 85%;
   color: #354259;
   font-size: 0.9rem;
   line-height: 30px;
 }
-
+.wrapperOfList {
+  margin: 0;
+  padding: 0;
+}
 .tripleDot {
   margin: 0 5px;
   display: flex;
@@ -75,4 +83,24 @@
   margin: 1px 2px;
 
   background-color: #354259;
+}
+.menuList {
+  left: 150px;
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  background-color: #f0f0f0;
+  width: 95px;
+  height: 25px;
+  padding: 10px 4px;
+  border-radius: 5px;
+
+  z-index: 11;
+}
+.menuListIcon {
+  background-color: pink;
+  width: 21px;
+  height: 21px;
+  border: solid black 2px;
+  border-radius: 15px;
 }

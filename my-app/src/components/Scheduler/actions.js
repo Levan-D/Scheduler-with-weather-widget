@@ -2,6 +2,7 @@ const ACTIONS = {
   FETCH_TODODATA: "fetch-todoData",
   ADD_TODO: "add-todo",
   ADD_LIST: "add-list",
+  DELETE_LIST: "delete-list",
   TOGGLE_TODO: "toggle-todo",
   DELETE_TODO: "delete-todo",
   SET_TASKSCOMPLETE: "set-tasksComplete",

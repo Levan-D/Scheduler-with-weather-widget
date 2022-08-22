@@ -155,6 +155,7 @@ function Scheduler() {
                   name={x.listName}
                   listSelect={handleList}
                   index={index}
+                  todos={todos}
                 />
               );
             })}
@@ -168,6 +169,8 @@ function Scheduler() {
             tasksComplete={taskProgress.tasksComplete}
             tasksTotal={taskProgress.tasksTotal}
             width={315}
+            height={10}
+            background={`#354259`}
           />
         </h2>
         <form onSubmit={handleSubmit}>

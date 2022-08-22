@@ -22,7 +22,8 @@ function todoReducer(todos, action) {
 
     case ACTIONS.ADD_LIST:
       return [...todos, newList(`list${todos.length + 1}`)];
-
+    case ACTIONS.DELETE_LIST:
+      return  
     case ACTIONS.DELETE_TODO:
       let newObject2 = [
         {
