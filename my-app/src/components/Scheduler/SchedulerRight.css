@@ -4,26 +4,7 @@
   margin: 2rem;
   display: flex;
 }
-.leftSide {
-  width: 120px;
-  padding: 25px;
-  height: 750px;
-  background-color: #354259;
-  border-radius: 1rem 0 0 1rem;
-  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.leftSide h2 {
-  font-size: 24px;
-  padding: 0;
-  margin: 0;
-  color: #c4d7e0;
-}
-.newListButton {
-  background-color: #f0f0f0;
-  
-}
+
 .rightSide {
   max-width: 500px;
   height: 800px;

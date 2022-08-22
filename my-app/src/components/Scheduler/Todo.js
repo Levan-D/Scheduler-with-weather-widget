@@ -1,16 +1,20 @@
 /** @format */
-import { ACTIONS } from "./Scheduler"
+import ACTIONS from "./actions";
 
 function Todo({ todo, toggle, index }) {
-  const dateArray = todo.time.split(" ")
+  const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
     id: index + 1,
-  }))
+  }));
   return (
     <div className="todoBackground">
       <div className="todoContainer">
-        <div className={`todo ${todo.complete ? "todoComplete" : "todoNotComplete"}`}>
+        <div
+          className={`todo ${
+            todo.complete ? "todoComplete" : "todoNotComplete"
+          }`}
+        >
           {todo.taskName}
         </div>
         <div className="todoButtonsFlex">
@@ -20,7 +24,7 @@ function Todo({ todo, toggle, index }) {
               toggle({
                 type: ACTIONS.TOGGLE_TODO,
                 payload: { id: todo.id, index: index },
-              })
+              });
             }}
           >
             &#10004;
@@ -31,7 +35,7 @@ function Todo({ todo, toggle, index }) {
               toggle({
                 type: ACTIONS.DELETE_TODO,
                 payload: { id: todo.id, index: index },
-              })
+              });
             }}
           >
             &#8211;
@@ -45,7 +49,7 @@ function Todo({ todo, toggle, index }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Todo
+export default Todo;
