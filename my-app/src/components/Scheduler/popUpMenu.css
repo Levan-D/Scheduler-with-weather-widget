@@ -1,0 +1,125 @@
+.popUpMenu {
+  position: absolute;
+  width: 120px;
+  height: 30px;
+  background-color: #6e85b7;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-radius: 10px;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+}
+.popUpButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  border: #f0f0f0 1.5px solid;
+  background-color: #354259;
+}
+.popUpButton:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 2px 2px rgba(240, 240, 240, 0.2),
+    0 0 3px 3px rgba(240, 240, 240, 0.2), 0 0 4px 4px rgba(240, 240, 240, 0.2);
+}
+.popUpButton:active {
+  filter: brightness(0.95);
+}
+/* trashcan */
+.icon-trash {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  overflow: hidden;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.icon-trash .trash-lid {
+  width: 62%;
+  height: 10%;
+  position: absolute;
+  left: 50%;
+  margin-left: -31%;
+  top: 10.5%;
+  background-color: #f0f0f0;
+  border-top-left-radius: 80%;
+  border-top-right-radius: 80%;
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+  -ms-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+}
+
+.icon-trash .trash-lid:after {
+  content: "";
+  width: 26%;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  margin-left: -13%;
+  margin-top: -10%;
+  background-color: inherit;
+  border-top-left-radius: 30%;
+  border-top-right-radius: 30%;
+  -webkit-transform: rotate(-1deg);
+  -moz-transform: rotate(-1deg);
+  -ms-transform: rotate(-1deg);
+  transform: rotate(-1deg);
+}
+
+.icon-trash .trash-container {
+  width: 56%;
+  height: 65%;
+  position: absolute;
+  left: 50%;
+  margin-left: -28%;
+  bottom: 10%;
+  background-color: #f0f0f0;
+  border-bottom-left-radius: 15%;
+  border-bottom-right-radius: 15%;
+}
+
+.icon-trash .trash-container:after {
+  content: "";
+  width: 110%;
+  height: 12%;
+  position: absolute;
+  left: 50%;
+  margin-left: -55%;
+  top: 0;
+  background-color: inherit;
+  border-bottom-left-radius: 45%;
+  border-bottom-right-radius: 45%;
+}
+
+.icon-trash .trash-line-1 {
+  width: 5%;
+  height: 50%;
+  position: absolute;
+  left: 38%;
+  margin-left: -2%;
+  bottom: 17%;
+  background-color: #252527;
+}
+
+.icon-trash .trash-line-2 {
+  width: 5%;
+  height: 50%;
+  position: absolute;
+  left: 50%;
+  margin-left: -2%;
+  bottom: 17%;
+  background-color: #252527;
+}
+
+.icon-trash .trash-line-3 {
+  width: 5%;
+  height: 50%;
+  position: absolute;
+  left: 62%;
+  margin-left: -2%;
+  bottom: 17%;
+  background-color: #252527;
+}
+
+/* trashcan */

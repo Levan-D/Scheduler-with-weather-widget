@@ -1,7 +1,7 @@
 /** @format */
 import ProgressBar from "../ProgressBar/ProgressBar";
 
-function List({ name, listSelect, todos, index }) {
+function List({ name, listSelect, todos, index, popUpMenu }) {
   return (
     <div className="wrapperOfList">
       <div
@@ -13,7 +13,12 @@ function List({ name, listSelect, todos, index }) {
         <div className={`${name} nameList`}> {name.replace(/_/gi, " ")} </div>
 
         {name === todos[index].listName && (
-          <div className="tripleDot">
+          <div
+            className="tripleDot"
+            onClick={(e) => {
+              popUpMenu(e);
+            }}
+          >
             <div className="dotdot"></div>
             <div className="dotdot"></div>
             <div className="dotdot"></div>

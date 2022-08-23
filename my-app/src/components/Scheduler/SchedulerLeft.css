@@ -61,7 +61,7 @@
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
-  min-width: 85%;
+  min-width: 80%;
   color: #354259;
   font-size: 0.9rem;
   line-height: 30px;
@@ -72,6 +72,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 10px;
 }
 .dotdot {
   width: 3px;

@@ -9,6 +9,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import Confetti from "react-confetti";
 import tpReducer from "./tpReducer";
 import ACTIONS from "./actions";
+import PopUpMenuComp from "./PopUpMenuComp";
 
 function Scheduler() {
   const [todos, todoDispatch] = useReducer(todoReducer, [
@@ -25,7 +26,9 @@ function Scheduler() {
     opacity: 1,
   });
   const [taskName, setTaskName] = useState("");
+  const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
   function setIndexCh(i) {
     setIndex(i);
   }
@@ -115,12 +118,18 @@ function Scheduler() {
     });
     setTaskName("");
   }
-
+  console.log(todos);
   function handleList(e) {
     const regex = /^(List)+[0-9]*/gi;
     if (regex.test(e.target.classList[0])) {
       setIndex(todos.map((x) => x.listName).indexOf(e.target.classList[0]));
     }
+  }
+  function popUpMenu(e) {
+    console.log(coords);
+    setCoords({ x: e.clientX, y: e.clientY });
+
+    setPopUpVisibility(!popUpVisibility);
   }
 
   return (
@@ -148,6 +157,7 @@ function Scheduler() {
                   listSelect={handleList}
                   index={index}
                   todos={todos}
+                  popUpMenu={popUpMenu}
                 />
               );
             })}
@@ -185,21 +195,25 @@ function Scheduler() {
             })}
         </div>
       </div>
-      <button
-        className="deleteButton"
-        onClick={(x) => {
-          todoDispatch({
-            type: ACTIONS.DELETE_LIST,
-            payload: {
-              index: index,
-              zeName: todos[index].listName,
-              setInfexF: setIndexCh,
-            },
-          });
-        }}
-      >
-        DELETE
-      </button>
+      {popUpVisibility && (
+        <PopUpMenuComp
+          coords={coords}
+          visibility={(x) => {
+            setPopUpVisibility(!popUpVisibility);
+          }}
+          deleteFunc={(x) => {
+            todoDispatch({
+              type: ACTIONS.DELETE_LIST,
+              payload: {
+                index: index,
+                zeName: todos[index].listName,
+                setInfexF: setIndexCh,
+              },
+            });
+            setPopUpVisibility(!popUpVisibility);
+          }}
+        />
+      )}
     </div>
   );
 }
