@@ -17,7 +17,11 @@ function tpReducer(taskProgress, action) {
       };
 
     case ACTIONS.SET_CONFETTIBOOM:
-      return { ...taskProgress, confettiBoom: action.payload.state };
+      return {
+        ...taskProgress,
+        confettiBoom: action.payload.state1,
+        triggered: action.payload.state2,
+      };
 
     case ACTIONS.SET_OPACITYZERO:
       return {

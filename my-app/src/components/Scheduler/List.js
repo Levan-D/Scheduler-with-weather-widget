@@ -10,7 +10,7 @@ function List({ name, listSelect, todos, index }) {
           name === todos[index].listName ? "selectedList" : ""
         } containerList`}
       >
-        <div className={`${name} nameList`}> {name} </div>
+        <div className={`${name} nameList`}> {name.replace(/_/gi, " ")} </div>
 
         {name === todos[index].listName && (
           <div className="tripleDot">

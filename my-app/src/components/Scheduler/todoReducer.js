@@ -21,9 +21,31 @@ function todoReducer(todos, action) {
       );
 
     case ACTIONS.ADD_LIST:
-      return [...todos, newList(`list${todos.length + 1}`)];
+      let newListName = `list_${todos.length + 1}`;
+      let listNames = todos.map((x) => x.listName);
+      while (listNames.includes(newListName)) {
+        newListName += 1;
+      }
+      return [...todos, newList(newListName)];
+
     case ACTIONS.DELETE_LIST:
-      return  
+      if (todos[action.payload.index]) {
+        if (
+          todos[action.payload.index].listName === action.payload.zeName &&
+          action.payload.index + 1 !== todos.length
+        ) {
+          todos.splice(action.payload.index, 1);
+        } else if (
+          todos[todos.length - 1].listName === action.payload.zeName &&
+          action.payload.index + 1 === todos.length
+        ) {
+          action.payload.setInfexF(todos.length - 2);
+          todos.pop();
+        }
+      }
+
+      return [...todos];
+
     case ACTIONS.DELETE_TODO:
       let newObject2 = [
         {
