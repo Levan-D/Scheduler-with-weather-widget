@@ -3,11 +3,35 @@
   width: 120px;
   height: 30px;
   background-color: #6e85b7;
-  display: flex;
-  justify-content: space-between;
   padding: 12px 8px;
   border-radius: 10px;
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+}
+.popUpWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.confirmTab {
+  position: relative;
+  width: 105px;
+  top: 9px;
+  padding: 0 8px;
+  height: 25px;
+  text-align: center;
+  background-color: #354259;
+  color: #f0f0f0;
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.confirmTab:hover {
+  filter: brightness(1.1);
+  box-shadow: 0px 4px 4px 1px #f0f0f0;
+}
+.confirmTab:active {
+  filter: brightness(0.95);
 }
 .popUpButton {
   width: 30px;
@@ -15,6 +39,7 @@
   border-radius: 30px;
   border: #f0f0f0 1.5px solid;
   background-color: #354259;
+  cursor: pointer;
 }
 .popUpButton:hover {
   filter: brightness(1.1);
@@ -24,6 +49,17 @@
 .popUpButton:active {
   filter: brightness(0.95);
 }
+.nameChangeForm input[type="text"],
+.nameChangeForm input[type="submit"] {
+  position: relative;
+  width: 100px;
+  height: 30px;
+  margin: 5px 0;
+  padding: 0 5px;
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+
 /* trashcan */
 .icon-trash {
   width: 26px;
@@ -123,3 +159,32 @@
 }
 
 /* trashcan */
+/* pencil */
+.pencil {
+  width: 4px;
+  height: 13px;
+  background: #f0f0f0;
+  position: relative;
+  left: 12px;
+  top: 9px;
+  transform: rotate(30deg);
+}
+.pencil::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #f0f0f0;
+  top: -6px;
+}
+.pencil::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 4px;
+  background: #f0f0f0;
+  left: 0px;
+  bottom: -3px;
+  transform: rotate(45deg);
+}
+/* pencil */
