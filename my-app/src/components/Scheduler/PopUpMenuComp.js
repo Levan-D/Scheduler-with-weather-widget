@@ -2,6 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import "./popUpMenu.css";
 
 function PopUpMenuComp({ deleteFunc, coords, visibility }) {
+  const [subMenu, setSubMenu] = useState({
+    confD: false,
+    confN: false,
+    confC: false,
+  });
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmNameChange, setConfirmNameChange] = useState(false);
   const refOne = useRef(null);
@@ -26,7 +31,11 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
         <div
           className="popUpButton"
           onClick={(x) => {
-            setConfirmNameChange(!confirmNameChange);
+            setSubMenu({
+              confD: false,
+              confN: !subMenu.confN,
+              confC: false,
+            });
           }}
         >
           <div className="pencil"></div>
@@ -35,7 +44,11 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
         <div
           className="popUpButton deleteButton"
           onClick={(x) => {
-            setConfirmDelete(!confirmDelete);
+            setSubMenu({
+              confD: !subMenu.confD,
+              confN: false,
+              confC: false,
+            });
           }}
         >
           <div className="icon-trash">
@@ -47,14 +60,14 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
           </div>
         </div>
       </div>
-      {confirmDelete && (
-        <div className="confirmTab">
+      {subMenu.confD && (
+        <div className="confirmTab confirmTabAc">
           <div onClick={deleteFunc}>Confirm</div>
         </div>
       )}
-      {confirmNameChange && (
+      {subMenu.confN && (
         <div
-          className="confirmTab"
+          className="confirmTab confirmTabAd"
           style={{
             height: `auto`,
             padding: `10px 0px`,
