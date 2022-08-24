@@ -29,7 +29,7 @@ function todoReducer(todos, action) {
       return [...todos, newList(newListName)];
 
     case ACTIONS.DELETE_LIST:
-      if (todos[action.payload.index]) {
+      if (todos[action.payload.index] && todos.length > 1) {
         if (
           todos[action.payload.index].listName === action.payload.zeName &&
           action.payload.index + 1 !== todos.length
@@ -45,6 +45,27 @@ function todoReducer(todos, action) {
       }
 
       return [...todos];
+
+    case ACTIONS.RENAME_LIST:
+      let newObject0 = [
+        {
+          ...todos[action.payload.index],
+          listNameShow: action.payload.newListName,
+        },
+      ];
+      return todos.map(
+        (obj) => newObject0.find((o) => o.listName === obj.listName) || obj
+      );
+    case ACTIONS.CHANGE_LIST_COLOR:
+      let newObject00 = [
+        {
+          ...todos[action.payload.index],
+          color: action.payload.color,
+        },
+      ];
+      return todos.map(
+        (obj) => newObject00.find((o) => o.listName === obj.listName) || obj
+      );
 
     case ACTIONS.DELETE_TODO:
       let newObject2 = [
@@ -94,6 +115,8 @@ function newTodo(taskName) {
 function newList(listName) {
   return {
     listName: listName,
+    listNameShow: "",
+    color: "default",
     todoArray: [],
   };
 }

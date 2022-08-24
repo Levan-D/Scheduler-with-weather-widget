@@ -63,7 +63,23 @@
   font-size: 0.8rem;
   border-radius: 10px;
 }
-
+.img {
+  width: 27px;
+  margin: 2px;
+}
+.colorCircle {
+  width: 17px;
+  margin: 3px;
+  height: 17px;
+  border: solid 1.5px #f0f0f0;
+  border-radius: 15px;
+}
+.colorBox {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 10px 8px;
+}
 /* trashcan */
 .icon-trash {
   width: 26px;

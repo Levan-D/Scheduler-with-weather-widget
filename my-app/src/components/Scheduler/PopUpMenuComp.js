@@ -1,14 +1,43 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./popUpMenu.css";
+import colorPalette from "./pictures/colorPalette.png";
 
-function PopUpMenuComp({ deleteFunc, coords, visibility }) {
+function PopUpMenuComp({
+  deleteFunc,
+  coords,
+  visibility,
+  renameFunc,
+  setlistnameFA,
+  listName,
+  colorChange,
+}) {
   const [subMenu, setSubMenu] = useState({
     confD: false,
     confN: false,
     confC: false,
   });
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [confirmNameChange, setConfirmNameChange] = useState(false);
+  const colors = [
+    `#f0f0f0`,
+    `#000000`,
+    `#4d4d4d`,
+    `#808080`,
+    `#66ffff`,
+    `#66ccff`,
+    `#3399ff`,
+    `#0033cc`,
+    `#00ff99`,
+    `#33cc33`,
+    `#009933`,
+    `#99cc00`,
+    `#ff6666`,
+    `#ff3300`,
+    `#ff0000`,
+    `#800000`,
+    `#ff0066`,
+    `#ff3399`,
+    `#cc0099`,
+    `#660066`,
+  ];
   const refOne = useRef(null);
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
@@ -40,7 +69,22 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
         >
           <div className="pencil"></div>
         </div>
-        <div className="popUpButton"></div>
+        <div
+          className="popUpButton"
+          onClick={(x) => {
+            setSubMenu({
+              confD: false,
+              confN: false,
+              confC: !subMenu.confC,
+            });
+          }}
+        >
+          <img
+            className="img"
+            src={colorPalette}
+            alt="color palette logo"
+          ></img>
+        </div>
         <div
           className="popUpButton deleteButton"
           onClick={(x) => {
@@ -75,17 +119,31 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
           }}
         >
           <div>
-            <form className="nameChangeForm">
+            <form className="nameChangeForm" onSubmit={renameFunc}>
               <input
                 type="text"
                 required
                 placeholder="Enter task here!"
-                // value={taskName}
-                // onChange={(e) => setTaskName(e.target.value)}
+                value={listName}
+                onChange={(e) => setlistnameFA(e.target.value)}
               />
               <input type="submit" value="Rename" />
             </form>
           </div>
+        </div>
+      )}
+      {subMenu.confC && (
+        <div className="colorBox confirmTab confirmTabAd">
+          {colors.map((x, i) => {
+            return (
+              <div
+                className="colorCircle popUpButton"
+                onClick={(x) => colorChange(colors[i])}
+                style={{ backgroundColor: x }}
+                key={i}
+              ></div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -93,5 +151,3 @@ function PopUpMenuComp({ deleteFunc, coords, visibility }) {
 }
 
 export default PopUpMenuComp;
-
-// deleteFunc;

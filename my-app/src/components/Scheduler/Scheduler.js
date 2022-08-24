@@ -15,6 +15,8 @@ function Scheduler() {
   const [todos, todoDispatch] = useReducer(todoReducer, [
     {
       listName: "list_1",
+      listNameShow: "",
+      color: "default",
       todoArray: [],
     },
   ]);
@@ -26,6 +28,7 @@ function Scheduler() {
     opacity: 1,
   });
   const [taskName, setTaskName] = useState("");
+  const [listName, setListName] = useState("");
   const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -118,7 +121,7 @@ function Scheduler() {
     });
     setTaskName("");
   }
-  console.log(todos);
+
   function handleList(e) {
     const regex = /^(List)+[0-9]*/gi;
     if (regex.test(e.target.classList[0])) {
@@ -126,12 +129,32 @@ function Scheduler() {
     }
   }
   function popUpMenu(e) {
-    console.log(coords);
     setCoords({ x: e.clientX, y: e.clientY });
-
     setPopUpVisibility(!popUpVisibility);
   }
-
+  function handleRename(e) {
+    e.preventDefault();
+    todoDispatch({
+      type: ACTIONS.RENAME_LIST,
+      payload: {
+        index: index,
+        newListName: listName,
+      },
+    });
+    setListName("");
+  }
+  function setListNameF(name) {
+    setListName(name);
+  }
+  function handleColorChange(color) {
+    todoDispatch({
+      type: ACTIONS.CHANGE_LIST_COLOR,
+      payload: {
+        index: index,
+        color: color,
+      },
+    });
+  }
   return (
     <div className="schedulerWrapper">
       {taskProgress.confettiBoom && <Confetti opacity={taskProgress.opacity} />}
@@ -154,6 +177,8 @@ function Scheduler() {
                 <List
                   key={x.listName}
                   name={x.listName}
+                  color={x.color}
+                  nameShow={x.listNameShow}
                   listSelect={handleList}
                   index={index}
                   todos={todos}
@@ -201,6 +226,10 @@ function Scheduler() {
           visibility={(x) => {
             setPopUpVisibility(!popUpVisibility);
           }}
+          renameFunc={handleRename}
+          setlistnameFA={setListNameF}
+          colorChange={handleColorChange}
+          listName={listName}
           deleteFunc={(x) => {
             todoDispatch({
               type: ACTIONS.DELETE_LIST,

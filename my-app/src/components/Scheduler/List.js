@@ -1,7 +1,8 @@
 /** @format */
 import ProgressBar from "../ProgressBar/ProgressBar";
 
-function List({ name, listSelect, todos, index, popUpMenu }) {
+function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
+  console.log(color);
   return (
     <div className="wrapperOfList">
       <div
@@ -9,8 +10,11 @@ function List({ name, listSelect, todos, index, popUpMenu }) {
         className={`${
           name === todos[index].listName ? "selectedList" : ""
         } containerList`}
+        style={{ backgroundColor: name !== "default" ? color : "" }}
       >
-        <div className={`${name} nameList`}> {name.replace(/_/gi, " ")} </div>
+        <div className={`${name} nameList`}>
+          {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
+        </div>
 
         {name === todos[index].listName && (
           <div
