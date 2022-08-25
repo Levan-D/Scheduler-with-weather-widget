@@ -1,4 +1,5 @@
 server:
+  url: "http://todo.lan"
   host: "0.0.0.0"
   port: 9991
 database:
@@ -17,8 +18,8 @@ jwt:
   accessTTL: 1000h
   refreshTTL: 4320h # 6 month
 smtp:
-  host: ""
-  port: 587
+  host: "mail.dreamhost.com"
+  port: 465
   from: "Todo"
-  username: "noreply@todo.lan"
-  password: ""
+  username: "noreplytodo@sns.ge"
+  password: "c3nybeq2eLXx84ovGxnO05Xf"

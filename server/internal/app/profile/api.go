@@ -24,9 +24,10 @@ func RegisterHandlers(r fiber.Router, service Service) {
 }
 
 type profileResponse struct {
-	Email     string `json:"email"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	Email      string `json:"email"`
+	FirstName  string `json:"first_name"`
+	LastName   string `json:"last_name"`
+	IsVerified bool   `json:"is_verified"`
 }
 
 // @Tags Profile
@@ -43,9 +44,10 @@ func (h *handler) getProfile(c *fiber.Ctx) error {
 	user := c.Locals(auth.LocalUser).(domain.User)
 
 	return c.Status(http.StatusOK).JSON(profileResponse{
-		Email:     user.Email,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
+		Email:      user.Email,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+		IsVerified: *user.IsVerified,
 	})
 }
 

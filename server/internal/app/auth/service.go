@@ -1,9 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"github.com/Levan-D/Scheduler-with-weather-widget/server/internal/app/errors"
 	"github.com/Levan-D/Scheduler-with-weather-widget/server/pkg/argon2id"
+	"github.com/Levan-D/Scheduler-with-weather-widget/server/pkg/config"
 	"github.com/Levan-D/Scheduler-with-weather-widget/server/pkg/domain"
+	"github.com/Levan-D/Scheduler-with-weather-widget/server/pkg/mail"
 	"github.com/Levan-D/Scheduler-with-weather-widget/server/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -12,8 +15,9 @@ import (
 )
 
 type service struct {
-	repository Repository
-	argon      argon2id.Argon2ID
+	repository  Repository
+	argon       argon2id.Argon2ID
+	mailService mail.Mail
 }
 
 type Service interface {
@@ -23,6 +27,7 @@ type Service interface {
 	ForgotPassword(email string) error
 	CheckResetToken(token string) error
 	ResetPassword(confirmationCode string, newPassword string, confirmPassword string) error
+	CheckConfirmationCode(confirmationCode string) (string, error)
 }
 
 type AuthSocialInput struct {
@@ -43,10 +48,11 @@ type SignUpInput struct {
 	Password  string
 }
 
-func NewService(repository Repository, argon argon2id.Argon2ID) Service {
+func NewService(repository Repository, argon argon2id.Argon2ID, mailService mail.Mail) Service {
 	return &service{
-		repository: repository,
-		argon:      argon,
+		repository:  repository,
+		argon:       argon,
+		mailService: mailService,
 	}
 }
 
@@ -118,6 +124,9 @@ func (s *service) ForgotPassword(email string) error {
 	if err != nil {
 		return errors.StatusInternalServer.LocaleWrapf(err, "cannot be update reset data", errors.LocaleUndefined)
 	}
+
+	content := fmt.Sprintf("Reset password: <a href=\"%s/reset/%s\" target=\"_blank\">%s/reset/%s</a>", config.Get().Server.Url, generateCode, config.Get().Server.Url, generateCode)
+	s.mailService.Send(user.Email, "Reset Password", content, nil)
 
 	return nil
 }

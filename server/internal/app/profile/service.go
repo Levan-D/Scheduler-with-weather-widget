@@ -15,13 +15,8 @@ type Service interface {
 }
 
 type UpdateUserProfileInput struct {
-	FirstName      string
-	LastName       string
-	Email          string
-	Phone          string
-	Gender         string
-	Birthday       string
-	PersonalNumber string
+	FirstName string
+	LastName  string
 }
 
 func NewService(repository Repository) Service {

@@ -23,6 +23,7 @@ var (
 
 type Config struct {
 	Server struct {
+		Url  string `yaml:"url"`
 		Host string `yaml:"host"`
 		Port uint16 `yaml:"port"`
 	} `yaml:"server"`

@@ -210,8 +210,7 @@ type forgotConfirmInput struct {
 }
 
 type forgotConfirmResponse struct {
-	ConfirmationCode string `json:"confirmation_code"`
-	Message          string `json:"message"`
+	Message string `json:"message"`
 }
 
 // @Tags Auth
@@ -234,13 +233,12 @@ func (h *handler) forgotConfirm(c *fiber.Ctx) error {
 		return response.NewErrorValidator(c, errors.StatusBadRequest.LocaleNew(errors.ErrInvalidValidation, errors.LocaleInvalidValidation), errValidate)
 	}
 
-	//confirmationCode, err := h.service.CheckConfirmationCode(input.ConfirmationCode)
-	//if err != nil {
-	//	return response.NewError(c, err)
-	//}
+	_, err := h.service.CheckConfirmationCode(input.ConfirmationCode)
+	if err != nil {
+		return response.NewError(c, err)
+	}
 
 	return c.Status(http.StatusOK).JSON(forgotConfirmResponse{
-		//ConfirmationCode: confirmationCode,
 		Message: "Confirmation code is validated",
 	})
 }
@@ -271,15 +269,15 @@ func (h *handler) forgotResetPassword(c *fiber.Ctx) error {
 		return response.NewErrorValidator(c, errors.StatusBadRequest.LocaleNew(errors.ErrInvalidValidation, errors.LocaleInvalidValidation), errValidator)
 	}
 
-	//confirmationCode, err := h.service.CheckConfirmationCode(input.ConfirmationCode)
-	//if err != nil {
-	//	return response.NewError(c, err)
-	//}
+	_, err := h.service.CheckConfirmationCode(input.ConfirmationCode)
+	if err != nil {
+		return response.NewError(c, err)
+	}
 
-	//err = h.service.ResetPassword(confirmationCode, input.NewPassword, input.ConfirmPassword)
-	//if err != nil {
-	//	return response.NewError(c, err)
-	//}
+	err = h.service.ResetPassword(input.ConfirmationCode, input.NewPassword, input.ConfirmPassword)
+	if err != nil {
+		return response.NewError(c, err)
+	}
 
 	return c.Status(http.StatusOK).JSON(response.Message{Message: "Password has been changed"})
 }

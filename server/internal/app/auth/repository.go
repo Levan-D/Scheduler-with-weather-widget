@@ -55,13 +55,13 @@ func (r *repository) Create(input domain.User) (domain.User, error) {
 
 func (r *repository) FindByResetToken(token string) (domain.User, error) {
 	var user domain.User
-	err := r.db.Where("reset_password_code = ?", token).First(&user).Error
+	err := r.db.Where("reset_password_token = ?", token).First(&user).Error
 	return user, err
 }
 
 func (r *repository) FindByForgotConfirmationCode(confirmationCode string) (domain.User, error) {
 	var user domain.User
-	err := r.db.Where("reset_password_code = ?", confirmationCode).First(&user).Error
+	err := r.db.Where("reset_password_token = ?", confirmationCode).First(&user).Error
 	return user, err
 }
 
@@ -80,7 +80,7 @@ func (r *repository) UpdateResetData(userId uuid.UUID, code string) error {
 }
 
 func (r *repository) UpdatePasswordByConfirmationCode(confirmationCode string, hashPassword string) error {
-	err := r.db.Where("reset_password_code = ?", confirmationCode).Updates(&domain.User{
+	err := r.db.Where("reset_password_token = ?", confirmationCode).Updates(&domain.User{
 		Password: hashPassword,
 	}).Error
 	if err != nil {
@@ -91,12 +91,12 @@ func (r *repository) UpdatePasswordByConfirmationCode(confirmationCode string, h
 }
 
 func (r *repository) CleanResetData(confirmationCode string) error {
-	err := r.db.Model(&domain.User{}).Where("reset_password_code = ?", confirmationCode).Update("reset_password_expire", nil).Error
+	err := r.db.Model(&domain.User{}).Where("reset_password_token = ?", confirmationCode).Update("reset_password_expire", nil).Error
 	if err != nil {
 		return err
 	}
 
-	err = r.db.Model(&domain.User{}).Where("reset_password_code = ?", confirmationCode).Update("reset_password_code", nil).Error
+	err = r.db.Model(&domain.User{}).Where("reset_password_token = ?", confirmationCode).Update("reset_password_token", nil).Error
 	if err != nil {
 		return err
 	}
