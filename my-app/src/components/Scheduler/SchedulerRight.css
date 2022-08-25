@@ -183,8 +183,8 @@ input[type="submit"]:active {
 .timeStampWrapper {
   background-color: #f0f0f0;
   height: 35px;
-  width: 100px;
-  line-height: 16px;
+  width: 75px;
+  line-height: 14px;
   font-size: 0.7rem;
   font-weight: bold;
   color: #354259;
@@ -195,6 +195,22 @@ input[type="submit"]:active {
   text-align: center;
   user-select: none;
 }
+.stampWrapper {
+  margin-top: 3px;
+}
+.markedStampWrapper {
+  height: 35px;
+  width: 75px;
+  line-height: 14px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  padding: auto 1rem;
+  text-align: center;
+  user-select: none;
+}
+
 .todoListWrapper {
   max-width: 500px;
   height: 800px;

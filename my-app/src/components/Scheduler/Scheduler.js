@@ -66,7 +66,7 @@ function Scheduler() {
       type: ACTIONS.SET_TASKSTOTAL,
       payload: { todos: todos, index: index },
     });
-  }, [todos]);
+  }, [todos, index]);
 
   useEffect(() => {
     if (

@@ -20,7 +20,6 @@
   border-radius: 15px;
   text-align: center;
   height: 24px;
-  color: #354259;
   font-weight: bold;
   font-size: 1.7rem;
   line-height: 24px;
@@ -38,7 +37,8 @@
   filter: brightness(0.95);
 }
 .containerList {
-  background-color: #c4d7e0;
+  border: 2px solid rgba(0, 0, 0, 0);
+  background-color: #9ec2d3;
   display: flex;
   justify-content: space-between;
   margin: 0.5rem 0.2rem 0.1rem 0.2rem;
@@ -46,9 +46,22 @@
   padding: 0 10px;
   cursor: pointer;
   transition: 0.3s;
+  user-select: none;
 }
 .selectedList {
-  background-color: #92ba92;
+  cursor: pointer;
+}
+.selectedList::before {
+  position: relative;
+  width: 2px;
+  top: 10px;
+  height: 4px;
+  left: -22px;
+  background-color: inherit;
+  border-radius: 20px;
+  border: 2px solid #f0f0f0;
+
+  content: "";
 }
 .containerList:hover {
   filter: brightness(1.1);
@@ -62,7 +75,6 @@
   white-space: nowrap;
   max-width: 100%;
   min-width: 80%;
-  color: #354259;
   font-size: 0.9rem;
   line-height: 30px;
 }

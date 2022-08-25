@@ -18,26 +18,41 @@ function PopUpMenuComp({
   });
   const colors = [
     `#f0f0f0`,
-    `#000000`,
-    `#4d4d4d`,
-    `#808080`,
-    `#66ffff`,
-    `#66ccff`,
-    `#3399ff`,
-    `#0033cc`,
-    `#00ff99`,
-    `#33cc33`,
-    `#009933`,
-    `#99cc00`,
-    `#ff6666`,
-    `#ff3300`,
-    `#ff0000`,
-    `#800000`,
-    `#ff0066`,
-    `#ff3399`,
-    `#cc0099`,
+    `#191919`,
+    `#323232`,
+    `#4c4c4c`,
+
+    `#9ED2C6`,
+    `#54BAB9`,
+    `#F7ECDE`,
+    `#E9DAC1`,
+
+    `#D6EFED`,
+    `#8CC0DE`,
+    `#1572A1`,
+    `#11324D`,
+
+    `#C4DFAA`,
+    `#70AF85`,
+    `#3A6351`,
+    `#064420`,
+
+    `#FFE9AE`,
+    `#FFDBA4`,
+    `#FFB3B3`,
+    `#F4BFBF`,
+
+    `#AF7AB3`,
+    `#80558C`,
+    `#726A95`,
     `#660066`,
+
+    `#FF7878`,
+    `#D35D6E`,
+    `#D45079`,
+    `#C84361`,
   ];
+
   const refOne = useRef(null);
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);

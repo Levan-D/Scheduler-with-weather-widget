@@ -89,7 +89,11 @@ function todoReducer(todos, action) {
           todoArray: [
             ...todos[action.payload.index].todoArray.map((x) => {
               if (x.id === action.payload.id) {
-                return { ...x, complete: !x.complete };
+                return {
+                  ...x,
+                  complete: !x.complete,
+                  completeDate: Date(Date.now()),
+                };
               }
               return x;
             }),
@@ -110,6 +114,7 @@ function newTodo(taskName) {
     time: Date(Date.now()),
     taskName: taskName,
     complete: false,
+    completeDate: "",
   };
 }
 function newList(listName) {
