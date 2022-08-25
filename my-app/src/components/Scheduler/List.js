@@ -18,7 +18,7 @@ function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
       b = parseInt(hex.slice(4, 6), 16);
     if (bw) {
       // https://stackoverflow.com/a/3943023/112731
-      return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "#323232" : "#F0F0F0";
+      return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "#000000" : "#F0F0F0";
     }
     // invert color components
     r = (255 - r).toString(16);
@@ -103,7 +103,7 @@ function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
         tasksTotal={
           todos[todos.map((x) => x.listName).indexOf(name)].todoArray.length
         }
-        width={100}
+        width={170}
         height={3}
         background={`#6e85b7`}
       />
