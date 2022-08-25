@@ -1,19 +1,20 @@
 .popUpMenu {
   position: absolute;
-  width: 120px;
+  width: 150px;
   height: 30px;
   background-color: #6e85b7;
   padding: 12px 8px;
   border-radius: 10px;
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  user-select: none;
 }
 .popUpWrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .confirmTab {
   position: relative;
-  width: 105px;
+  width: 90%;
   top: 9px;
   padding: 0 8px;
   height: 30px;
@@ -55,14 +56,16 @@
 }
 .nameChangeForm input[type="text"],
 .nameChangeForm input[type="submit"] {
+  user-select: auto;
   position: relative;
-  width: 100px;
+  width: 92%;
   height: 30px;
   margin: 5px 0;
   padding: 0 5px;
   font-size: 0.8rem;
   border-radius: 10px;
 }
+
 .img {
   width: 27px;
   margin: 2px;

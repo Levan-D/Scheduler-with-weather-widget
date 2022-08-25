@@ -16,11 +16,13 @@ function PopUpMenuComp({
     confN: false,
     confC: false,
   });
+
   const colors = [
     `#f0f0f0`,
     `#191919`,
     `#323232`,
     `#4c4c4c`,
+    `#D3D3D3`,
 
     `#9ED2C6`,
     `#54BAB9`,
@@ -51,6 +53,7 @@ function PopUpMenuComp({
     `#D35D6E`,
     `#D45079`,
     `#C84361`,
+    `#42032C`,
   ];
 
   const refOne = useRef(null);
@@ -142,6 +145,26 @@ function PopUpMenuComp({
                 value={listName}
                 onChange={(e) => setlistnameFA(e.target.value)}
               />
+              <div
+                onClick={() =>
+                  setlistnameFA(
+                    new Date()
+                      .toJSON()
+                      .slice(2, 10)
+                      .replace(/-/g, "")
+                      .match(/.{1,2}/g)
+                      .reverse()
+                      .join("")
+                      .replace(/(.{2})/g, "$&/")
+                      .slice(0, -1) +
+                      " " +
+                      listName
+                  )
+                }
+              >
+                Add today's date
+              </div>
+
               <input type="submit" value="Rename" />
             </form>
           </div>

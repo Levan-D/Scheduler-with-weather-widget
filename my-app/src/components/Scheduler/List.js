@@ -103,7 +103,7 @@ function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
         tasksTotal={
           todos[todos.map((x) => x.listName).indexOf(name)].todoArray.length
         }
-        width={100}
+        width={170}
         height={3}
         background={`#6e85b7`}
       />
