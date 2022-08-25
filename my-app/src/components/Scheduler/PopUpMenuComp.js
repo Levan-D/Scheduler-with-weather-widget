@@ -145,7 +145,7 @@ function PopUpMenuComp({
                 value={listName}
                 onChange={(e) => setlistnameFA(e.target.value)}
               />
-              <div
+              <div className="todaysDateButton"
                 onClick={() =>
                   setlistnameFA(
                     new Date()

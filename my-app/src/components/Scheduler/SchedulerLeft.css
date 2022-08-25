@@ -1,5 +1,6 @@
 .leftSide {
   width: 200px;
+  min-width: 150px;
   padding: 25px 15px;
   height: 750px;
   background-color: #354259;
@@ -77,6 +78,8 @@
   min-width: 80%;
   font-size: 0.9rem;
   line-height: 30px;
+  letter-spacing: 0px;
+  font-family: "Arial Narrow", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 .tripleDot {
