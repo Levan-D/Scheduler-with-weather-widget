@@ -1,7 +1,33 @@
 /** @format */
 import ProgressBar from "../ProgressBar/ProgressBar";
+import React, { useState, useEffect, useRef } from "react";
 
-function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
+function List({
+  name,
+  listSelect,
+  todos,
+  index,
+  popUpMenu,
+  nameShow,
+  color,
+  setlistnameFA,
+  popUpVisibility,
+}) {
+  const [isHovering, setIsHovering] = useState(false);
+
+  let hoverEvent;
+
+  const refTwo = useRef(null);
+  useEffect(() => {
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
+
+  const handleClickOutside = (e) => {
+    if (!refTwo.current.contains(e.target)) {
+      setIsHovering(false);
+    }
+  };
+
   function invertColor(hex, bw) {
     if (hex.indexOf("#") === 0) {
       hex = hex.slice(1);
@@ -34,9 +60,18 @@ function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
   }
 
   return (
-    <div className="wrapperOfList">
+    <div className="wrapperOfList" onClick={listSelect}>
       <div
-        onClick={listSelect}
+        onMouseEnter={(x) => {
+          hoverEvent = setTimeout(() => {
+            setIsHovering(true);
+          }, 1000);
+        }}
+        onMouseLeave={(x) => {
+          setIsHovering(!true);
+          clearTimeout(hoverEvent);
+        }}
+        ref={refTwo}
         className={`${
           name === todos[index].listName ? "selectedList" : ""
         } containerList`}
@@ -55,11 +90,16 @@ function List({ name, listSelect, todos, index, popUpMenu, nameShow, color }) {
         <div className={`${name} nameList`}>
           {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
-
+        {isHovering && !popUpVisibility && (
+          <div className="hoverName">
+            {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
+          </div>
+        )}
         {name === todos[index].listName && (
           <div
             className="tripleDot"
             onClick={(e) => {
+              setlistnameFA("");
               popUpMenu(e);
             }}
           >

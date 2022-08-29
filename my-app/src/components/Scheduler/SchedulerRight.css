@@ -1,7 +1,8 @@
 /** @format */
 
 .schedulerWrapper {
-  margin: 2rem;
+  width: 730px;
+  margin: 2rem auto;
   display: flex;
 }
 

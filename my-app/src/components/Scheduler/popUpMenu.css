@@ -38,6 +38,11 @@
 .confirmTabAc:active {
   filter: brightness(0.95);
 }
+.calendar {
+  position: absolute;
+  left: 150px;
+  top: 0px;
+}
 .popUpButton {
   width: 30px;
   height: 30px;

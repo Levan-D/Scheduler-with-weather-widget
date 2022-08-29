@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./popUpMenu.css";
 import colorPalette from "./pictures/colorPalette.png";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 function PopUpMenuComp({
   deleteFunc,
@@ -10,12 +12,16 @@ function PopUpMenuComp({
   setlistnameFA,
   listName,
   colorChange,
+  index,
+  todos,
 }) {
   const [subMenu, setSubMenu] = useState({
     confD: false,
     confN: false,
     confC: false,
+    showCal: false,
   });
+  const [calendarPick, setCalendarPick] = useState(new Date());
 
   const colors = [
     `#f0f0f0`,
@@ -66,12 +72,68 @@ function PopUpMenuComp({
       visibility();
     }
   };
+  function insertCalendarDate() {
+    const monthsShort = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    let displayDate = calendarPick
+      .toString()
+      .split(" ")
+      .map((str, index) => ({
+        value: str,
+        id: index + 1,
+      }));
+    function setMonth() {
+      if (monthsShort.indexOf(displayDate[1].value) + 1 < 10) {
+        return `0${(monthsShort.indexOf(displayDate[1].value) + 1).toString()}`;
+      } else if (monthsShort.indexOf(displayDate[1].value) + 1 >= 10) {
+        return (monthsShort.indexOf(displayDate[1].value) + 1).toString();
+      }
+    }
+    function pickListName() {
+      return todos[index].listNameShow != ""
+        ? todos[index].listNameShow
+        : todos[index].listName.replace(/_/, " ");
+    }
+    setlistnameFA(
+      `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
+        .toString()
+        .slice(2, 4)}  ${pickListName().replace(
+        /([0-9]{2}\/){2}([0-9]{2})(\s*)/,
+        ""
+      )}`
+    );
+  }
+  useEffect(() => {
+    if (subMenu.confC || subMenu.showCal) {
+      insertCalendarDate();
+    }
+  }, [calendarPick]);
+  let mouseEvent;
 
   return (
     <div
       className="popUpMenu"
       ref={refOne}
-      onMouseLeave={visibility}
+      onMouseLeave={(x) => {
+        mouseEvent = setTimeout(() => {
+          visibility();
+        }, 500);
+      }}
+      onMouseEnter={(x) => {
+        clearTimeout(mouseEvent);
+      }}
       style={{ top: coords.y + "px", left: coords.x + "px" }}
     >
       <div className="popUpWrapper">
@@ -82,6 +144,7 @@ function PopUpMenuComp({
               confD: false,
               confN: !subMenu.confN,
               confC: false,
+              showCal: false,
             });
           }}
         >
@@ -94,6 +157,7 @@ function PopUpMenuComp({
               confD: false,
               confN: false,
               confC: !subMenu.confC,
+              showCal: false,
             });
           }}
         >
@@ -110,6 +174,7 @@ function PopUpMenuComp({
               confD: !subMenu.confD,
               confN: false,
               confC: false,
+              showCal: false,
             });
           }}
         >
@@ -127,6 +192,7 @@ function PopUpMenuComp({
           <div onClick={deleteFunc}>Confirm</div>
         </div>
       )}
+
       {subMenu.confN && (
         <div
           className="confirmTab confirmTabAd"
@@ -140,31 +206,38 @@ function PopUpMenuComp({
             <form className="nameChangeForm" onSubmit={renameFunc}>
               <input
                 type="text"
+                maxlength="256"
                 required
                 placeholder="Enter task here!"
                 value={listName}
                 onChange={(e) => setlistnameFA(e.target.value)}
               />
-              <div className="todaysDateButton"
-                onClick={() =>
-                  setlistnameFA(
-                    new Date()
-                      .toJSON()
-                      .slice(2, 10)
-                      .replace(/-/g, "")
-                      .match(/.{1,2}/g)
-                      .reverse()
-                      .join("")
-                      .replace(/(.{2})/g, "$&/")
-                      .slice(0, -1) +
-                      " " +
-                      listName
-                  )
-                }
+              <div
+                className="todaysDateButton"
+                onClick={() => {
+                  setCalendarPick(new Date());
+                  insertCalendarDate();
+                }}
               >
                 Add today's date
               </div>
 
+              <div
+                className="todaysDateButton"
+                onClick={() =>
+                  setSubMenu({
+                    ...subMenu,
+                    showCal: !subMenu.showCal,
+                  })
+                }
+              >
+                Pick a date
+              </div>
+              {subMenu.showCal && (
+                <div className="calendar">
+                  <Calendar onChange={setCalendarPick} value={calendarPick} />
+                </div>
+              )}
               <input type="submit" value="Rename" />
             </form>
           </div>

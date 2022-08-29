@@ -157,7 +157,13 @@ function Scheduler() {
   }
   return (
     <div className="schedulerWrapper">
-      {taskProgress.confettiBoom && <Confetti opacity={taskProgress.opacity} />}
+      {taskProgress.confettiBoom && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          opacity={taskProgress.opacity}
+        />
+      )}
       <div className="leftSide">
         <h2>Your Lists:</h2>
         <div
@@ -183,6 +189,8 @@ function Scheduler() {
                   index={index}
                   todos={todos}
                   popUpMenu={popUpMenu}
+                  popUpVisibility={popUpVisibility}
+                  setlistnameFA={setListNameF}
                 />
               );
             })}
@@ -223,10 +231,15 @@ function Scheduler() {
       {popUpVisibility && (
         <PopUpMenuComp
           coords={coords}
+          todos={todos}
+          index={index}
           visibility={(x) => {
             setPopUpVisibility(!popUpVisibility);
           }}
-          renameFunc={handleRename}
+          renameFunc={(x) => {
+            handleRename(x);
+            setPopUpVisibility(!popUpVisibility);
+          }}
           setlistnameFA={setListNameF}
           colorChange={handleColorChange}
           listName={listName}
