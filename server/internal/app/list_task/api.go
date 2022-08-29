@@ -1,6 +1,7 @@
 package list_task
 
 import (
+	"github.com/Levan-D/Scheduler-with-weather-widget/server/internal/app/auth"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -11,15 +12,27 @@ type handler struct {
 func RegisterHandlers(r fiber.Router, service Service) {
 	h := handler{service}
 
-	route := r.Group("/lists/:listId/tasks")
+	route := r.Group("/lists/:listId/tasks", auth.Authorization)
 	{
-		route.Get("/", h.blank)
-		route.Post("/complete", h.blank)
-		route.Put("/:id", h.blank)
-		route.Delete("/:id", h.blank)
+		route.Get("/", h.getListTask)
+		route.Post("/complete", h.completeListTask)
+		route.Put("/:id", h.updateListTask)
+		route.Delete("/:id", h.deleteListTask)
 	}
 }
 
-func (h *handler) blank(c *fiber.Ctx) error {
+func (h *handler) getListTask(c *fiber.Ctx) error {
+	return nil
+}
+
+func (h *handler) completeListTask(c *fiber.Ctx) error {
+	return nil
+}
+
+func (h *handler) updateListTask(c *fiber.Ctx) error {
+	return nil
+}
+
+func (h *handler) deleteListTask(c *fiber.Ctx) error {
 	return nil
 }
