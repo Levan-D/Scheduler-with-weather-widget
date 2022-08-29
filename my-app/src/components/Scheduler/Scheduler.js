@@ -55,7 +55,7 @@ function Scheduler() {
     }
     if (todos[index].todoArray.length > 0)
       localStorage.setItem("todoData", JSON.stringify(todos));
-  }, [todos]);
+  }, [todos, listName]);
 
   useEffect(() => {
     tpDispatch({
