@@ -124,10 +124,12 @@ input[type="submit"]:active {
   z-index: 2;
   cursor: pointer;
 }
+.textArea::-webkit-scrollbar-thumb,
 .todo::-webkit-scrollbar-thumb {
   width: 10px;
   background: #80ad80;
 }
+.textArea::-webkit-scrollbar-track,
 .todo::-webkit-scrollbar-track {
   border-radius: 5px;
   margin: 0.5rem 0;
