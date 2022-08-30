@@ -1,26 +1,52 @@
 /** @format */
 import ACTIONS from "./actions";
+import React, { useState } from "react";
 
 function Todo({ todo, toggle, index }) {
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
     id: index + 1,
   }));
+  const [edit, setEdit] = useState(false);
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
     id: index + 1,
   }));
 
+  function handleKeyDown(e) {
+    e.target.style.height = "25px";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`;
+    // In case you have a limitation
+    // ;
+  }
+
   return (
     <div className="todoBackground">
       <div className="todoContainer">
         <div
-          className={`todo ${
-            todo.complete ? "todoComplete" : "todoNotComplete"
-          }`}
+          onDoubleClick={(x) => {
+            console.log(`lalala`);
+            setEdit(!edit);
+          }}
         >
-          {todo.taskName}
+          {!edit ? (
+            <div
+              className={`todo ${
+                todo.complete ? "todoComplete" : "todoNotComplete"
+              }`}
+            >
+              {todo.taskName}
+            </div>
+          ) : (
+            <div>
+              <form className="renameForm">
+                <label>
+                  <textarea className="textArea" onKeyDown={handleKeyDown} />
+                </label>
+              </form>
+            </div>
+          )}
         </div>
         <div className="todoButtonsFlex">
           <div

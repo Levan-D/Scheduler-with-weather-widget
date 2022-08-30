@@ -86,7 +86,7 @@ input[type="submit"]:active {
   border-radius: 20px;
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
   background-color: rgba(53, 66, 89, 0.2);
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 .todoWrapper::-webkit-scrollbar-track {
   background: #b2c8df;
@@ -100,10 +100,12 @@ input[type="submit"]:active {
   background-color: #c4d7e0;
   border-radius: 15px;
 }
+
 .todoButtonsFlex {
   padding: 10px 0;
   display: flex;
 }
+
 .todoBackground {
   padding: 15px 20px;
 }
@@ -117,7 +119,10 @@ input[type="submit"]:active {
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
   color: #354259;
   overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
   z-index: 2;
+  cursor: pointer;
 }
 .todo::-webkit-scrollbar-thumb {
   width: 10px;
@@ -131,6 +136,7 @@ input[type="submit"]:active {
 .todoComplete {
   background-color: #92ba92;
   color: #f0f0f0;
+  overflow-x: hidden;
 }
 .todoNotComplete {
   background-color: #f0f0f0;
@@ -216,4 +222,27 @@ input[type="submit"]:active {
   max-width: 500px;
   height: 800px;
   background-color: #6e85b7;
+}
+.textArea {
+  margin: 0;
+  padding: 0 20px;
+  background-color: transparent;
+  font-size: 1rem;
+  box-sizing: border-box;
+  width: 380px;
+  height: 34px;
+  line-height: 34px;
+  border-radius: 15px;
+  border: none;
+  color: #354259;
+  background-color: pink;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  overflow-wrap: break-word;
+  z-index: 2;
+  cursor: pointer;
+  resize: none;
+}
+.textArea:focus {
+  outline: none;
+  filter: brightness(0.98);
 }
