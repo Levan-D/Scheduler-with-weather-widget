@@ -50,7 +50,7 @@ function Todo({
             <div
               onDoubleClick={() => {
                 setTaskRenameF({
-                  rename: todo.taskName,
+                  rename: todo.taskName.replace(/\s\s+/g, ' '),
                   id: todo.id,
                   show: true,
                 });
