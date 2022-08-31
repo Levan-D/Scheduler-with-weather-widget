@@ -1,6 +1,6 @@
 /** @format */
 import ACTIONS from "./actions";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 function Todo({
   todo,
@@ -14,6 +14,10 @@ function Todo({
     value: str,
     id: index + 1,
   }));
+
+  const [isHovering, setIsHovering] = useState(false);
+
+  let hoverEvent;
 
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
@@ -51,11 +55,25 @@ function Todo({
                   show: true,
                 });
               }}
+              onMouseEnter={(x) => {
+                hoverEvent = setTimeout(() => {
+                  setIsHovering(true);
+                }, 1000);
+              }}
+              onMouseLeave={(x) => {
+                setIsHovering(!true);
+                clearTimeout(hoverEvent);
+              }}
               className={`todo ${
                 todo.complete ? "todoComplete" : "todoNotComplete"
               }`}
             >
               {todo.taskName}
+              {isHovering && (
+          <div className="hoverDoubleClick">
+            {"Double click to edit"  }
+          </div>
+        )}
             </div>
           )}
 
@@ -69,7 +87,7 @@ function Todo({
                       value={taskRename.rename}
                       className="textArea"
                       onKeyDown={handleKeyDown}
-                      onKeyPress={e=>{  if( e.key==="Enter"){handleRenameTodo(e)}   }}
+                      onKeyPress={e=>{  if( e.key==="Enter" && !e.shiftKey){handleRenameTodo(e)}   }}
                       onChange={(e) =>
                         setTaskRenameF({
                           rename: e.target.value,
