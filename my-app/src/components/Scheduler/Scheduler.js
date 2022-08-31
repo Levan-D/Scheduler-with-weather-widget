@@ -28,6 +28,10 @@ function Scheduler() {
     opacity: 1,
   });
   const [taskName, setTaskName] = useState("");
+  const [taskRename, setTaskRename] = useState("");
+  function setTaskRenameF(rename) {
+    setTaskRename(rename);
+  }
   const [listName, setListName] = useState("");
   const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
@@ -143,6 +147,18 @@ function Scheduler() {
     });
     setListName("");
   }
+  function handleRenameTodo(e) {
+    e.preventDefault();
+    todoDispatch({
+      type: ACTIONS.RENAME_TODO,
+      payload: {
+        taskRename: taskRename.rename,
+        id: taskRename.id,
+        index: index,
+      },
+    });
+    setTaskRename({ rename: "", id: "", show: false });
+  }
   function setListNameF(name) {
     setListName(name);
   }
@@ -208,7 +224,7 @@ function Scheduler() {
             background={`#354259`}
           />
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="renameForm">
           <input
             type="text"
             required
@@ -216,14 +232,22 @@ function Scheduler() {
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
           />
-          <input type="submit" value="+" />
+          <input type="submit" value="+" className="bigSubmitButton" />
         </form>
         <div className="todoWrapper">
           {typeof todos === "object" &&
             todos[index].todoArray.length > 0 &&
             todos[index].todoArray.map((x) => {
               return (
-                <Todo key={x.id} todo={x} toggle={todoDispatch} index={index} />
+                <Todo
+                  key={x.id}
+                  todo={x}
+                  handleRenameTodo={handleRenameTodo}
+                  setTaskRenameF={setTaskRenameF}
+                  taskRename={taskRename}
+                  toggle={todoDispatch}
+                  index={index}
+                />
               );
             })}
         </div>

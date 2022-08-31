@@ -72,6 +72,9 @@
 }
 .nameChangeForm input[type="submit"] {
   height: 40px;
+  background-color: #80558c;
+  color: white;
+  border: none;
 }
 .todaysDateButton {
   width: 92%;
