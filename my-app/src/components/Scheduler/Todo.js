@@ -69,6 +69,7 @@ function Todo({
                       value={taskRename.rename}
                       className="textArea"
                       onKeyDown={handleKeyDown}
+                      onKeyPress={e=>{  if( e.key==="Enter"){handleRenameTodo(e)}   }}
                       onChange={(e) =>
                         setTaskRenameF({
                           rename: e.target.value,
