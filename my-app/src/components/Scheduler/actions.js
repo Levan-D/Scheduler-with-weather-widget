@@ -5,6 +5,7 @@ const ACTIONS = {
   DELETE_LIST: "delete-list",
   DELETE_TODO: "delete-todo",
   TOGGLE_TODO: "toggle-todo",
+  RENAME_TODO: "rename-todo",
   RENAME_LIST: "rename-list",
   CHANGE_LIST_COLOR: "change-list-color",
   SET_TASKSCOMPLETE: "set-tasksComplete",

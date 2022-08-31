@@ -59,7 +59,7 @@ input[type="text"]:focus {
   outline: none;
   filter: brightness(0.98);
 }
-input[type="submit"] {
+.bigSubmitButton {
   width: 450px;
   height: 40px;
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
@@ -99,6 +99,7 @@ input[type="submit"]:active {
   margin: 0.2rem 0 0 0;
   background-color: #c4d7e0;
   border-radius: 15px;
+  overflow-x: hidden;
 }
 
 .todoButtonsFlex {
@@ -227,7 +228,7 @@ input[type="submit"]:active {
 }
 .textArea {
   margin: 0;
-  padding: 0 20px;
+  padding: 0 55px 0 20px;
   background-color: transparent;
   font-size: 1rem;
   box-sizing: border-box;
@@ -237,14 +238,38 @@ input[type="submit"]:active {
   border-radius: 15px;
   border: none;
   color: #354259;
-  background-color: pink;
+  background-color: rgba(146, 186, 146, 0.5);
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
   overflow-wrap: break-word;
   z-index: 2;
-  cursor: pointer;
   resize: none;
 }
 .textArea:focus {
-  outline: none;
+  outline: rgba(146, 186, 146, 1) solid 3px;
   filter: brightness(0.98);
+}
+.editTodoForm {
+  display: flex;
+}
+.miniSubmit {
+  width: 40px;
+  height: 95%;
+  line-height: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  margin: 0;
+
+  border-radius: 15px;
+  position: relative;
+  left: -50px;
+
+  border: none;
+  background-color: #80558c;
+  color: #f0f0f0;
+  cursor: pointer;
+  font-size: 1.8rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.submitContainer {
+  margin: 2% 0 3% 0;
 }

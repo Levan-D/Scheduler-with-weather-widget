@@ -81,7 +81,26 @@ function todoReducer(todos, action) {
       return todos.map(
         (obj) => newObject2.find((o) => o.listName === obj.listName) || obj
       );
-
+    case ACTIONS.RENAME_TODO:
+      let newObject5 = [
+        {
+          ...todos[action.payload.index],
+          todoArray: [
+            ...todos[action.payload.index].todoArray.map((x) => {
+              if (x.id === action.payload.id) {
+                return {
+                  ...x,
+                  taskName: action.payload.taskRename,
+                };
+              }
+              return x;
+            }),
+          ],
+        },
+      ];
+      return todos.map(
+        (obj) => newObject5.find((o) => o.listName === obj.listName) || obj
+      );
     case ACTIONS.TOGGLE_TODO:
       let newObject3 = [
         {

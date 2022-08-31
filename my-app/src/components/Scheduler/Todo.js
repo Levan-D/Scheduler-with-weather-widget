@@ -1,13 +1,20 @@
 /** @format */
 import ACTIONS from "./actions";
-import React, { useState } from "react";
+import React, { useRef, useEffect } from "react";
 
-function Todo({ todo, toggle, index }) {
+function Todo({
+  todo,
+  toggle,
+  index,
+  setTaskRenameF,
+  taskRename,
+  handleRenameTodo,
+}) {
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
     id: index + 1,
   }));
-  const [edit, setEdit] = useState(false);
+
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
@@ -17,34 +24,80 @@ function Todo({ todo, toggle, index }) {
   function handleKeyDown(e) {
     e.target.style.height = "25px";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`;
-    // In case you have a limitation
-    // ;
   }
+
+  const refOne = useRef(null);
+
+  useEffect(() => {
+    if (refOne.current) {
+      refOne.current.style.height = "25px";
+      refOne.current.style.height = `${Math.min(
+        refOne.current.scrollHeight,
+        250
+      )}px`;
+    }
+  }, [taskRename.show, taskRename]);
 
   return (
     <div className="todoBackground">
       <div className="todoContainer">
-        <div
-          onDoubleClick={(x) => {
-            console.log(`lalala`);
-            setEdit(!edit);
-          }}
-        >
-          {!edit ? (
+        <div>
+          {!taskRename.show && (
             <div
+              onDoubleClick={() => {
+                setTaskRenameF({
+                  rename: todo.taskName,
+                  id: todo.id,
+                  show: true,
+                });
+              }}
               className={`todo ${
                 todo.complete ? "todoComplete" : "todoNotComplete"
               }`}
             >
               {todo.taskName}
             </div>
-          ) : (
+          )}
+
+          {taskRename.show && (
             <div>
-              <form className="renameForm">
-                <label>
-                  <textarea className="textArea" onKeyDown={handleKeyDown} />
-                </label>
-              </form>
+              {todo.id === taskRename.id ? (
+                <form className="editTodoForm" onSubmit={handleRenameTodo}>
+                  <label>
+                    <textarea
+                      ref={refOne}
+                      value={taskRename.rename}
+                      className="textArea"
+                      onKeyDown={handleKeyDown}
+                      onChange={(e) =>
+                        setTaskRenameF({
+                          rename: e.target.value,
+                          id: todo.id,
+                          show: true,
+                        })
+                      }
+                    />
+                  </label>
+                  <label className="submitContainer">
+                    <input type="submit" className="miniSubmit" value="+" />
+                  </label>
+                </form>
+              ) : (
+                <div
+                  onDoubleClick={() => {
+                    setTaskRenameF({
+                      rename: todo.taskName,
+                      id: todo.id,
+                      show: true,
+                    });
+                  }}
+                  className={`todo ${
+                    todo.complete ? "todoComplete" : "todoNotComplete"
+                  }`}
+                >
+                  {todo.taskName}
+                </div>
+              )}
             </div>
           )}
         </div>
