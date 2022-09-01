@@ -36,6 +36,10 @@ function Scheduler() {
   const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
   const [todoIndex, setTodoIndex] = useState("");
+  const [newtodoid, settodoid] = useState(0);
+  function settodoidf(x) {
+    settodoid(x);
+  }
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   function setIndexCh(i) {
     setIndex(i);
@@ -134,8 +138,10 @@ function Scheduler() {
     }
   }
   function setTodoIndexF(todoId) {
-    setTodoIndex(todos[index].todoArray.map((x) => x.id).indexOf(todoId));
-    console.log(todoIndex);
+    setTodoIndex({
+      todoId: todoId,
+      todoIndex: todos[index].todoArray.map((x) => x.id).indexOf(todoId),
+    });
   }
   function popUpMenu(e) {
     setCoords({ x: e.clientX, y: e.clientY });
@@ -176,16 +182,18 @@ function Scheduler() {
       },
     });
   }
-  function rearrange(todoid) {
-    let newPosition = todos[index].todoArray.map((x) => x.id).indexOf(todoid);
-    console.log(todoid);
+  function rearrange() {
+    let newPosition = todos[index].todoArray
+      .map((x) => x.id)
+      .indexOf(newtodoid);
     todoDispatch({
       type: ACTIONS.CHANGE_TODO_POSITION,
       payload: {
         index: index,
-        todoIndex: todoIndex,
-        newPosition: newPosition,
-        todoid: todoid,
+        todoId: todoIndex.todoId,
+        todoIndex: todoIndex.todoIndex,
+        newPositionIndex: newPosition,
+        newtodoid: newtodoid,
       },
     });
   }
@@ -267,6 +275,8 @@ function Scheduler() {
                   index={index}
                   setTodoIndexF={setTodoIndexF}
                   rearrange={rearrange}
+                  settodoidf={settodoidf}
+                  newtodoid={newtodoid}
                 />
               );
             })}

@@ -11,6 +11,7 @@ function Todo({
   handleRenameTodo,
   setTodoIndexF,
   rearrange,
+  settodoidf,
 }) {
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
@@ -21,7 +22,7 @@ function Todo({
 
   let hoverEvent;
 
-    const [dragging, setDragging] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
@@ -46,27 +47,39 @@ function Todo({
     }
   }, [taskRename.show, taskRename]);
 
+  const refTwo = useRef(null);
+  useEffect(() => {
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
+
+  const handleClickOutside = (e) => {
+    if (!refTwo.current.contains(e.target)) {
+      setIsHovering(false);
+    }
+  };
+
   return (
     <div
       className="todoBackground"
       onDragOver={(e) => {
         e.preventDefault();
+        settodoidf(todo.id);
       }}
     >
       <div
         className="todoContainer"
+        ref={refTwo}
         style={{ filter: dragging ? "brightness(0.7)" : "brightness(1)" }}
         draggable="true"
         onDragStart={() => {
           if (!dragging) {
             setDragging(true);
           }
-          console.log(`draag`);
+
           setTodoIndexF(todo.id);
         }}
         onDragEnd={() => {
-          console.log(`stoop`);
-          rearrange(todo.id);
+          rearrange();
           setDragging(false);
         }}
       >
@@ -95,7 +108,9 @@ function Todo({
             >
               {todo.taskName}
               {isHovering && (
-                <div className="hoverDoubleClick">{"Double click to edit"}</div>
+                <div className="hoverDoubleClick">
+                  Double click to edit <br /> or drag {`&`} drop
+                </div>
               )}
             </div>
           )}
