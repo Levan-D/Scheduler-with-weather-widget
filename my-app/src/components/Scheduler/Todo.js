@@ -1,6 +1,6 @@
 /** @format */
 import ACTIONS from "./actions";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 function Todo({
   todo,
@@ -9,12 +9,14 @@ function Todo({
   setTaskRenameF,
   taskRename,
   handleRenameTodo,
+  setTodoIndexF,
+  rearrange,
 }) {
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
     id: index + 1,
   }));
-
+  const [dragging, setDragging] = useState(false);
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
@@ -39,8 +41,29 @@ function Todo({
   }, [taskRename.show, taskRename]);
 
   return (
-    <div className="todoBackground">
-      <div className="todoContainer">
+    <div
+      className="todoBackground"
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <div
+        className="todoContainer"
+        style={{ filter: dragging ? "brightness(0.7)" : "brightness(1)" }}
+        draggable="true"
+        onDragStart={() => {
+          if (!dragging) {
+            setDragging(true);
+          }
+          console.log(`draag`);
+          setTodoIndexF(todo.id);
+        }}
+        onDragEnd={() => {
+          console.log(`stoop`);
+          rearrange(todo.id);
+          setDragging(false);
+        }}
+      >
         <div>
           {!taskRename.show && (
             <div

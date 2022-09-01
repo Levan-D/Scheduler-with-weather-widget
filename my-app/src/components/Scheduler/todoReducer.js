@@ -101,6 +101,44 @@ function todoReducer(todos, action) {
       return todos.map(
         (obj) => newObject5.find((o) => o.listName === obj.listName) || obj
       );
+    case ACTIONS.CHANGE_TODO_POSITION:
+      //     index: index,
+      // todoIndex: todoIndex,
+      // newPosition: newPosition,
+      let currentTodo =
+        todos[action.payload.index].todoArray[action.payload.todoIndex];
+      let newTodoPosition =
+        todos[action.payload.index].todoArray[action.payload.newPosition];
+
+      console.log(currentTodo);
+      console.log(newTodoPosition);
+
+      let newObject6 = [
+        {
+          ...todos[action.payload.index],
+          todoArray: [
+            ...todos[action.payload.index].todoArray.map((x, i) => {
+              if (action.payload.index === action.payload.newPosition) {
+                return x;
+              } else if (
+                action.payload.index === i &&
+                action.payload.newPosition != i
+              ) {
+                return { ...newTodoPosition, id: Date.now() };
+              } else if (
+                action.payload.newPosition === i &&
+                action.payload.index != i
+              ) {
+                return { ...currentTodo, id: Date.now() };
+              }
+            }),
+          ],
+        },
+      ];
+
+      return todos.map(
+        (obj) => newObject6.find((o) => o.listName === obj.listName) || obj
+      );
     case ACTIONS.TOGGLE_TODO:
       let newObject3 = [
         {

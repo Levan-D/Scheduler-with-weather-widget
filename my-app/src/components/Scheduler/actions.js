@@ -13,6 +13,7 @@ const ACTIONS = {
   SET_CONFETTIBOOM: "set-confettiBoom",
   SET_OPACITYZERO: "set-opacity-zero",
   SET_OPACITYONE: "set-opacity-one",
+  CHANGE_TODO_POSITION: "change-todo-position",
 };
 
 export default ACTIONS;

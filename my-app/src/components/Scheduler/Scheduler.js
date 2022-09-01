@@ -35,6 +35,7 @@ function Scheduler() {
   const [listName, setListName] = useState("");
   const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
+  const [todoIndex, setTodoIndex] = useState("");
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   function setIndexCh(i) {
     setIndex(i);
@@ -132,6 +133,10 @@ function Scheduler() {
       setIndex(todos.map((x) => x.listName).indexOf(e.target.classList[0]));
     }
   }
+  function setTodoIndexF(todoId) {
+    setTodoIndex(todos[index].todoArray.map((x) => x.id).indexOf(todoId));
+    console.log(todoIndex);
+  }
   function popUpMenu(e) {
     setCoords({ x: e.clientX, y: e.clientY });
     setPopUpVisibility(!popUpVisibility);
@@ -168,6 +173,19 @@ function Scheduler() {
       payload: {
         index: index,
         color: color,
+      },
+    });
+  }
+  function rearrange(todoid) {
+    let newPosition = todos[index].todoArray.map((x) => x.id).indexOf(todoid);
+    console.log(todoid);
+    todoDispatch({
+      type: ACTIONS.CHANGE_TODO_POSITION,
+      payload: {
+        index: index,
+        todoIndex: todoIndex,
+        newPosition: newPosition,
+        todoid: todoid,
       },
     });
   }
@@ -247,6 +265,8 @@ function Scheduler() {
                   taskRename={taskRename}
                   toggle={todoDispatch}
                   index={index}
+                  setTodoIndexF={setTodoIndexF}
+                  rearrange={rearrange}
                 />
               );
             })}
