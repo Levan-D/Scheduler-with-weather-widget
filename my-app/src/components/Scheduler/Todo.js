@@ -16,7 +16,13 @@ function Todo({
     value: str,
     id: index + 1,
   }));
-  const [dragging, setDragging] = useState(false);
+
+  const [isHovering, setIsHovering] = useState(false);
+
+  let hoverEvent;
+
+    const [dragging, setDragging] = useState(false);
+
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
@@ -69,16 +75,28 @@ function Todo({
             <div
               onDoubleClick={() => {
                 setTaskRenameF({
-                  rename: todo.taskName,
+                  rename: todo.taskName.replace(/\s\s+/g, " "),
                   id: todo.id,
                   show: true,
                 });
+              }}
+              onMouseEnter={(x) => {
+                hoverEvent = setTimeout(() => {
+                  setIsHovering(true);
+                }, 1000);
+              }}
+              onMouseLeave={(x) => {
+                setIsHovering(!true);
+                clearTimeout(hoverEvent);
               }}
               className={`todo ${
                 todo.complete ? "todoComplete" : "todoNotComplete"
               }`}
             >
               {todo.taskName}
+              {isHovering && (
+                <div className="hoverDoubleClick">{"Double click to edit"}</div>
+              )}
             </div>
           )}
 
@@ -92,6 +110,11 @@ function Todo({
                       value={taskRename.rename}
                       className="textArea"
                       onKeyDown={handleKeyDown}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          handleRenameTodo(e);
+                        }
+                      }}
                       onChange={(e) =>
                         setTaskRenameF({
                           rename: e.target.value,
