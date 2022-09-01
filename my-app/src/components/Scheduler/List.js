@@ -12,9 +12,13 @@ function List({
   color,
   setlistnameFA,
   popUpVisibility,
+  rearrangeList,
+  setBaseListNameF,
+  setCurrentListNameF,
+  currentListName,
 }) {
+  const [dragging, setDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-
   let hoverEvent;
 
   const refTwo = useRef(null);
@@ -60,14 +64,22 @@ function List({
   }
 
   return (
-    <div className="wrapperOfList" onClick={listSelect}>
+    <div
+      className="wrapperOfList"
+      onClick={listSelect}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setCurrentListNameF(name);
+        console.log(currentListName);
+      }}
+    >
       <div
-        onMouseEnter={(x) => {
+        onMouseEnter={() => {
           hoverEvent = setTimeout(() => {
             setIsHovering(true);
           }, 1000);
         }}
-        onMouseLeave={(x) => {
+        onMouseLeave={() => {
           setIsHovering(!true);
           clearTimeout(hoverEvent);
         }}
@@ -86,11 +98,22 @@ function List({
               ? `2px solid ${invertColor(color.substring(1), `bw`)}`
               : "",
         }}
+        draggable="true"
+        onDragStart={() => {
+          if (!dragging) {
+            setDragging(true);
+            setBaseListNameF(name);
+          }
+        }}
+        onDragEnd={() => {
+          rearrangeList();
+          setDragging(false);
+        }}
       >
         <div className={`${name} nameList`}>
           {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
-        {isHovering && !popUpVisibility && (
+        {isHovering && !popUpVisibility && !dragging && (
           <div className="hoverName">
             {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
           </div>

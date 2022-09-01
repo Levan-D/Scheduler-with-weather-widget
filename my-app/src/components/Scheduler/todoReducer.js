@@ -101,6 +101,7 @@ function todoReducer(todos, action) {
       return todos.map(
         (obj) => newObject5.find((o) => o.listName === obj.listName) || obj
       );
+
     case ACTIONS.CHANGE_TODO_POSITION:
       let currentTodo =
         todos[action.payload.index].todoArray[action.payload.todoIndex];
@@ -116,10 +117,19 @@ function todoReducer(todos, action) {
           todoArray: [...newTodoArray],
         },
       ];
-
       return todos.map(
         (obj) => newObject6.find((o) => o.listName === obj.listName) || obj
       );
+
+    case ACTIONS.CHANGE_LIST_POSITION:
+      let oldList = todos[action.payload.todoIndex];
+      let newObject69 = todos.filter(
+        (x) => x.listName !== action.payload.todoId
+      );
+      newObject69.splice(action.payload.newPositionIndex, 0, oldList);
+
+      return newObject69;
+
     case ACTIONS.TOGGLE_TODO:
       let newObject3 = [
         {

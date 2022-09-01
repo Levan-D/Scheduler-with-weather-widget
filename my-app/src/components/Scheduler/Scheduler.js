@@ -36,6 +36,14 @@ function Scheduler() {
   const [popUpVisibility, setPopUpVisibility] = useState(false);
   const [index, setIndex] = useState(0);
   const [todoIndex, setTodoIndex] = useState("");
+  const [baseListName, setBaseListName] = useState("");
+  function setBaseListNameF(name) {
+    setBaseListName(name);
+  }
+  const [currentListName, setCurrentListName] = useState("");
+  function setCurrentListNameF(name) {
+    setCurrentListName(name);
+  }
   const [newtodoid, settodoid] = useState(0);
   function settodoidf(x) {
     settodoid(x);
@@ -197,6 +205,21 @@ function Scheduler() {
       },
     });
   }
+
+  function rearrangeList() {
+    setIndexCh(todos.map((x) => x.listName).indexOf(currentListName));
+
+    todoDispatch({
+      type: ACTIONS.CHANGE_LIST_POSITION,
+      payload: {
+        index: index,
+        todoId: baseListName,
+        todoIndex: todos.map((x) => x.listName).indexOf(baseListName),
+        newPositionIndex: todos.map((x) => x.listName).indexOf(currentListName),
+        newtodoid: currentListName,
+      },
+    });
+  }
   return (
     <div className="schedulerWrapper">
       {taskProgress.confettiBoom && (
@@ -233,6 +256,10 @@ function Scheduler() {
                   popUpMenu={popUpMenu}
                   popUpVisibility={popUpVisibility}
                   setlistnameFA={setListNameF}
+                  rearrangeList={rearrangeList}
+                  setCurrentListNameF={setCurrentListNameF}
+                  setBaseListNameF={setBaseListNameF}
+                  currentListName={currentListName}
                 />
               );
             })}

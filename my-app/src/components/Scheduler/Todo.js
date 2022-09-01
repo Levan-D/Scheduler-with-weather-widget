@@ -19,11 +19,8 @@ function Todo({
   }));
 
   const [isHovering, setIsHovering] = useState(false);
-
   let hoverEvent;
-
   const [dragging, setDragging] = useState(false);
-
   const dateArray = todo.time.split(" ");
   const dataObject = dateArray.map((str, index) => ({
     value: str,
@@ -107,7 +104,7 @@ function Todo({
               }`}
             >
               {todo.taskName}
-              {isHovering && (
+              {isHovering && !dragging && (
                 <div className="hoverDoubleClick">
                   Double click to edit <br /> or drag {`&`} drop
                 </div>

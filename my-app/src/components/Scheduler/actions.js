@@ -14,6 +14,7 @@ const ACTIONS = {
   SET_OPACITYZERO: "set-opacity-zero",
   SET_OPACITYONE: "set-opacity-one",
   CHANGE_TODO_POSITION: "change-todo-position",
+  CHANGE_LIST_POSITION: "change-list-position",
 };
 
 export default ACTIONS;
