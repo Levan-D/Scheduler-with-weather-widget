@@ -22,9 +22,11 @@ jobs:
       - name: Install yarn
         run: |
           yarn install
+          
       - name: Build services
         run: |
-          yarn build
+          DISABLE_ESLINT_PLUGIN=true yarn build
+          
       - name: Get current datetime
         uses: 1466587594/get-current-time@v2
         id: current-datetime
