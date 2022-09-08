@@ -42,8 +42,8 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "dist"
-          target: "/tmp/dist"
+          source: "build"
+          target: "/tmp/build"
           strip_components: 1
 
       - name: Staging Server - Deploy
@@ -55,6 +55,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             rm -rf /var/www/todo-frontend
-            mv /tmp/dist /var/www/todo-frontend
+            mv /tmp/build /var/www/todo-frontend
             chown -R nginx:nginx /var/www/todo-frontend
             systemctl restart nginx
