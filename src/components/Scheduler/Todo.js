@@ -1,10 +1,22 @@
 /** @format */
-import ACTIONS from "./actions";
+
 import React, { useRef, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  FETCH_TODODATA,
+  ADD_TODO,
+  ADD_LIST,
+  DELETE_LIST,
+  RENAME_LIST,
+  CHANGE_LIST_COLOR,
+  RENAME_TODO,
+  TOGGLE_TODO,
+  DELETE_TODO,
+} from "./todoSlice";
 
 function Todo({
   todo,
-  toggle,
+
   index,
   setTaskRenameF,
   taskRename,
@@ -13,6 +25,7 @@ function Todo({
   rearrange,
   settodoidf,
 }) {
+  const dispatch = useDispatch();
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
     id: index + 1,
@@ -45,9 +58,9 @@ function Todo({
   }, [taskRename.show, taskRename]);
 
   const refTwo = useRef(null);
-  useEffect(() => {
-    document.addEventListener("mousemove", handleClickOutside, true);
-  }, [refTwo]);
+  // useEffect(() => {
+  //   document.addEventListener("mousemove", handleClickOutside, true);
+  // }, [refTwo]);
 
   const handleClickOutside = (e) => {
     if (!refTwo.current.contains(e.target)) {
@@ -163,10 +176,7 @@ function Todo({
           <div
             className="todoCheck"
             onClick={() => {
-              toggle({
-                type: ACTIONS.TOGGLE_TODO,
-                payload: { id: todo.id, index: index },
-              });
+              dispatch(TOGGLE_TODO({ id: todo.id, index: index }));
             }}
           >
             &#10004;
@@ -174,10 +184,7 @@ function Todo({
           <div
             className="todoDelete"
             onClick={() => {
-              toggle({
-                type: ACTIONS.DELETE_TODO,
-                payload: { id: todo.id, index: index },
-              });
+              dispatch(DELETE_TODO({ id: todo.id, index: index }));
             }}
           >
             &#8211;

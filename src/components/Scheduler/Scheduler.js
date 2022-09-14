@@ -1,32 +1,38 @@
 /** @format */
 import "./SchedulerRight.css";
 import "./SchedulerLeft.css";
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Todo from "./Todo";
 import List from "./List";
-import todoReducer from "./todoReducer";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Confetti from "react-confetti";
-import tpReducer from "./tpReducer";
-import ACTIONS from "./actions";
 import PopUpMenuComp from "./PopUpMenuComp";
+import {
+  FETCH_TODODATA,
+  ADD_TODO,
+  ADD_LIST,
+  RENAME_LIST,
+  CHANGE_LIST_COLOR,
+  RENAME_TODO,
+  DELETE_LIST,
+  TOGGLE_TODO,
+  CHANGE_TODO_POSITION,
+  CHANGE_LIST_POSITION,
+} from "./todoSlice";
+import {
+  SET_TASKSCOMPLETE,
+  SET_TASKSTOTAL,
+  SET_CONFETTIBOOM,
+  SET_OPACITY,
+} from "./taskProgressSlice";
 
 function Scheduler() {
-  const [todos, todoDispatch] = useReducer(todoReducer, [
-    {
-      listName: "list_1",
-      listNameShow: "",
-      color: "default",
-      todoArray: [],
-    },
-  ]);
-  const [taskProgress, tpDispatch] = useReducer(tpReducer, {
-    tasksComplete: 0,
-    tasksTotal: 0,
-    confettiBoom: false,
-    triggered: false,
-    opacity: 1,
-  });
+  const dispatch = useDispatch();
+  const todosRedux = useSelector((store) => store.todo.data);
+  const isInitialData = useSelector((store) => store.todo.isInitialData);
+  const taskProgressData = useSelector((store) => store.taskProgress.data);
+
   const [taskName, setTaskName] = useState("");
   const [taskRename, setTaskRename] = useState("");
   function setTaskRenameF(rename) {
@@ -52,103 +58,76 @@ function Scheduler() {
   function setIndexCh(i) {
     setIndex(i);
   }
+
   useEffect(() => {
-    if (
-      JSON.parse(localStorage.getItem("todoData")) !== null &&
-      JSON.parse(localStorage.getItem("todoData")).length > 0
-    ) {
-      todoDispatch({
-        type: ACTIONS.FETCH_TODODATA,
-      });
+    if (!isInitialData) {
+      localStorage.setItem("todoData", JSON.stringify(todosRedux));
     }
-  }, []);
-
-  useEffect(() => {
-    if (
-      JSON.parse(localStorage.getItem("todoData")) !== null &&
-      JSON.parse(localStorage.getItem("todoData")).length === 0
-    ) {
-      localStorage.setItem("todoData", JSON.stringify(todos));
+    if (isInitialData) {
+      dispatch(FETCH_TODODATA());
     }
-    if (todos[index].todoArray.length > 0)
-      localStorage.setItem("todoData", JSON.stringify(todos));
-  }, [todos, listName]);
+  }, [todosRedux, listName]);
 
   useEffect(() => {
-    tpDispatch({
-      type: ACTIONS.SET_TASKSCOMPLETE,
-      payload: { todos: todos, index: index },
-    });
-    tpDispatch({
-      type: ACTIONS.SET_TASKSTOTAL,
-      payload: { todos: todos, index: index },
-    });
-  }, [todos, index]);
+    dispatch(
+      SET_TASKSCOMPLETE({
+        tasksComplete: todosRedux[index].todoArray.filter(
+          (x) => x.complete === true
+        ).length,
+      })
+    );
+    dispatch(
+      SET_TASKSTOTAL({ tasksTotal: todosRedux[index].todoArray.length })
+    );
+  }, [todosRedux, index]);
 
   useEffect(() => {
     if (
-      taskProgress.tasksComplete === taskProgress.tasksTotal &&
-      taskProgress.tasksTotal > 0 &&
-      taskProgress.confettiBoom === false &&
-      taskProgress.triggered === false
+      taskProgressData.tasksComplete === taskProgressData.tasksTotal &&
+      taskProgressData.tasksTotal > 0 &&
+      taskProgressData.confettiBoom === false &&
+      taskProgressData.triggered === false
     ) {
-      tpDispatch({
-        type: ACTIONS.SET_CONFETTIBOOM,
-        payload: { todos: todos, index: index, state1: true, state2: true },
-      });
+      dispatch(SET_CONFETTIBOOM({ confettiBoom: true, triggered: true }));
 
       for (let i = 1, j = 1; i >= 0, j < 6; i = i - 0.2, j++) {
         setTimeout(() => {
-          tpDispatch({
-            type: ACTIONS.SET_OPACITYZERO,
-            payload: { opa: i },
-          });
+          dispatch(SET_OPACITY({ opa: i }));
         }, j * 1000);
         if (j === 5) {
           setTimeout(() => {
-            tpDispatch({
-              type: ACTIONS.SET_CONFETTIBOOM,
-              payload: {
-                todos: todos,
-                index: index,
-                state1: false,
-                state2: true,
-              },
-            });
+            dispatch(
+              SET_CONFETTIBOOM({ confettiBoom: false, triggered: true })
+            );
           }, j * 1000);
         }
       }
     }
-    if (
-      taskProgress.tasksComplete !== taskProgress.tasksTotal &&
-      taskProgress.triggered === true
-    ) {
-      tpDispatch({
-        type: ACTIONS.SET_CONFETTIBOOM,
-        payload: { todos: todos, index: index, state1: false, state2: false },
-      });
+    if (taskProgressData.tasksComplete !== taskProgressData.tasksTotal) {
+      dispatch(SET_CONFETTIBOOM({ confettiBoom: false, triggered: false }));
+      dispatch(SET_OPACITY({ opa: 1 }));
     }
-  }, [taskProgress]);
+  }, [taskProgressData]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    todoDispatch({
-      type: ACTIONS.ADD_TODO,
-      payload: { taskName: taskName, index: index },
-    });
+    dispatch(ADD_TODO({ taskName: taskName, index: index }));
+
     setTaskName("");
   }
 
   function handleList(e) {
     const regex = /^(List)+[0-9]*/gi;
     if (regex.test(e.target.classList[0])) {
-      setIndex(todos.map((x) => x.listName).indexOf(e.target.classList[0]));
+      setIndex(
+        todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
+      );
     }
   }
   function setTodoIndexF(todoId) {
     setTodoIndex({
       todoId: todoId,
-      todoIndex: todos[index].todoArray.map((x) => x.id).indexOf(todoId),
+      todoIndex: todosRedux[index].todoArray.map((x) => x.id).indexOf(todoId),
     });
   }
   function popUpMenu(e) {
@@ -157,76 +136,65 @@ function Scheduler() {
   }
   function handleRename(e) {
     e.preventDefault();
-    todoDispatch({
-      type: ACTIONS.RENAME_LIST,
-      payload: {
-        index: index,
-        newListName: listName,
-      },
-    });
+    dispatch(RENAME_LIST({ index: index, newListName: listName }));
+
     setListName("");
   }
   function handleRenameTodo(e) {
     e.preventDefault();
-    todoDispatch({
-      type: ACTIONS.RENAME_TODO,
-      payload: {
+    dispatch(
+      RENAME_TODO({
         taskRename: taskRename.rename,
         id: taskRename.id,
         index: index,
-      },
-    });
+      })
+    );
+
     setTaskRename({ rename: "", id: "", show: false });
   }
   function setListNameF(name) {
     setListName(name);
   }
   function handleColorChange(color) {
-    todoDispatch({
-      type: ACTIONS.CHANGE_LIST_COLOR,
-      payload: {
-        index: index,
-        color: color,
-      },
-    });
+    dispatch(CHANGE_LIST_COLOR({ index: index, color: color }));
   }
   function rearrange() {
-    let newPosition = todos[index].todoArray
+    let newPosition = todosRedux[index].todoArray
       .map((x) => x.id)
       .indexOf(newtodoid);
-    todoDispatch({
-      type: ACTIONS.CHANGE_TODO_POSITION,
-      payload: {
+    dispatch(
+      CHANGE_TODO_POSITION({
         index: index,
         todoId: todoIndex.todoId,
         todoIndex: todoIndex.todoIndex,
         newPositionIndex: newPosition,
         newtodoid: newtodoid,
-      },
-    });
+      })
+    );
   }
 
   function rearrangeList() {
-    setIndexCh(todos.map((x) => x.listName).indexOf(currentListName));
-
-    todoDispatch({
-      type: ACTIONS.CHANGE_LIST_POSITION,
-      payload: {
+    setIndexCh(todosRedux.map((x) => x.listName).indexOf(currentListName));
+    dispatch(
+      CHANGE_LIST_POSITION({
         index: index,
         todoId: baseListName,
-        todoIndex: todos.map((x) => x.listName).indexOf(baseListName),
-        newPositionIndex: todos.map((x) => x.listName).indexOf(currentListName),
+        todoIndex: todosRedux.map((x) => x.listName).indexOf(baseListName),
+        newPositionIndex: todosRedux
+          .map((x) => x.listName)
+          .indexOf(currentListName),
         newtodoid: currentListName,
-      },
-    });
+      })
+    );
   }
+
   return (
     <div className="schedulerWrapper">
-      {taskProgress.confettiBoom && (
+      {taskProgressData.confettiBoom && (
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
-          opacity={taskProgress.opacity}
+          opacity={taskProgressData.opacity}
         />
       )}
       <div className="leftSide">
@@ -234,16 +202,14 @@ function Scheduler() {
         <div
           className="newListButton"
           onClick={(x) => {
-            todoDispatch({
-              type: ACTIONS.ADD_LIST,
-            });
+            dispatch(ADD_LIST());
           }}
         >
           +
         </div>
         <div className="listWrapper">
-          {typeof todos === "object" &&
-            todos.map((x) => {
+          {typeof todosRedux === "object" &&
+            todosRedux.map((x) => {
               return (
                 <List
                   key={x.listName}
@@ -252,7 +218,7 @@ function Scheduler() {
                   nameShow={x.listNameShow}
                   listSelect={handleList}
                   index={index}
-                  todos={todos}
+                  todos={todosRedux}
                   popUpMenu={popUpMenu}
                   popUpVisibility={popUpVisibility}
                   setlistnameFA={setListNameF}
@@ -267,11 +233,11 @@ function Scheduler() {
       </div>
       <div className="rightSide">
         <h2>
-          Add a new task below! ({taskProgress.tasksComplete}/
-          {taskProgress.tasksTotal})
+          Add a new task below! ({taskProgressData.tasksComplete}/
+          {taskProgressData.tasksTotal})
           <ProgressBar
-            tasksComplete={taskProgress.tasksComplete}
-            tasksTotal={taskProgress.tasksTotal}
+            tasksComplete={taskProgressData.tasksComplete}
+            tasksTotal={taskProgressData.tasksTotal}
             width={315}
             height={10}
             background={`#354259`}
@@ -288,9 +254,8 @@ function Scheduler() {
           <input type="submit" value="+" className="bigSubmitButton" />
         </form>
         <div className="todoWrapper">
-          {typeof todos === "object" &&
-            todos[index].todoArray.length > 0 &&
-            todos[index].todoArray.map((x) => {
+          {typeof todosRedux &&
+            todosRedux[index].todoArray.map((x) => {
               return (
                 <Todo
                   key={x.id}
@@ -298,7 +263,6 @@ function Scheduler() {
                   handleRenameTodo={handleRenameTodo}
                   setTaskRenameF={setTaskRenameF}
                   taskRename={taskRename}
-                  toggle={todoDispatch}
                   index={index}
                   setTodoIndexF={setTodoIndexF}
                   rearrange={rearrange}
@@ -312,7 +276,7 @@ function Scheduler() {
       {popUpVisibility && (
         <PopUpMenuComp
           coords={coords}
-          todos={todos}
+          todos={todosRedux}
           index={index}
           visibility={(x) => {
             setPopUpVisibility(!popUpVisibility);
@@ -324,15 +288,14 @@ function Scheduler() {
           setlistnameFA={setListNameF}
           colorChange={handleColorChange}
           listName={listName}
-          deleteFunc={(x) => {
-            todoDispatch({
-              type: ACTIONS.DELETE_LIST,
-              payload: {
+          deleteFunc={() => {
+            dispatch(
+              DELETE_LIST({
                 index: index,
-                zeName: todos[index].listName,
-                setInfexF: setIndexCh,
-              },
-            });
+                zeName: todosRedux[index].listName,
+              })
+            );
+
             setPopUpVisibility(!popUpVisibility);
           }}
         />

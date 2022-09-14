@@ -249,7 +249,7 @@ function PopUpMenuComp({
             return (
               <div
                 className="colorCircle popUpButton"
-                onClick={(x) => colorChange(colors[i])}
+                onClick={() => colorChange(colors[i])}
                 style={{ backgroundColor: x }}
                 key={i}
               ></div>
