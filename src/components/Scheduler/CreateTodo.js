@@ -1,24 +1,10 @@
 import ProgressBar from "../ProgressBar/ProgressBar";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import {
-  FETCH_TODODATA,
-  ADD_TODO,
-  ADD_LIST,
-  RENAME_LIST,
-  CHANGE_LIST_COLOR,
-  RENAME_TODO,
-  DELETE_LIST,
-  TOGGLE_TODO,
-  CHANGE_TODO_POSITION,
-  CHANGE_LIST_POSITION,
-} from "./todoSlice";
+import { ADD_TODO } from "./todoSlice";
 
 const CreateTodo = () => {
   const dispatch = useDispatch();
-  const todosRedux = useSelector((store) => store.todo.data);
-  const isInitialData = useSelector((store) => store.todo.isInitialData);
   const taskProgressData = useSelector((store) => store.taskProgress.data);
   const indexingData = useSelector((store) => store.indexing.data);
 

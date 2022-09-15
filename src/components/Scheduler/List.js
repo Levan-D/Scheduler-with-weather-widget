@@ -5,24 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   CHANGE_LISTINDEX,
-  TASK_RENAME,
-  CHANGE_TODOINDEX,
   ONDRAGSTART,
   ONDRAGOVER,
+  POPUPVISIBILITY,
   NEWLISTNAME,
+  POPUPCOORDS,
 } from "./indexingSlice";
 
-function List({
-  name,
+import { CHANGE_LIST_POSITION } from "./todoSlice";
 
-  todos,
-
-  popUpMenu,
-  nameShow,
-  color,
-
-  rearrangeList,
-}) {
+function List({ name, nameShow, color }) {
   const dispatch = useDispatch();
   const indexingData = useSelector((store) => store.indexing.data);
   const todosRedux = useSelector((store) => store.todo.data);
@@ -31,9 +23,9 @@ function List({
   let hoverEvent;
 
   const refTwo = useRef(null);
-  // useEffect(() => {
-  //   document.addEventListener("mousemove", handleClickOutside, true);
-  // }, [refTwo]);
+  useEffect(() => {
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
 
   const handleClickOutside = (e) => {
     if (!refTwo.current.contains(e.target)) {
@@ -83,6 +75,25 @@ function List({
     }
   }
 
+  function rearrangeList() {
+    dispatch(
+      CHANGE_LISTINDEX(
+        todosRedux
+          .map((x) => x.listName)
+          .indexOf(indexingData.onDragOverListName)
+      )
+    );
+    dispatch(
+      CHANGE_LIST_POSITION({
+        todoIndex: todosRedux
+          .map((x) => x.listName)
+          .indexOf(indexingData.onDragStartListName),
+        newPositionIndex: todosRedux
+          .map((x) => x.listName)
+          .indexOf(indexingData.onDragOverListName),
+      })
+    );
+  }
   return (
     <div
       className="wrapperOfList"
@@ -106,7 +117,9 @@ function List({
         }}
         ref={refTwo}
         className={`${
-          name === todos[indexingData.listIndex].listName ? "selectedList" : ""
+          name === todosRedux[indexingData.listIndex].listName
+            ? "selectedList"
+            : ""
         } containerList`}
         style={{
           color:
@@ -115,7 +128,7 @@ function List({
               : "#354259",
           backgroundColor: color !== "default" ? color : "",
           border:
-            name === todos[indexingData.listIndex].listName
+            name === todosRedux[indexingData.listIndex].listName
               ? `2px solid ${invertColor(color.substring(1), `bw`)}`
               : "",
         }}
@@ -139,12 +152,13 @@ function List({
             {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
           </div>
         )}
-        {name === todos[indexingData.listIndex].listName && (
+        {name === todosRedux[indexingData.listIndex].listName && (
           <div
             className="tripleDot"
             onClick={(e) => {
               dispatch(NEWLISTNAME(""));
-              popUpMenu(e);
+              dispatch(POPUPCOORDS({ x: e.clientX, y: e.clientY }));
+              dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
             }}
           >
             <div
@@ -180,12 +194,13 @@ function List({
 
       <ProgressBar
         tasksComplete={
-          todos[todos.map((x) => x.listName).indexOf(name)].todoArray.filter(
-            (x) => x.complete === true
-          ).length
+          todosRedux[
+            todosRedux.map((x) => x.listName).indexOf(name)
+          ].todoArray.filter((x) => x.complete === true).length
         }
         tasksTotal={
-          todos[todos.map((x) => x.listName).indexOf(name)].todoArray.length
+          todosRedux[todosRedux.map((x) => x.listName).indexOf(name)].todoArray
+            .length
         }
         width={170}
         height={3}

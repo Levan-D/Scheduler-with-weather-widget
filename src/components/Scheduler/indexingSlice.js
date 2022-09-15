@@ -10,6 +10,7 @@ const initialState = {
     popUpVisibility: false,
     newtodoid: "",
     newListName: "",
+    popUpCoords: { x: 0, y: 0 },
   },
 };
 
@@ -41,6 +42,9 @@ const indexingSlice = createSlice({
     NEWLISTNAME: (state, action) => {
       state.data.newListName = action.payload;
     },
+    POPUPCOORDS: (state, action) => {
+      state.data.popUpCoords = action.payload;
+    },
   },
 });
 
@@ -53,5 +57,6 @@ export const {
   POPUPVISIBILITY,
   NEWTODOID,
   NEWLISTNAME,
+  POPUPCOORDS,
 } = indexingSlice.actions;
 export default indexingSlice.reducer;

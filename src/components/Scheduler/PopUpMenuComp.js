@@ -5,25 +5,19 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useSelector, useDispatch } from "react-redux";
 
+import { RENAME_LIST, CHANGE_LIST_COLOR, DELETE_LIST } from "./todoSlice";
+
 import {
-  CHANGE_LISTINDEX,
-  TASK_RENAME,
-  CHANGE_TODOINDEX,
   POPUPVISIBILITY,
   NEWLISTNAME,
+  CHANGE_LISTINDEX,
 } from "./indexingSlice";
 
-function PopUpMenuComp({
-  deleteFunc,
-  coords,
-  visibility,
-  renameFunc,
-  listName,
-  colorChange,
-  index,
-  todos,
-}) {
+function PopUpMenuComp() {
   const dispatch = useDispatch();
+  const todosRedux = useSelector((store) => store.todo.data);
+  const indexingData = useSelector((store) => store.indexing.data);
+
   const [subMenu, setSubMenu] = useState({
     confD: false,
     confN: false,
@@ -78,7 +72,7 @@ function PopUpMenuComp({
 
   const handleClickOutside = (e) => {
     if (!refOne.current.contains(e.target)) {
-      visibility();
+      dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
     }
   };
   function insertCalendarDate() {
@@ -111,9 +105,9 @@ function PopUpMenuComp({
       }
     }
     function pickListName() {
-      return todos[index].listNameShow != ""
-        ? todos[index].listNameShow
-        : todos[index].listName.replace(/_/, " ");
+      return todosRedux[indexingData.listIndex].listNameShow != ""
+        ? todosRedux[indexingData.listIndex].listNameShow
+        : todosRedux[indexingData.listIndex].listName.replace(/_/, " ");
     }
     dispatch(
       NEWLISTNAME(
@@ -139,18 +133,21 @@ function PopUpMenuComp({
       ref={refOne}
       onMouseLeave={(x) => {
         mouseEvent = setTimeout(() => {
-          visibility();
+          dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
         }, 500);
       }}
       onMouseEnter={(x) => {
         clearTimeout(mouseEvent);
       }}
-      style={{ top: coords.y + "px", left: coords.x + "px" }}
+      style={{
+        top: indexingData.popUpCoords.y + "px",
+        left: indexingData.popUpCoords.x + "px",
+      }}
     >
       <div className="popUpWrapper">
         <div
           className="popUpButton"
-          onClick={(x) => {
+          onClick={() => {
             setSubMenu({
               confD: false,
               confN: !subMenu.confN,
@@ -163,7 +160,7 @@ function PopUpMenuComp({
         </div>
         <div
           className="popUpButton"
-          onClick={(x) => {
+          onClick={() => {
             setSubMenu({
               confD: false,
               confN: false,
@@ -180,7 +177,7 @@ function PopUpMenuComp({
         </div>
         <div
           className="popUpButton deleteButton"
-          onClick={(x) => {
+          onClick={() => {
             setSubMenu({
               confD: !subMenu.confD,
               confN: false,
@@ -200,7 +197,24 @@ function PopUpMenuComp({
       </div>
       {subMenu.confD && (
         <div className="confirmTab confirmTabAc">
-          <div onClick={deleteFunc}>Confirm</div>
+          <div
+            onClick={() => {
+              if (todosRedux.length > 1) {
+                if (indexingData.listIndex !== 0) {
+                  dispatch(CHANGE_LISTINDEX(indexingData.listIndex - 1));
+                }
+                dispatch(
+                  DELETE_LIST({
+                    index: indexingData.listIndex,
+                    zeName: todosRedux[indexingData.listIndex].listName,
+                  })
+                );
+              }
+              dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+            }}
+          >
+            Confirm
+          </div>
         </div>
       )}
 
@@ -214,13 +228,25 @@ function PopUpMenuComp({
           }}
         >
           <div>
-            <form className="nameChangeForm" onSubmit={renameFunc}>
+            <form
+              className="nameChangeForm"
+              onSubmit={(e) => {
+                e.preventDefault();
+                dispatch(
+                  RENAME_LIST({
+                    index: indexingData.listIndex,
+                    newListName: indexingData.newListName,
+                  })
+                );
+                dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+              }}
+            >
               <input
                 type="text"
-                maxlength="256"
+                maxLength="256"
                 required
                 placeholder="Enter task here!"
-                value={listName}
+                value={indexingData.newListName}
                 onChange={(e) => dispatch(NEWLISTNAME(e.target.value))}
               />
               <div
@@ -260,7 +286,14 @@ function PopUpMenuComp({
             return (
               <div
                 className="colorCircle popUpButton"
-                onClick={() => colorChange(colors[i])}
+                onClick={() =>
+                  dispatch(
+                    CHANGE_LIST_COLOR({
+                      index: indexingData.listIndex,
+                      color: colors[i],
+                    })
+                  )
+                }
                 style={{ backgroundColor: x }}
                 key={i}
               ></div>

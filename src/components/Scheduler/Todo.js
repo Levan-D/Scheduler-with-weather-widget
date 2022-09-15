@@ -6,12 +6,14 @@ import {
   FETCH_TODODATA,
   ADD_TODO,
   ADD_LIST,
-  DELETE_LIST,
   RENAME_LIST,
   CHANGE_LIST_COLOR,
   RENAME_TODO,
   TOGGLE_TODO,
+   
   DELETE_TODO,
+  CHANGE_TODO_POSITION,
+   
 } from "./todoSlice";
 
 import {
@@ -21,14 +23,7 @@ import {
   NEWTODOID,
 } from "./indexingSlice";
 
-function Todo({
-  todo,
-
-  index,
-
- 
-  rearrange,
-}) {
+function Todo({ todo }) {
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
   const dispatch = useDispatch();
@@ -87,6 +82,18 @@ function Todo({
     dispatch(TASK_RENAME({ rename: "", id: "", show: false }));
   }
 
+  function rearrange() {
+    let newPosition = todosRedux[indexingData.listIndex].todoArray
+      .map((x) => x.id)
+      .indexOf(indexingData.newtodoid);
+    dispatch(
+      CHANGE_TODO_POSITION({
+        index: indexingData.listIndex,
+        todoIndex: indexingData.todoIndex.todoIndex,
+        newPositionIndex: newPosition,
+      })
+    );
+  }
   return (
     <div
       className="todoBackground"
@@ -206,7 +213,9 @@ function Todo({
           <div
             className="todoCheck"
             onClick={() => {
-              dispatch(TOGGLE_TODO({ id: todo.id, index: index }));
+              dispatch(
+                TOGGLE_TODO({ id: todo.id, index: indexingData.listIndex })
+              );
             }}
           >
             &#10004;
@@ -214,7 +223,9 @@ function Todo({
           <div
             className="todoDelete"
             onClick={() => {
-              dispatch(DELETE_TODO({ id: todo.id, index: index }));
+              dispatch(
+                DELETE_TODO({ id: todo.id, index: indexingData.listIndex })
+              );
             }}
           >
             &#8211;

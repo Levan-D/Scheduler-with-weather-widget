@@ -35,7 +35,7 @@ const initialState = {
         {
           id: Date.now(),
           time: Date(Date.now()),
-          taskName: `whoop whoop`,
+          taskName: ``,
           complete: false,
           completeDate: "",
         },
@@ -125,10 +125,12 @@ const todoSlice = createSlice({
       );
     },
     CHANGE_LIST_POSITION: (state, action) => {
-      state.data.swapItems(
-        action.payload.index,
-        action.payload.newPositionIndex
+      let oldList = state.data[action.payload.todoIndex];
+      let newArray = state.data.filter(
+        (x, i) => i !== action.payload.todoIndex
       );
+      newArray.splice(action.payload.newPositionIndex, 0, oldList);
+      state.data = newArray;
     },
   },
 });

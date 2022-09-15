@@ -1,39 +1,21 @@
 /** @format */
 import "./SchedulerRight.css";
 import "./SchedulerLeft.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Todo from "./Todo";
 import List from "./List";
 import CreateTodo from "./CreateTodo";
 import Confetti from "react-confetti";
 import PopUpMenuComp from "./PopUpMenuComp";
-import {
-  FETCH_TODODATA,
-  ADD_TODO,
-  ADD_LIST,
-  RENAME_LIST,
-  CHANGE_LIST_COLOR,
-  RENAME_TODO,
-  DELETE_LIST,
-  TOGGLE_TODO,
-  CHANGE_TODO_POSITION,
-  CHANGE_LIST_POSITION,
-} from "./todoSlice";
+import CreateList from "./CreateList";
+import { FETCH_TODODATA } from "./todoSlice";
 import {
   SET_TASKSCOMPLETE,
   SET_TASKSTOTAL,
   SET_CONFETTIBOOM,
   SET_OPACITY,
 } from "./taskProgressSlice";
-
-import {
-  CHANGE_LISTINDEX,
-  TASK_RENAME,
-  CHANGE_TODOINDEX,
-  POPUPVISIBILITY,
-  NEWLISTNAME,
-} from "./indexingSlice";
 
 function Scheduler() {
   const dispatch = useDispatch();
@@ -42,9 +24,6 @@ function Scheduler() {
   const taskProgressData = useSelector((store) => store.taskProgress.data);
   const indexingData = useSelector((store) => store.indexing.data);
 
-  const [listName, setListName] = useState("");
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-
   useEffect(() => {
     if (!isInitialData) {
       localStorage.setItem("todoData", JSON.stringify(todosRedux));
@@ -52,7 +31,7 @@ function Scheduler() {
     if (isInitialData) {
       dispatch(FETCH_TODODATA());
     }
-  }, [todosRedux, listName]);
+  }, [todosRedux, indexingData.newListName]);
 
   useEffect(() => {
     dispatch(
@@ -97,61 +76,6 @@ function Scheduler() {
     }
   }, [taskProgressData]);
 
-  function popUpMenu(e) {
-    setCoords({ x: e.clientX, y: e.clientY });
-    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
-  }
-  function handleRename(e) {
-    e.preventDefault();
-    dispatch(
-      RENAME_LIST({ index: indexingData.listIndex, newListName: listName })
-    );
-    setListName("");
-    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
-  }
-
-  function handleColorChange(color) {
-    dispatch(
-      CHANGE_LIST_COLOR({ index: indexingData.listIndex, color: color })
-    );
-  }
-  function rearrange() {
-    let newPosition = todosRedux[indexingData.listIndex].todoArray
-      .map((x) => x.id)
-      .indexOf(indexingData.newtodoid);
-    dispatch(
-      CHANGE_TODO_POSITION({
-        index: indexingData.listIndex,
-        todoIndex: indexingData.todoIndex.todoIndex,
-        newPositionIndex: newPosition,
-      })
-    );
-  }
-
-  function rearrangeList() {
-    console.log(
-      todosRedux.map((x) => x.listName).indexOf(indexingData.onDragOverListName)
-    );
-    dispatch(
-      CHANGE_LISTINDEX(
-        todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragOverListName)
-      )
-    );
-
-    dispatch(
-      CHANGE_LIST_POSITION({
-        todoIndex: todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragStartListName),
-        newPositionIndex: todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragOverListName),
-      })
-    );
-  }
-
   return (
     <div className="schedulerWrapper">
       {taskProgressData.confettiBoom && (
@@ -162,16 +86,7 @@ function Scheduler() {
         />
       )}
       <div className="leftSide">
-        <h2>Your Lists:</h2>
-        <div
-          className="newListButton"
-          onClick={(x) => {
-            dispatch(ADD_LIST());
-          }}
-        >
-          +
-        </div>
-
+        <CreateList />
         <div className="listWrapper">
           {typeof todosRedux === "object" &&
             todosRedux.map((x) => {
@@ -181,9 +96,6 @@ function Scheduler() {
                   name={x.listName}
                   color={x.color}
                   nameShow={x.listNameShow}
-                  todos={todosRedux}
-                  popUpMenu={popUpMenu}
-                  rearrangeList={rearrangeList}
                 />
               );
             })}
@@ -194,42 +106,11 @@ function Scheduler() {
         <div className="todoWrapper">
           {typeof todosRedux &&
             todosRedux[indexingData.listIndex].todoArray.map((x) => {
-              return (
-                <Todo
-                  key={x.id}
-                  todo={x}
-                  index={indexingData.listIndex}
-                  rearrange={rearrange}
-                />
-              );
+              return <Todo key={x.id} todo={x} />;
             })}
         </div>
       </div>
-      {indexingData.popUpVisibility && (
-        <PopUpMenuComp
-          coords={coords}
-          todos={todosRedux}
-          index={indexingData.listIndex}
-          visibility={() => {
-            dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
-          }}
-          renameFunc={(x) => {
-            handleRename(x);
-          }}
-          colorChange={handleColorChange}
-          listName={listName}
-          deleteFunc={() => {
-            dispatch(
-              DELETE_LIST({
-                index: indexingData.listIndex,
-                zeName: todosRedux[indexingData.listIndex].listName,
-              })
-            );
-
-            dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
-          }}
-        />
-      )}
+      {indexingData.popUpVisibility && <PopUpMenuComp />}
     </div>
   );
 }
