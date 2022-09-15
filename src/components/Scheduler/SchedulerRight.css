@@ -81,7 +81,7 @@ input[type="submit"]:active {
 }
 .todoWrapper {
   width: 450px;
-  height: 570px;
+  height: 560px;
   margin: 20px auto;
   padding-top: 20px;
   border-radius: 20px;
@@ -275,14 +275,14 @@ input[type="submit"]:active {
 .submitContainer {
   margin: 2% 0 3% 0;
 }
-.hoverDoubleClick{
+.hoverDoubleClick {
   position: absolute;
   background: #f0f0f0;
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
   border: #354259 solid 1px;
   color: #354259;
-   width: 130px;
-   text-align: center;
+  width: 130px;
+  text-align: center;
   font-size: 0.8rem;
   line-height: 18px;
   border-radius: 10px;

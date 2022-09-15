@@ -20,6 +20,11 @@ function newList(listName) {
   };
 }
 
+Array.prototype.swapItems = function (a, b) {
+  this[a] = this.splice(b, 1, this[a])[0];
+  return this;
+};
+
 const initialState = {
   data: [
     {
@@ -55,10 +60,9 @@ const todoSlice = createSlice({
       localStorage.setItem("todoData", JSON.stringify(state.data));
     },
     ADD_TODO: (state, action) => {
-      state.data[action.payload.index].todoArray = [
-        ...state.data[action.payload.index].todoArray,
-        newTodo(action.payload.taskName),
-      ];
+      state.data[action.payload.index].todoArray.push(
+        newTodo(action.payload.taskName)
+      );
     },
     ADD_LIST: (state) => {
       let newListName = `list_${state.data.length + 1}`;
@@ -66,134 +70,65 @@ const todoSlice = createSlice({
       while (listNames.includes(newListName)) {
         newListName += 1;
       }
-      state.data = [...state.data, newList(newListName)];
+      state.data.push(newList(newListName));
     },
     RENAME_LIST: (state, action) => {
-      let newObject0 = [
-        {
-          ...state.data[action.payload.index],
-          listNameShow: action.payload.newListName,
-        },
-      ];
-      state.data = state.data.map(
-        (obj) => newObject0.find((o) => o.listName === obj.listName) || obj
-      );
+      state.data[action.payload.index].listNameShow =
+        action.payload.newListName;
     },
     CHANGE_LIST_COLOR: (state, action) => {
-      let newObject00 = [
-        {
-          ...state.data[action.payload.index],
-          color: action.payload.color,
-        },
-      ];
-      state.data = state.data.map(
-        (obj) => newObject00.find((o) => o.listName === obj.listName) || obj
-      );
+      state.data[action.payload.index].color = action.payload.color;
     },
     RENAME_TODO: (state, action) => {
-      let newObject5 = [
-        {
-          ...state.data[action.payload.index],
-          todoArray: [
-            ...state.data[action.payload.index].todoArray.map((x) => {
-              if (x.id === action.payload.id) {
-                return {
-                  ...x,
-                  taskName: action.payload.taskRename,
-                };
-              }
-              return x;
-            }),
-          ],
-        },
+      state.data[action.payload.index].todoArray = [
+        ...state.data[action.payload.index].todoArray.map((x) => {
+          if (x.id === action.payload.id) {
+            return {
+              ...x,
+              taskName: action.payload.taskRename,
+            };
+          }
+          return x;
+        }),
       ];
-      state.data = state.data.map(
-        (obj) => newObject5.find((o) => o.listName === obj.listName) || obj
-      );
     },
     TOGGLE_TODO: (state, action) => {
-      let newObject3 = [
-        {
-          ...state.data[action.payload.index],
-          todoArray: [
-            ...state.data[action.payload.index].todoArray.map((x) => {
-              if (x.id === action.payload.id) {
-                return {
-                  ...x,
-                  complete: !x.complete,
-                  completeDate: Date(Date.now()),
-                };
-              }
-              return x;
-            }),
-          ],
-        },
+      state.data[action.payload.index].todoArray = [
+        ...state.data[action.payload.index].todoArray.map((x) => {
+          if (x.id === action.payload.id) {
+            return {
+              ...x,
+              complete: !x.complete,
+              completeDate: Date(Date.now()),
+            };
+          }
+          return x;
+        }),
       ];
-      state.data = state.data.map(
-        (obj) => newObject3.find((o) => o.listName === obj.listName) || obj
-      );
     },
     DELETE_LIST: (state, action) => {
       if (state.data[action.payload.index] && state.data.length > 1) {
-        if (
-          state.data[action.payload.index].listName === action.payload.zeName &&
-          action.payload.index + 1 !== state.data.length
-        ) {
-          console.log("state.data:", state.data);
-
-          state.data = state.data
-            .map((obj, i) => {
-              if (i !== action.payload.index) {
-                return obj;
-              }
-            })
-            .filter((item) => item);
-          console.log("state.data:", state.data);
-        }
+        state.data.splice(action.payload.index, 1);
       }
     },
     DELETE_TODO: (state, action) => {
-      let newObject2 = [
-        {
-          ...state.data[action.payload.index],
-          todoArray: [
-            ...state.data[action.payload.index].todoArray.filter(
-              (x) => x.id !== action.payload.id
-            ),
-          ],
-        },
+      state.data[action.payload.index].todoArray = [
+        ...state.data[action.payload.index].todoArray.filter(
+          (x) => x.id !== action.payload.id
+        ),
       ];
-      state.data = state.data.map(
-        (obj) => newObject2.find((o) => o.listName === obj.listName) || obj
-      );
     },
     CHANGE_TODO_POSITION: (state, action) => {
-      let currentTodo =
-        state.data[action.payload.index].todoArray[action.payload.todoIndex];
-
-      let newTodoArray = state.data[action.payload.index].todoArray.filter(
-        (x) => x.id !== action.payload.todoId
-      );
-      newTodoArray.splice(action.payload.newPositionIndex, 0, currentTodo);
-
-      let newObject6 = [
-        {
-          ...state.data[action.payload.index],
-          todoArray: [...newTodoArray],
-        },
-      ];
-      state.data = state.data.map(
-        (obj) => newObject6.find((o) => o.listName === obj.listName) || obj
+      state.data[action.payload.index].todoArray.swapItems(
+        action.payload.todoIndex,
+        action.payload.newPositionIndex
       );
     },
     CHANGE_LIST_POSITION: (state, action) => {
-      let oldList = state.data[action.payload.todoIndex];
-      let newObject69 = state.data.filter(
-        (x) => x.listName !== action.payload.todoId
+      state.data.swapItems(
+        action.payload.index,
+        action.payload.newPositionIndex
       );
-      newObject69.splice(action.payload.newPositionIndex, 0, oldList);
-
-      state.data = newObject69;
     },
   },
 });

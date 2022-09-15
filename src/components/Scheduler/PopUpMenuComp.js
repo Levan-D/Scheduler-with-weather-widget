@@ -3,18 +3,27 @@ import "./popUpMenu.css";
 import colorPalette from "./pictures/colorPalette.png";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  CHANGE_LISTINDEX,
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  POPUPVISIBILITY,
+  NEWLISTNAME,
+} from "./indexingSlice";
 
 function PopUpMenuComp({
   deleteFunc,
   coords,
   visibility,
   renameFunc,
-  setlistnameFA,
   listName,
   colorChange,
   index,
   todos,
 }) {
+  const dispatch = useDispatch();
   const [subMenu, setSubMenu] = useState({
     confD: false,
     confN: false,
@@ -106,13 +115,15 @@ function PopUpMenuComp({
         ? todos[index].listNameShow
         : todos[index].listName.replace(/_/, " ");
     }
-    setlistnameFA(
-      `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
-        .toString()
-        .slice(2, 4)}  ${pickListName().replace(
-        /([0-9]{2}\/){2}([0-9]{2})(\s*)/,
-        ""
-      )}`
+    dispatch(
+      NEWLISTNAME(
+        `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
+          .toString()
+          .slice(2, 4)}  ${pickListName().replace(
+          /([0-9]{2}\/){2}([0-9]{2})(\s*)/,
+          ""
+        )}`
+      )
     );
   }
   useEffect(() => {
@@ -210,7 +221,7 @@ function PopUpMenuComp({
                 required
                 placeholder="Enter task here!"
                 value={listName}
-                onChange={(e) => setlistnameFA(e.target.value)}
+                onChange={(e) => dispatch(NEWLISTNAME(e.target.value))}
               />
               <div
                 className="todaysDateButton"

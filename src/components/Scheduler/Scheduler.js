@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Todo from "./Todo";
 import List from "./List";
-import ProgressBar from "../ProgressBar/ProgressBar";
+import CreateTodo from "./CreateTodo";
 import Confetti from "react-confetti";
 import PopUpMenuComp from "./PopUpMenuComp";
 import {
@@ -27,37 +27,23 @@ import {
   SET_OPACITY,
 } from "./taskProgressSlice";
 
+import {
+  CHANGE_LISTINDEX,
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  POPUPVISIBILITY,
+  NEWLISTNAME,
+} from "./indexingSlice";
+
 function Scheduler() {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
   const isInitialData = useSelector((store) => store.todo.isInitialData);
   const taskProgressData = useSelector((store) => store.taskProgress.data);
+  const indexingData = useSelector((store) => store.indexing.data);
 
-  const [taskName, setTaskName] = useState("");
-  const [taskRename, setTaskRename] = useState("");
-  function setTaskRenameF(rename) {
-    setTaskRename(rename);
-  }
   const [listName, setListName] = useState("");
-  const [popUpVisibility, setPopUpVisibility] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [todoIndex, setTodoIndex] = useState("");
-  const [baseListName, setBaseListName] = useState("");
-  function setBaseListNameF(name) {
-    setBaseListName(name);
-  }
-  const [currentListName, setCurrentListName] = useState("");
-  function setCurrentListNameF(name) {
-    setCurrentListName(name);
-  }
-  const [newtodoid, settodoid] = useState(0);
-  function settodoidf(x) {
-    settodoid(x);
-  }
   const [coords, setCoords] = useState({ x: 0, y: 0 });
-  function setIndexCh(i) {
-    setIndex(i);
-  }
 
   useEffect(() => {
     if (!isInitialData) {
@@ -71,15 +57,17 @@ function Scheduler() {
   useEffect(() => {
     dispatch(
       SET_TASKSCOMPLETE({
-        tasksComplete: todosRedux[index].todoArray.filter(
+        tasksComplete: todosRedux[indexingData.listIndex].todoArray.filter(
           (x) => x.complete === true
         ).length,
       })
     );
     dispatch(
-      SET_TASKSTOTAL({ tasksTotal: todosRedux[index].todoArray.length })
+      SET_TASKSTOTAL({
+        tasksTotal: todosRedux[indexingData.listIndex].todoArray.length,
+      })
     );
-  }, [todosRedux, index]);
+  }, [todosRedux, indexingData.listIndex]);
 
   useEffect(() => {
     if (
@@ -109,81 +97,57 @@ function Scheduler() {
     }
   }, [taskProgressData]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    dispatch(ADD_TODO({ taskName: taskName, index: index }));
-
-    setTaskName("");
-  }
-
-  function handleList(e) {
-    const regex = /^(List)+[0-9]*/gi;
-    if (regex.test(e.target.classList[0])) {
-      setIndex(
-        todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
-      );
-    }
-  }
-  function setTodoIndexF(todoId) {
-    setTodoIndex({
-      todoId: todoId,
-      todoIndex: todosRedux[index].todoArray.map((x) => x.id).indexOf(todoId),
-    });
-  }
   function popUpMenu(e) {
     setCoords({ x: e.clientX, y: e.clientY });
-    setPopUpVisibility(!popUpVisibility);
+    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
   }
   function handleRename(e) {
     e.preventDefault();
-    dispatch(RENAME_LIST({ index: index, newListName: listName }));
-
-    setListName("");
-  }
-  function handleRenameTodo(e) {
-    e.preventDefault();
     dispatch(
-      RENAME_TODO({
-        taskRename: taskRename.rename,
-        id: taskRename.id,
-        index: index,
-      })
+      RENAME_LIST({ index: indexingData.listIndex, newListName: listName })
     );
+    setListName("");
+    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+  }
 
-    setTaskRename({ rename: "", id: "", show: false });
-  }
-  function setListNameF(name) {
-    setListName(name);
-  }
   function handleColorChange(color) {
-    dispatch(CHANGE_LIST_COLOR({ index: index, color: color }));
+    dispatch(
+      CHANGE_LIST_COLOR({ index: indexingData.listIndex, color: color })
+    );
   }
   function rearrange() {
-    let newPosition = todosRedux[index].todoArray
+    let newPosition = todosRedux[indexingData.listIndex].todoArray
       .map((x) => x.id)
-      .indexOf(newtodoid);
+      .indexOf(indexingData.newtodoid);
     dispatch(
       CHANGE_TODO_POSITION({
-        index: index,
-        todoId: todoIndex.todoId,
-        todoIndex: todoIndex.todoIndex,
+        index: indexingData.listIndex,
+        todoIndex: indexingData.todoIndex.todoIndex,
         newPositionIndex: newPosition,
-        newtodoid: newtodoid,
       })
     );
   }
 
   function rearrangeList() {
-    setIndexCh(todosRedux.map((x) => x.listName).indexOf(currentListName));
+    console.log(
+      todosRedux.map((x) => x.listName).indexOf(indexingData.onDragOverListName)
+    );
+    dispatch(
+      CHANGE_LISTINDEX(
+        todosRedux
+          .map((x) => x.listName)
+          .indexOf(indexingData.onDragOverListName)
+      )
+    );
+
     dispatch(
       CHANGE_LIST_POSITION({
-        index: index,
-        todoId: baseListName,
-        todoIndex: todosRedux.map((x) => x.listName).indexOf(baseListName),
+        todoIndex: todosRedux
+          .map((x) => x.listName)
+          .indexOf(indexingData.onDragStartListName),
         newPositionIndex: todosRedux
           .map((x) => x.listName)
-          .indexOf(currentListName),
-        newtodoid: currentListName,
+          .indexOf(indexingData.onDragOverListName),
       })
     );
   }
@@ -207,6 +171,7 @@ function Scheduler() {
         >
           +
         </div>
+
         <div className="listWrapper">
           {typeof todosRedux === "object" &&
             todosRedux.map((x) => {
@@ -216,87 +181,52 @@ function Scheduler() {
                   name={x.listName}
                   color={x.color}
                   nameShow={x.listNameShow}
-                  listSelect={handleList}
-                  index={index}
                   todos={todosRedux}
                   popUpMenu={popUpMenu}
-                  popUpVisibility={popUpVisibility}
-                  setlistnameFA={setListNameF}
                   rearrangeList={rearrangeList}
-                  setCurrentListNameF={setCurrentListNameF}
-                  setBaseListNameF={setBaseListNameF}
-                  currentListName={currentListName}
                 />
               );
             })}
         </div>
       </div>
       <div className="rightSide">
-        <h2>
-          Add a new task below! ({taskProgressData.tasksComplete}/
-          {taskProgressData.tasksTotal})
-          <ProgressBar
-            tasksComplete={taskProgressData.tasksComplete}
-            tasksTotal={taskProgressData.tasksTotal}
-            width={315}
-            height={10}
-            background={`#354259`}
-          />
-        </h2>
-        <form onSubmit={handleSubmit} className="renameForm">
-          <input
-            type="text"
-            required
-            placeholder="Enter task here!"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-          />
-          <input type="submit" value="+" className="bigSubmitButton" />
-        </form>
+        <CreateTodo />
         <div className="todoWrapper">
           {typeof todosRedux &&
-            todosRedux[index].todoArray.map((x) => {
+            todosRedux[indexingData.listIndex].todoArray.map((x) => {
               return (
                 <Todo
                   key={x.id}
                   todo={x}
-                  handleRenameTodo={handleRenameTodo}
-                  setTaskRenameF={setTaskRenameF}
-                  taskRename={taskRename}
-                  index={index}
-                  setTodoIndexF={setTodoIndexF}
+                  index={indexingData.listIndex}
                   rearrange={rearrange}
-                  settodoidf={settodoidf}
-                  newtodoid={newtodoid}
                 />
               );
             })}
         </div>
       </div>
-      {popUpVisibility && (
+      {indexingData.popUpVisibility && (
         <PopUpMenuComp
           coords={coords}
           todos={todosRedux}
-          index={index}
-          visibility={(x) => {
-            setPopUpVisibility(!popUpVisibility);
+          index={indexingData.listIndex}
+          visibility={() => {
+            dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
           }}
           renameFunc={(x) => {
             handleRename(x);
-            setPopUpVisibility(!popUpVisibility);
           }}
-          setlistnameFA={setListNameF}
           colorChange={handleColorChange}
           listName={listName}
           deleteFunc={() => {
             dispatch(
               DELETE_LIST({
-                index: index,
-                zeName: todosRedux[index].listName,
+                index: indexingData.listIndex,
+                zeName: todosRedux[indexingData.listIndex].listName,
               })
             );
 
-            setPopUpVisibility(!popUpVisibility);
+            dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
           }}
         />
       )}

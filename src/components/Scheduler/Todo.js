@@ -14,18 +14,25 @@ import {
   DELETE_TODO,
 } from "./todoSlice";
 
+import {
+  CHANGE_LISTINDEX,
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  NEWTODOID,
+} from "./indexingSlice";
+
 function Todo({
   todo,
 
   index,
-  setTaskRenameF,
-  taskRename,
-  handleRenameTodo,
-  setTodoIndexF,
+
+ 
   rearrange,
-  settodoidf,
 }) {
+  const todosRedux = useSelector((store) => store.todo.data);
+  const indexingData = useSelector((store) => store.indexing.data);
   const dispatch = useDispatch();
+
   let markedDate = todo.completeDate.split(" ").map((str, index) => ({
     value: str,
     id: index + 1,
@@ -55,7 +62,7 @@ function Todo({
         250
       )}px`;
     }
-  }, [taskRename.show, taskRename]);
+  }, [indexingData.taskRename.show, indexingData.taskRename]);
 
   const refTwo = useRef(null);
   // useEffect(() => {
@@ -68,12 +75,24 @@ function Todo({
     }
   };
 
+  function handleRenameTodo(e) {
+    e.preventDefault();
+    dispatch(
+      RENAME_TODO({
+        taskRename: indexingData.taskRename.rename,
+        id: indexingData.taskRename.id,
+        index: indexingData.listIndex,
+      })
+    );
+    dispatch(TASK_RENAME({ rename: "", id: "", show: false }));
+  }
+
   return (
     <div
       className="todoBackground"
       onDragOver={(e) => {
         e.preventDefault();
-        settodoidf(todo.id);
+        dispatch(NEWTODOID(todo.id));
       }}
     >
       <div
@@ -86,7 +105,14 @@ function Todo({
             setDragging(true);
           }
 
-          setTodoIndexF(todo.id);
+          dispatch(
+            CHANGE_TODOINDEX({
+              todoId: todo.id,
+              todoIndex: todosRedux[indexingData.listIndex].todoArray
+                .map((x) => x.id)
+                .indexOf(todo.id),
+            })
+          );
         }}
         onDragEnd={() => {
           rearrange();
@@ -94,14 +120,16 @@ function Todo({
         }}
       >
         <div>
-          {!taskRename.show && (
+          {!indexingData.taskRename.show && (
             <div
               onDoubleClick={() => {
-                setTaskRenameF({
-                  rename: todo.taskName.replace(/\s\s+/g, " "),
-                  id: todo.id,
-                  show: true,
-                });
+                dispatch(
+                  TASK_RENAME({
+                    rename: todo.taskName.replace(/\s\s+/g, " "),
+                    id: todo.id,
+                    show: true,
+                  })
+                );
               }}
               onMouseEnter={(x) => {
                 hoverEvent = setTimeout(() => {
@@ -125,14 +153,14 @@ function Todo({
             </div>
           )}
 
-          {taskRename.show && (
+          {indexingData.taskRename.show && (
             <div>
-              {todo.id === taskRename.id ? (
+              {todo.id === indexingData.taskRename.id ? (
                 <form className="editTodoForm" onSubmit={handleRenameTodo}>
                   <label>
                     <textarea
                       ref={refOne}
-                      value={taskRename.rename}
+                      value={indexingData.taskRename.rename}
                       className="textArea"
                       onKeyDown={handleKeyDown}
                       onKeyPress={(e) => {
@@ -141,11 +169,13 @@ function Todo({
                         }
                       }}
                       onChange={(e) =>
-                        setTaskRenameF({
-                          rename: e.target.value,
-                          id: todo.id,
-                          show: true,
-                        })
+                        dispatch(
+                          TASK_RENAME({
+                            rename: e.target.value,
+                            id: todo.id,
+                            show: true,
+                          })
+                        )
                       }
                     />
                   </label>
@@ -156,7 +186,7 @@ function Todo({
               ) : (
                 <div
                   onDoubleClick={() => {
-                    setTaskRenameF({
+                    TASK_RENAME({
                       rename: todo.taskName,
                       id: todo.id,
                       show: true,

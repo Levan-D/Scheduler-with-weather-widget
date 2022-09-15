@@ -1,22 +1,31 @@
 /** @format */
 import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  CHANGE_LISTINDEX,
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  ONDRAGSTART,
+  ONDRAGOVER,
+  NEWLISTNAME,
+} from "./indexingSlice";
 
 function List({
   name,
-  listSelect,
+
   todos,
-  index,
+
   popUpMenu,
   nameShow,
   color,
-  setlistnameFA,
-  popUpVisibility,
+
   rearrangeList,
-  setBaseListNameF,
-  setCurrentListNameF,
-  currentListName,
 }) {
+  const dispatch = useDispatch();
+  const indexingData = useSelector((store) => store.indexing.data);
+  const todosRedux = useSelector((store) => store.todo.data);
   const [dragging, setDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   let hoverEvent;
@@ -63,14 +72,26 @@ function List({
     return (zeros + str).slice(-len);
   }
 
+  function handleList(e) {
+    const regex = /^(List)+[0-9]*/gi;
+    if (regex.test(e.target.classList[0])) {
+      dispatch(
+        CHANGE_LISTINDEX(
+          todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
+        )
+      );
+    }
+  }
+
   return (
     <div
       className="wrapperOfList"
-      onClick={listSelect}
+      onClick={(e) => {
+        handleList(e);
+      }}
       onDragOver={(e) => {
         e.preventDefault();
-        setCurrentListNameF(name);
-        console.log(currentListName);
+        dispatch(ONDRAGOVER(name));
       }}
     >
       <div
@@ -85,7 +106,7 @@ function List({
         }}
         ref={refTwo}
         className={`${
-          name === todos[index].listName ? "selectedList" : ""
+          name === todos[indexingData.listIndex].listName ? "selectedList" : ""
         } containerList`}
         style={{
           color:
@@ -94,7 +115,7 @@ function List({
               : "#354259",
           backgroundColor: color !== "default" ? color : "",
           border:
-            name === todos[index].listName
+            name === todos[indexingData.listIndex].listName
               ? `2px solid ${invertColor(color.substring(1), `bw`)}`
               : "",
         }}
@@ -102,7 +123,7 @@ function List({
         onDragStart={() => {
           if (!dragging) {
             setDragging(true);
-            setBaseListNameF(name);
+            dispatch(ONDRAGSTART(name));
           }
         }}
         onDragEnd={() => {
@@ -113,16 +134,16 @@ function List({
         <div className={`${name} nameList`}>
           {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
-        {isHovering && !popUpVisibility && !dragging && (
+        {isHovering && !indexingData.popUpVisibility && !dragging && (
           <div className="hoverName">
             {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
           </div>
         )}
-        {name === todos[index].listName && (
+        {name === todos[indexingData.listIndex].listName && (
           <div
             className="tripleDot"
             onClick={(e) => {
-              setlistnameFA("");
+              dispatch(NEWLISTNAME(""));
               popUpMenu(e);
             }}
           >
