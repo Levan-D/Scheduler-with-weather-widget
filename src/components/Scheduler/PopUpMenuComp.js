@@ -71,8 +71,9 @@ function PopUpMenuComp() {
   }, [refOne]);
 
   const handleClickOutside = (e) => {
+    console.log("indexingData.popUpVisibility:", indexingData.popUpVisibility);
     if (!refOne.current.contains(e.target)) {
-      dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+      dispatch(POPUPVISIBILITY(false));
     }
   };
   function insertCalendarDate() {
@@ -133,7 +134,7 @@ function PopUpMenuComp() {
       ref={refOne}
       onMouseLeave={(x) => {
         mouseEvent = setTimeout(() => {
-          dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+          dispatch(POPUPVISIBILITY(false));
         }, 500);
       }}
       onMouseEnter={(x) => {
@@ -210,7 +211,7 @@ function PopUpMenuComp() {
                   })
                 );
               }
-              dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+              dispatch(POPUPVISIBILITY(false));
             }}
           >
             Confirm
@@ -238,7 +239,7 @@ function PopUpMenuComp() {
                     newListName: indexingData.newListName,
                   })
                 );
-                dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+                dispatch(POPUPVISIBILITY(false));
               }}
             >
               <input

@@ -69,6 +69,7 @@
   padding: 0 5px;
   font-size: 0.8rem;
   border-radius: 10px;
+  cursor: pointer;
 }
 .nameChangeForm input[type="submit"] {
   height: 40px;

@@ -88,8 +88,7 @@
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
   border: #354259 solid 1px;
   color: #354259;
-  left: 0px;
-  top: 38px;
+  translate: 0px 40px;
   width: 130px;
   font-size: 0.8rem;
   line-height: 18px;

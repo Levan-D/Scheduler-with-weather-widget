@@ -80,17 +80,9 @@ const todoSlice = createSlice({
       state.data[action.payload.index].color = action.payload.color;
     },
     RENAME_TODO: (state, action) => {
-      state.data[action.payload.index].todoArray = [
-        ...state.data[action.payload.index].todoArray.map((x) => {
-          if (x.id === action.payload.id) {
-            return {
-              ...x,
-              taskName: action.payload.taskRename,
-            };
-          }
-          return x;
-        }),
-      ];
+      state.data[action.payload.index].todoArray[
+        action.payload.todoIndex
+      ].taskName = action.payload.taskRename;
     },
     TOGGLE_TODO: (state, action) => {
       state.data[action.payload.index].todoArray = [

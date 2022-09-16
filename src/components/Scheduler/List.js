@@ -147,11 +147,14 @@ function List({ name, nameShow, color }) {
         <div className={`${name} nameList`}>
           {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
-        {isHovering && !indexingData.popUpVisibility && !dragging && (
-          <div className="hoverName">
-            {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
-          </div>
-        )}
+        {isHovering &&
+          !indexingData.popUpVisibility &&
+          !dragging &&
+          nameShow.length > 26 && (
+            <div className="hoverName">
+              {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
+            </div>
+          )}
         {name === todosRedux[indexingData.listIndex].listName && (
           <div
             className="tripleDot"

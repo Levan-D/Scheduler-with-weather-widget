@@ -3,25 +3,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  FETCH_TODODATA,
-  ADD_TODO,
-  ADD_LIST,
-  RENAME_LIST,
-  CHANGE_LIST_COLOR,
   RENAME_TODO,
   TOGGLE_TODO,
-   
   DELETE_TODO,
   CHANGE_TODO_POSITION,
-   
 } from "./todoSlice";
 
-import {
-  CHANGE_LISTINDEX,
-  TASK_RENAME,
-  CHANGE_TODOINDEX,
-  NEWTODOID,
-} from "./indexingSlice";
+import { TASK_RENAME, CHANGE_TODOINDEX, NEWTODOID } from "./indexingSlice";
 
 function Todo({ todo }) {
   const todosRedux = useSelector((store) => store.todo.data);
@@ -60,13 +48,16 @@ function Todo({ todo }) {
   }, [indexingData.taskRename.show, indexingData.taskRename]);
 
   const refTwo = useRef(null);
-  // useEffect(() => {
-  //   document.addEventListener("mousemove", handleClickOutside, true);
-  // }, [refTwo]);
+  useEffect(() => {
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
 
   const handleClickOutside = (e) => {
-    if (!refTwo.current.contains(e.target)) {
-      setIsHovering(false);
+    if (refTwo !== null && dragging === true) {
+      if (!refTwo.current.contains(e.target)) {
+        console.log(refTwo.current);
+        setIsHovering(false);
+      }
     }
   };
 
@@ -75,7 +66,7 @@ function Todo({ todo }) {
     dispatch(
       RENAME_TODO({
         taskRename: indexingData.taskRename.rename,
-        id: indexingData.taskRename.id,
+        todoIndex: indexingData.todoIndex.todoIndex,
         index: indexingData.listIndex,
       })
     );
@@ -214,7 +205,11 @@ function Todo({ todo }) {
             className="todoCheck"
             onClick={() => {
               dispatch(
-                TOGGLE_TODO({ id: todo.id, index: indexingData.listIndex })
+                TOGGLE_TODO({
+                  id: todo.id,
+                  index: indexingData.listIndex,
+                  todoIndex: indexingData.todoIndex.todoIndex,
+                })
               );
             }}
           >
