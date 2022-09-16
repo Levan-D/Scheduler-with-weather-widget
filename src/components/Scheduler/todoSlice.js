@@ -60,17 +60,21 @@ const todoSlice = createSlice({
       localStorage.setItem("todoData", JSON.stringify(state.data));
     },
     ADD_TODO: (state, action) => {
-      state.data[action.payload.index].todoArray.push(
-        newTodo(action.payload.taskName)
-      );
+      if (state.data[action.payload.index].todoArray.length <= 150) {
+        state.data[action.payload.index].todoArray.push(
+          newTodo(action.payload.taskName)
+        );
+      }
     },
     ADD_LIST: (state) => {
-      let newListName = `list_${state.data.length + 1}`;
-      let listNames = state.data.map((x) => x.listName);
-      while (listNames.includes(newListName)) {
-        newListName += 1;
+      if (state.data.length <= 50) {
+        let newListName = `list_${state.data.length + 1}`;
+        let listNames = state.data.map((x) => x.listName);
+        while (listNames.includes(newListName)) {
+          newListName += 1;
+        }
+        state.data.push(newList(newListName));
       }
-      state.data.push(newList(newListName));
     },
     RENAME_LIST: (state, action) => {
       state.data[action.payload.index].listNameShow =

@@ -71,7 +71,6 @@ function PopUpMenuComp() {
   }, [refOne]);
 
   const handleClickOutside = (e) => {
-    console.log("indexingData.popUpVisibility:", indexingData.popUpVisibility);
     if (!refOne.current.contains(e.target)) {
       dispatch(POPUPVISIBILITY(false));
     }
