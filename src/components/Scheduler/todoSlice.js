@@ -90,7 +90,7 @@ const todoSlice = createSlice({
     },
     ADD_DATE_LIST: (state, action) => {
       state.data[action.payload.index].listNameShow.date =
-        action.payload.newListName;
+        action.payload.newData;
     },
     CHANGE_LIST_COLOR: (state, action) => {
       state.data[action.payload.index].color = action.payload.color;

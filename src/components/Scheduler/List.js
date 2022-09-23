@@ -146,11 +146,8 @@ function List({ name, nameShow, color, date }) {
         }}
       >
         <div className={`${name} nameList`}>
-          {date !== ""
-            ? date
-            : "" + nameShow !== ""
-            ? nameShow
-            : name.replace(/_/, " ")}
+          {date !== "" ? date : ""}
+          {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
         {isHovering &&
           !indexingData.popUpVisibility &&

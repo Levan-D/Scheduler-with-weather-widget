@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./popUpMenu.css";
-import { RENAME_LIST } from "../todoSlice";
+import { RENAME_LIST, ADD_DATE_LIST } from "../todoSlice";
 import { resetState, setCalendar } from "./popupMenuSlice";
 import Calendar from "react-calendar";
 import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice";
 
+localStorage.clear();
+
 const ChangeDate = () => {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
+  console.log("todosRedux:", todosRedux);
   const indexingData = useSelector((store) => store.indexing.data);
   const subMenu = useSelector((store) => store.subMenu);
   const [calendarPick, setCalendarPick] = useState(new Date());
@@ -41,21 +44,21 @@ const ChangeDate = () => {
         return (monthsShort.indexOf(displayDate[1].value) + 1).toString();
       }
     }
-    function pickListName() {
-      return todosRedux[indexingData.listIndex].listNameShow != ""
-        ? todosRedux[indexingData.listIndex].listNameShow
-        : todosRedux[indexingData.listIndex].listName.replace(/_/, " ");
-    }
-    dispatch(
-      NEWLISTNAME(
-        `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
-          .toString()
-          .slice(2, 4)}  ${pickListName().replace(
-          /([0-9]{2}\/){2}([0-9]{2})(\s*)/,
-          ""
-        )}`
-      )
-    );
+    // function pickListName() {
+    //   return todosRedux[indexingData.listIndex].listNameShow != ""
+    //     ? todosRedux[indexingData.listIndex].listNameShow
+    //     : todosRedux[indexingData.listIndex].listName.replace(/_/, " ");
+    // }
+    // dispatch(
+    //   NEWLISTNAME(
+    //     `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
+    //       .toString()
+    //       .slice(2, 4)}  ${pickListName().replace(
+    //       /([0-9]{2}\/){2}([0-9]{2})(\s*)/,
+    //       ""
+    //     )}`
+    //   )
+    // );
   }
   useEffect(() => {
     if (subMenu.confC || subMenu.showCal) {
@@ -101,9 +104,11 @@ const ChangeDate = () => {
               setCalendarPick(new Date());
               insertCalendarDate();
               dispatch(
-                RENAME_LIST({
+                ADD_DATE_LIST({
                   index: indexingData.listIndex,
-                  newListName: indexingData.newListName,
+                  newData: `${displayDate[2].value.toString()}/${setMonth()}/${displayDate[3].value
+                    .toString()
+                    .slice(2, 4)}`,
                 })
               );
               dispatch(resetState());
