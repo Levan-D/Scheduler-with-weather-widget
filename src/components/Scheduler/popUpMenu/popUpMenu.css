@@ -1,0 +1,136 @@
+.popUpMenu {
+  position: absolute;
+  width: 150px;
+  height: 30px;
+  background-color: #6e85b7;
+  padding: 12px 8px;
+  border-radius: 10px;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  user-select: none;
+}
+.popUpWrapper {
+  display: flex;
+  justify-content: space-around;
+}
+.confirmTab {
+  position: relative;
+  width: 90%;
+  top: 9px;
+  padding: 0 8px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  background-color: #354259;
+  color: #f0f0f0;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.confirmTabAc:hover {
+  filter: brightness(1.1);
+  box-shadow: 0px 4px 4px 1px #f0f0f0;
+  cursor: pointer;
+}
+.confirmTabAd:hover {
+  box-shadow: 0px 4px 4px 1px #f0f0f0;
+}
+.confirmTabAc:active {
+  filter: brightness(0.95);
+}
+.calendar {
+  position: absolute;
+  left: 150px;
+  top: 0px;
+}
+.popUpButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  border: #f0f0f0 1.5px solid;
+  background-color: #354259;
+  cursor: pointer;
+}
+.popUpButton:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 2px 2px rgba(240, 240, 240, 0.2),
+    0 0 3px 3px rgba(240, 240, 240, 0.2), 0 0 4px 4px rgba(240, 240, 240, 0.2);
+}
+.popUpButton:active {
+  filter: brightness(0.95);
+}
+.nameChangeForm input[type="text"],
+.nameChangeForm input[type="submit"] {
+  user-select: auto;
+  position: relative;
+  width: 92%;
+  height: 30px;
+  margin: 5px 0;
+  padding: 0 5px;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.nameChangeForm input[type="submit"] {
+  height: 40px;
+  background-color: #80558c;
+  color: white;
+  border: none;
+}
+.todaysDateButton {
+  width: 92%;
+  height: 30px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  margin: 10px auto;
+  border-radius: 10px;
+  border: none;
+  background-color: #6e85b7;
+  color: #f0f0f0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+.todaysDateButton:hover {
+  filter: brightness(1.1);
+}
+.todaysDateButton:active {
+  filter: brightness(0.95);
+}
+
+.colorCircle {
+  width: 17px;
+  margin: 3px;
+  height: 17px;
+  border: solid 1.5px #f0f0f0;
+  border-radius: 15px;
+}
+.colorBox {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 10px 8px 10px 11px;
+}
+
+.icon-trash > * {
+  width: auto;
+  height: 20px;
+  position: relative;
+  left: 8px;
+  top: 4px;
+}
+
+.icon-pencil > * {
+  width: auto;
+  height: 28px;
+  position: relative;
+  left: 3px;
+}
+
+.icon-palette > * {
+  width: auto;
+  height: 20px;
+  position: relative;
+  left: 5px;
+  top: 4px;
+}

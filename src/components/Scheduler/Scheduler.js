@@ -7,7 +7,7 @@ import Todo from "./Todo";
 import List from "./List";
 import CreateTodo from "./CreateTodo";
 import Confetti from "react-confetti";
-import PopUpMenuComp from "./PopUpMenuComp";
+import PopUpMenuComp from "./popUpMenu/PopUpMenuComp";
 import CreateList from "./CreateList";
 import { FETCH_TODODATA } from "./todoSlice";
 import {
