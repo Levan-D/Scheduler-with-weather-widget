@@ -31,15 +31,7 @@ const initialState = {
       listName: `list_1`,
       listNameShow: "",
       color: "default",
-      todoArray: [
-        {
-          id: Date.now(),
-          time: Date(Date.now()),
-          taskName: ``,
-          complete: false,
-          completeDate: "",
-        },
-      ],
+      todoArray: [],
     },
   ],
   isInitialData: true,

@@ -101,7 +101,7 @@ input[type="submit"]:active {
   margin: 0.2rem 0 0 0;
   background-color: #c4d7e0;
   border-radius: 15px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .todoButtonsFlex {
@@ -259,7 +259,9 @@ input[type="submit"]:active {
   line-height: 15px;
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
   margin: 0;
-
+  padding: 2px 0;
+  position: relative;
+  top: -5px;
   border-radius: 15px;
   position: relative;
   left: -50px;
@@ -271,7 +273,16 @@ input[type="submit"]:active {
   font-size: 1.8rem;
   font-weight: bold;
   transition: 0.3s;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
 }
+.miniSubmit img {
+  width: 17px;
+  height: 17px;
+  margin: 0 5px 0 10px;
+}
+
 .submitContainer {
   margin: 2% 0 3% 0;
 }

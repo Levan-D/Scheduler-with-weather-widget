@@ -2,6 +2,8 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import ReactTooltip from "react-tooltip";
+import saveIcon from "./pictures/saveIcon.png";
 import {
   RENAME_TODO,
   TOGGLE_TODO,
@@ -63,6 +65,7 @@ function Todo({ todo }) {
 
   function handleRenameTodo(e) {
     e.preventDefault();
+    console.log(indexingData.todoIndex.todoIndex);
     dispatch(
       RENAME_TODO({
         taskRename: indexingData.taskRename.rename,
@@ -95,6 +98,16 @@ function Todo({ todo }) {
     >
       <div
         className="todoContainer"
+        onClick={() => {
+          dispatch(
+            CHANGE_TODOINDEX({
+              todoId: todo.id,
+              todoIndex: todosRedux[indexingData.listIndex].todoArray
+                .map((x) => x.id)
+                .indexOf(todo.id),
+            })
+          );
+        }}
         ref={refTwo}
         style={{ filter: dragging ? "brightness(0.7)" : "brightness(1)" }}
         draggable="true"
@@ -135,7 +148,7 @@ function Todo({ todo }) {
                 }, 1000);
               }}
               onMouseLeave={(x) => {
-                setIsHovering(!true);
+                setIsHovering(false);
                 clearTimeout(hoverEvent);
               }}
               className={`todo ${
@@ -157,6 +170,9 @@ function Todo({ todo }) {
                 <form className="editTodoForm" onSubmit={handleRenameTodo}>
                   <label>
                     <textarea
+                      autoFocus={
+                        todo.id === indexingData.taskRename.id ? true : false
+                      }
                       ref={refOne}
                       value={indexingData.taskRename.rename}
                       className="textArea"
@@ -178,7 +194,14 @@ function Todo({ todo }) {
                     />
                   </label>
                   <label className="submitContainer">
-                    <input type="submit" className="miniSubmit" value="+" />
+                    <div
+                      className="miniSubmit"
+                      onClick={(e) => {
+                        handleRenameTodo(e);
+                      }}
+                    >
+                      <img src={saveIcon} alt="save icon" />
+                    </div>
                   </label>
                 </form>
               ) : (
