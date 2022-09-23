@@ -5,7 +5,7 @@ const initialState = {
     confD: false,
     confN: false,
     confC: false,
-    showCal: false,
+    confCal: false,
   },
 };
 
@@ -13,28 +13,36 @@ const subMenuSlice = createSlice({
   name: `subMenu`,
   initialState,
   reducers: {
-    setDelete: (state) => {
+    setDelete: (state, action) => {
       state.data = {
-        confD: !state.confD,
+        confD: action.payload,
         confN: false,
         confC: false,
-        showCal: false,
+        confCal: false,
       };
     },
-    setColor: (state) => {
+    setColor: (state, action) => {
       state.data = {
         confD: false,
         confN: false,
-        confC: !state.confC,
-        showCal: false,
+        confC: action.payload,
+        confCal: false,
       };
     },
-    setRename: (state) => {
+    setRename: (state, action) => {
       state.data = {
         confD: false,
-        confN: !state.confN,
+        confN: action.payload,
         confC: false,
-        showCal: false,
+        confCal: false,
+      };
+    },
+    setCalendar: (state, action) => {
+      state.data = {
+        confD: false,
+        confN: false,
+        confC: false,
+        confCal: action.payload,
       };
     },
     resetState: (state) => {
@@ -42,12 +50,12 @@ const subMenuSlice = createSlice({
         confD: false,
         confN: false,
         confC: false,
-        showCal: false,
+        confCal: false,
       };
     },
   },
 });
 
-export const { setDelete, setColor, setRename, resetState } =
+export const { setDelete, setColor, setRename, setCalendar, resetState } =
   subMenuSlice.actions;
 export default subMenuSlice.reducer;

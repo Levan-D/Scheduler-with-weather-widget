@@ -71,6 +71,9 @@
   border-radius: 10px;
   cursor: pointer;
 }
+.nameChangeForm input[type="text"] {
+  cursor: text;
+}
 .nameChangeForm input[type="submit"] {
   height: 40px;
   background-color: #80558c;
@@ -112,25 +115,31 @@
   padding: 10px 8px 10px 11px;
 }
 
-.icon-trash > * {
-  width: auto;
-  height: 20px;
-  position: relative;
-  left: 8px;
-  top: 4px;
-}
-
 .icon-pencil > * {
   width: auto;
-  height: 28px;
+  height: 27px;
   position: relative;
   left: 3px;
+  top: 1px;
 }
-
+.icon-calendar > * {
+  width: auto;
+  height: 17px;
+  position: relative;
+  left: 7px;
+  top: 5px;
+}
 .icon-palette > * {
   width: auto;
-  height: 20px;
+  height: 18px;
   position: relative;
   left: 5px;
-  top: 4px;
+  top: 5px;
+}
+.icon-trash > * {
+  width: auto;
+  height: 17px;
+  position: relative;
+  left: 9px;
+  top: 5px;
 }

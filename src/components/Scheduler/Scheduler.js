@@ -95,7 +95,8 @@ function Scheduler() {
                   key={x.listName}
                   name={x.listName}
                   color={x.color}
-                  nameShow={x.listNameShow}
+                  nameShow={x.listNameShow.name}
+                  date={x.listNameShow.date}
                 />
               );
             })}

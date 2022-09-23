@@ -2,6 +2,7 @@
 import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { ReactComponent as Dots } from "./pictures/dots.svg";
 
 import {
   CHANGE_LISTINDEX,
@@ -14,7 +15,7 @@ import {
 
 import { CHANGE_LIST_POSITION } from "./todoSlice";
 
-function List({ name, nameShow, color }) {
+function List({ name, nameShow, color, date }) {
   const dispatch = useDispatch();
   const indexingData = useSelector((store) => store.indexing.data);
   const todosRedux = useSelector((store) => store.todo.data);
@@ -145,7 +146,11 @@ function List({ name, nameShow, color }) {
         }}
       >
         <div className={`${name} nameList`}>
-          {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
+          {date !== ""
+            ? date
+            : "" + nameShow !== ""
+            ? nameShow
+            : name.replace(/_/, " ")}
         </div>
         {isHovering &&
           !indexingData.popUpVisibility &&
@@ -164,33 +169,16 @@ function List({ name, nameShow, color }) {
               dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
             }}
           >
-            <div
-              className="dotdot"
-              style={{
-                backgroundColor:
+            <div>
+              <Dots
+                className="dotdot"
+                fill={
                   color !== "default"
                     ? invertColor(color.substring(1), `bw`)
-                    : "#354259",
-              }}
-            ></div>
-            <div
-              className="dotdot"
-              style={{
-                backgroundColor:
-                  color !== "default"
-                    ? invertColor(color.substring(1), `bw`)
-                    : "#354259",
-              }}
-            ></div>
-            <div
-              className="dotdot"
-              style={{
-                backgroundColor:
-                  color !== "default"
-                    ? invertColor(color.substring(1), `bw`)
-                    : "#354259",
-              }}
-            ></div>
+                    : "#354259"
+                }
+              />
+            </div>
           </div>
         )}
       </div>

@@ -2,24 +2,6 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-function newTodo(taskName) {
-  return {
-    id: Date.now(),
-    time: Date(Date.now()),
-    taskName: taskName,
-    complete: false,
-    completeDate: "",
-  };
-}
-function newList(listName) {
-  return {
-    listName: listName,
-    listNameShow: "",
-    color: "default",
-    todoArray: [],
-  };
-}
-
 Array.prototype.swapItems = function (a, b) {
   this[a] = this.splice(b, 1, this[a])[0];
   return this;
@@ -29,7 +11,10 @@ const initialState = {
   data: [
     {
       listName: `list_1`,
-      listNameShow: "",
+      listNameShow: {
+        date: "",
+        name: "",
+      },
       color: "default",
       todoArray: [],
     },
@@ -51,25 +36,60 @@ const todoSlice = createSlice({
       state.isInitialData = false;
       localStorage.setItem("todoData", JSON.stringify(state.data));
     },
-    ADD_TODO: (state, action) => {
-      if (state.data[action.payload.index].todoArray.length <= 150) {
-        state.data[action.payload.index].todoArray.push(
-          newTodo(action.payload.taskName)
-        );
-      }
-    },
-    ADD_LIST: (state) => {
-      if (state.data.length <= 50) {
-        let newListName = `list_${state.data.length + 1}`;
-        let listNames = state.data.map((x) => x.listName);
-        while (listNames.includes(newListName)) {
-          newListName += 1;
+    ADD_TODO: {
+      reducer: (state, action) => {
+        if (state.data[action.payload.index].todoArray.length <= 150) {
+          state.data[action.payload.index].todoArray.push(action.payload.todo);
         }
-        state.data.push(newList(newListName));
-      }
+      },
+      prepare: (text) => {
+        return {
+          payload: {
+            index: text.index,
+            todo: {
+              id: Date.now(),
+              time: Date(Date.now()),
+              taskName: text.taskName,
+              complete: false,
+              completeDate: "",
+            },
+          },
+        };
+      },
+    },
+    ADD_LIST: {
+      reducer: (state, action) => {
+        if (state.data.length <= 50) {
+          let newListName = `list_${state.data.length + 1}`;
+          let listNames = state.data.map((x) => x.listName);
+          while (listNames.includes(newListName)) {
+            newListName += 1;
+          }
+          let bob = action.payload;
+          bob.listName = newListName;
+          state.data.push(bob);
+        }
+      },
+      prepare: () => {
+        return {
+          payload: {
+            listName: "",
+            listNameShow: {
+              date: "",
+              name: "",
+            },
+            color: "default",
+            todoArray: [],
+          },
+        };
+      },
     },
     RENAME_LIST: (state, action) => {
-      state.data[action.payload.index].listNameShow =
+      state.data[action.payload.index].listNameShow.name =
+        action.payload.newListName;
+    },
+    ADD_DATE_LIST: (state, action) => {
+      state.data[action.payload.index].listNameShow.date =
         action.payload.newListName;
     },
     CHANGE_LIST_COLOR: (state, action) => {
@@ -128,6 +148,7 @@ export const {
   ADD_TODO,
   ADD_LIST,
   RENAME_LIST,
+  ADD_DATE_LIST,
   CHANGE_LIST_COLOR,
   RENAME_TODO,
   TOGGLE_TODO,

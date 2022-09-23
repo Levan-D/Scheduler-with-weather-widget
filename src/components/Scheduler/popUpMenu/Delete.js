@@ -1,9 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./popUpMenu.css";
-
 import { DELETE_LIST } from "../todoSlice";
-
 import { POPUPVISIBILITY, CHANGE_LISTINDEX } from "../indexingSlice";
 import { resetState } from "./popupMenuSlice";
 
@@ -11,7 +9,7 @@ const Delete = () => {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
-  const subMenu = useSelector((store) => store.subMenu);
+
   return (
     <>
       <div className="confirmTab confirmTabAc">
