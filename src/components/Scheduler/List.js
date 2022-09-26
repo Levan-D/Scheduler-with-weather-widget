@@ -101,7 +101,9 @@ function List({ name, nameShow, color, date }) {
     <div
       className="wrapperOfList"
       onClick={(e) => {
-        handleList(e);
+        if (!dragging) {
+          handleList(e);
+        }
       }}
       onDragOver={(e) => {
         e.preventDefault();
