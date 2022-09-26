@@ -10,9 +10,14 @@ import {
   CHANGE_TODO_POSITION,
 } from "./todoSlice";
 
-import { TASK_RENAME, CHANGE_TODOINDEX, NEWTODOID } from "./indexingSlice";
+import {
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  NEWTODOID,
+  TODODRAGGING,
+} from "./indexingSlice";
 
-function Todo({ todo }) {
+function Todo({ todo, name }) {
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
   const dispatch = useDispatch();
@@ -56,7 +61,6 @@ function Todo({ todo }) {
   const handleClickOutside = (e) => {
     if (refTwo !== null && dragging === true) {
       if (!refTwo.current.contains(e.target)) {
-        console.log(refTwo.current);
         setIsHovering(false);
       }
     }
@@ -64,7 +68,6 @@ function Todo({ todo }) {
 
   function handleRenameTodo(e) {
     e.preventDefault();
-    console.log(indexingData.todoIndex.todoIndex);
     dispatch(
       RENAME_TODO({
         taskRename: indexingData.taskRename.rename,
@@ -87,6 +90,7 @@ function Todo({ todo }) {
       })
     );
   }
+
   return (
     <div
       className="todoBackground"
@@ -96,7 +100,15 @@ function Todo({ todo }) {
       }}
     >
       <div
-        className="todoContainer"
+        className={`
+        ${
+          indexingData.newtodoid &&
+          indexingData.TodoDragging &&
+          indexingData.newtodoid === name
+            ? "afterGlowTodo"
+            : ""
+        } 
+          todoContainer`}
         onClick={() => {
           dispatch(
             CHANGE_TODOINDEX({
@@ -112,6 +124,7 @@ function Todo({ todo }) {
         draggable="true"
         onDragStart={() => {
           if (!dragging) {
+            dispatch(TODODRAGGING(true));
             setDragging(true);
           }
 
@@ -126,6 +139,7 @@ function Todo({ todo }) {
         }}
         onDragEnd={() => {
           rearrange();
+          dispatch(TODODRAGGING(false));
           setDragging(false);
         }}
       >

@@ -300,3 +300,22 @@ input[type="submit"]:active {
   padding: 5px;
   z-index: 111;
 }
+
+.afterGlowTodo {
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glowL 1s ease-in-out infinite alternate;
+}
+
+@keyframes glowL {
+  from {
+    filter: brightness(1.05);
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #92ba92, 0 0 40px #92ba92,
+      0 0 50px #92ba92;
+  }
+  to {
+    filter: brightness(1.05);
+    box-shadow: 0 0 20px #fff, 0 0 30px #528352, 0 0 40px #528352,
+      0 0 50px #528352, 0 0 60px #528352;
+  }
+}

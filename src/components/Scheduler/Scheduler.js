@@ -24,6 +24,8 @@ function Scheduler() {
   const taskProgressData = useSelector((store) => store.taskProgress.data);
   const indexingData = useSelector((store) => store.indexing.data);
 
+  console.log("indexingData:", indexingData);
+
   useEffect(() => {
     if (!isInitialData) {
       localStorage.setItem("todoData", JSON.stringify(todosRedux));
@@ -107,7 +109,7 @@ function Scheduler() {
         <div className="todoWrapper">
           {typeof todosRedux &&
             todosRedux[indexingData.listIndex].todoArray.map((x) => {
-              return <Todo key={x.id} todo={x} />;
+              return <Todo key={x.id} todo={x} name={x.id} />;
             })}
         </div>
       </div>

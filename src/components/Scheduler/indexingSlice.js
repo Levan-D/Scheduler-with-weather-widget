@@ -11,6 +11,8 @@ const initialState = {
     newtodoid: "",
     newListName: "",
     popUpCoords: { x: 0, y: 0 },
+    ListDragging: false,
+    TodoDragging: false,
   },
 };
 
@@ -45,6 +47,12 @@ const indexingSlice = createSlice({
     POPUPCOORDS: (state, action) => {
       state.data.popUpCoords = action.payload;
     },
+    LISTDRAGGING: (state, action) => {
+      state.data.ListDragging = action.payload;
+    },
+    TODODRAGGING: (state, action) => {
+      state.data.TodoDragging = action.payload;
+    },
   },
 });
 
@@ -58,5 +66,7 @@ export const {
   NEWTODOID,
   NEWLISTNAME,
   POPUPCOORDS,
+  LISTDRAGGING,
+  TODODRAGGING,
 } = indexingSlice.actions;
 export default indexingSlice.reducer;

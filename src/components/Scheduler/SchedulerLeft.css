@@ -108,3 +108,22 @@
   border-radius: 5px;
   margin: 4px 2px 0 2px;
 }
+
+.afterGlowList {
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glowS 1s ease-in-out infinite alternate;
+}
+
+@keyframes glowS {
+  from {
+    filter: brightness(1.1);
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #92ba92, 0 0 20px #92ba92,
+      0 0 25px #92ba92;
+  }
+  to {
+    filter: brightness(1.1);
+    box-shadow: 0 0 10px #fff, 0 0 15px #528352, 0 0 20px #528352, 0 0 25px #fff,
+      0 0 30px #fff;
+  }
+}

@@ -11,6 +11,7 @@ import {
   POPUPVISIBILITY,
   NEWLISTNAME,
   POPUPCOORDS,
+  LISTDRAGGING,
 } from "./indexingSlice";
 
 import { CHANGE_LIST_POSITION } from "./todoSlice";
@@ -95,6 +96,7 @@ function List({ name, nameShow, color, date }) {
       })
     );
   }
+
   return (
     <div
       className="wrapperOfList"
@@ -104,6 +106,7 @@ function List({ name, nameShow, color, date }) {
       onDragOver={(e) => {
         e.preventDefault();
         dispatch(ONDRAGOVER(name));
+        console.log(indexingData.ListDragging);
       }}
     >
       <div
@@ -121,7 +124,13 @@ function List({ name, nameShow, color, date }) {
           name === todosRedux[indexingData.listIndex].listName
             ? "selectedList"
             : ""
-        } containerList`}
+        } ${
+          indexingData.onDragOverListName &&
+          indexingData.ListDragging &&
+          indexingData.onDragOverListName === name
+            ? "afterGlowList"
+            : ""
+        }  containerList`}
         style={{
           color:
             color !== "default"
@@ -137,11 +146,14 @@ function List({ name, nameShow, color, date }) {
         onDragStart={() => {
           if (!dragging) {
             setDragging(true);
+            dispatch(LISTDRAGGING(true));
             dispatch(ONDRAGSTART(name));
+            console.log(indexingData.ListDragging);
           }
         }}
         onDragEnd={() => {
           rearrangeList();
+          dispatch(LISTDRAGGING(false));
           setDragging(false);
         }}
       >
