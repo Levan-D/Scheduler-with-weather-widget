@@ -101,14 +101,11 @@ function List({ name, nameShow, color, date }) {
     <div
       className="wrapperOfList"
       onClick={(e) => {
-        if (!dragging) {
-          handleList(e);
-        }
+        handleList(e);
       }}
       onDragOver={(e) => {
         e.preventDefault();
         dispatch(ONDRAGOVER(name));
-        console.log(indexingData.ListDragging);
       }}
     >
       <div
@@ -150,7 +147,6 @@ function List({ name, nameShow, color, date }) {
             setDragging(true);
             dispatch(LISTDRAGGING(true));
             dispatch(ONDRAGSTART(name));
-            console.log(indexingData.ListDragging);
           }
         }}
         onDragEnd={() => {
