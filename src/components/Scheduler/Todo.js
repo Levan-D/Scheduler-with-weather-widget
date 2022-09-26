@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ReactTooltip from "react-tooltip";
 import saveIcon from "./pictures/saveIcon.png";
 import {
   RENAME_TODO,

@@ -1,6 +1,6 @@
 /** @format */
 
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 Array.prototype.swapItems = function (a, b) {
   this[a] = this.splice(b, 1, this[a])[0];

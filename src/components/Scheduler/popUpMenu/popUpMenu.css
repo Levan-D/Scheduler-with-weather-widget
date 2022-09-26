@@ -80,7 +80,9 @@
   color: white;
   border: none;
 }
-.todaysDateButton {
+.todaysDateButton,
+.clearDateButton,
+.pickDateButton {
   width: 92%;
   height: 30px;
   box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
@@ -94,13 +96,19 @@
   font-size: 0.9rem;
   transition: 0.3s;
 }
-.todaysDateButton:hover {
+.todaysDateButton:hover,
+.clearDateButton:hover,
+.pickDateButton:hover {
   filter: brightness(1.1);
 }
-.todaysDateButton:active {
+.todaysDateButton:active,
+.clearDateButton:active,
+.pickDateButton:active {
   filter: brightness(0.95);
 }
-
+.clearDateButton {
+  background-color: #80558c;
+}
 .colorCircle {
   width: 17px;
   margin: 3px;

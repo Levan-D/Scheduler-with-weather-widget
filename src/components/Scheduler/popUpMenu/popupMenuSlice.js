@@ -6,6 +6,7 @@ const initialState = {
     confN: false,
     confC: false,
     confCal: false,
+    confCalM: false,
   },
 };
 
@@ -14,36 +15,19 @@ const subMenuSlice = createSlice({
   initialState,
   reducers: {
     setDelete: (state, action) => {
-      state.data = {
-        confD: action.payload,
-        confN: false,
-        confC: false,
-        confCal: false,
-      };
+      state.data.confD = action.payload;
     },
     setColor: (state, action) => {
-      state.data = {
-        confD: false,
-        confN: false,
-        confC: action.payload,
-        confCal: false,
-      };
+      state.data.confC = action.payload;
     },
     setRename: (state, action) => {
-      state.data = {
-        confD: false,
-        confN: action.payload,
-        confC: false,
-        confCal: false,
-      };
+      state.data.confN = action.payload;
     },
     setCalendar: (state, action) => {
-      state.data = {
-        confD: false,
-        confN: false,
-        confC: false,
-        confCal: action.payload,
-      };
+      state.data.confCal = action.payload;
+    },
+    setCalendarMenu: (state, action) => {
+      state.data.confCalM = action.payload;
     },
     resetState: (state) => {
       state.data = {
@@ -51,11 +35,18 @@ const subMenuSlice = createSlice({
         confN: false,
         confC: false,
         confCal: false,
+        confCalM: false,
       };
     },
   },
 });
 
-export const { setDelete, setColor, setRename, setCalendar, resetState } =
-  subMenuSlice.actions;
+export const {
+  setDelete,
+  setColor,
+  setRename,
+  setCalendar,
+  resetState,
+  setCalendarMenu,
+} = subMenuSlice.actions;
 export default subMenuSlice.reducer;

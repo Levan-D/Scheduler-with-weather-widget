@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import "./popUpMenu.css";
 import colorPalette from "../pictures/colorPallete.png";
 import pencil from "../pictures/pencil.png";
@@ -59,6 +59,7 @@ function PopUpMenuComp() {
         <div
           className="popUpButton"
           onClick={() => {
+            dispatch(resetState());
             dispatch(setRename(!subMenu.confN));
           }}
         >
@@ -69,6 +70,7 @@ function PopUpMenuComp() {
         <div
           className="popUpButton"
           onClick={() => {
+            dispatch(resetState());
             dispatch(setCalendar(!subMenu.confCal));
           }}
         >
@@ -79,6 +81,7 @@ function PopUpMenuComp() {
         <div
           className="popUpButton"
           onClick={() => {
+            dispatch(resetState());
             dispatch(setColor(!subMenu.confC));
           }}
         >
@@ -89,6 +92,7 @@ function PopUpMenuComp() {
         <div
           className="popUpButton deleteButton"
           onClick={() => {
+            dispatch(resetState());
             dispatch(setDelete(!subMenu.confD));
           }}
         >
