@@ -15,7 +15,7 @@ import {
   SET_CONFETTIBOOM,
   SET_OPACITY,
 } from "./taskProgressSlice";
-localStorage.clear();
+
 function Scheduler() {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
@@ -74,7 +74,7 @@ function Scheduler() {
       dispatch(SET_OPACITY({ opa: 1 }));
     }
   }, [taskProgressData]);
-console.log('indexingData.listIndex:', indexingData.listIndex);
+  console.log("indexingData.listIndex:", indexingData.listIndex);
   return (
     <div className={styles.schedulerWrapper}>
       {taskProgressData.confettiBoom && (

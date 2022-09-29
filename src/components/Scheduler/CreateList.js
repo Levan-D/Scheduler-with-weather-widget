@@ -7,7 +7,7 @@ const CreateList = () => {
   const dispatch = useDispatch();
   return (
     <div>
-      <h2>Your Lists:</h2>
+      <h2 className={styles.header}>Your Lists:</h2>
       <div
         className={styles.newListButton}
         onClick={() => {

@@ -35,6 +35,7 @@ const ChangeName = () => {
             }}
           >
             <input
+              className={styles.textInput}
               type="text"
               maxLength="256"
               autoFocus={true}
@@ -43,7 +44,11 @@ const ChangeName = () => {
               value={indexingData.newListName}
               onChange={(e) => dispatch(NEWLISTNAME(e.target.value))}
             />
-            <input type="submit" value="Rename" />
+            <input
+              className={styles.submitInput}
+              type="submit"
+              value="Rename"
+            />
           </form>
         </div>
       </div>

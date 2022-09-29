@@ -1,18 +1,18 @@
 /** @format */
-import "./ProgressBar.css";
+import style from "./ProgressBar.module.css";
 function ProgressBar({ tasksComplete, tasksTotal, width, height, background }) {
   return (
-    <div className="barcontainer">
+    <div>
       <div
-        className="bar"
+        className={style.bar}
         style={{
           width: width + "px",
           height: height + "px",
-          backgroundColor: background
+          backgroundColor: background,
         }}
       >
         <div
-          className="progress"
+          className={style.progress}
           style={{
             width: (tasksComplete / tasksTotal) * width + "px",
             height: height + "px",

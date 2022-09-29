@@ -1,8 +1,114 @@
 .container {
   width: 400px;
-  height: 600px;
+  height: 620px;
   background-color: #c4d7e0;
   margin: 6rem auto;
-  border-radius: 2rem;
+  border-radius: 1rem;
   padding: 2rem;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  color: #354259;
+}
+
+.guestButton {
+  display: block;
+  width: 90%;
+  padding: 0 10px;
+  margin: 2rem auto;
+  height: 45px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 15px;
+  border: none;
+  background: #6e85b7;
+  color: #f0f0f0;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 42px;
+  font-weight: bold;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.guestButton:hover {
+  filter: brightness(1.1);
+}
+.guestButton:active {
+  filter: brightness(0.95);
+}
+.header {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 1rem;
+  font-weight: 700;
+}
+.inputText {
+  height: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  width: 90%;
+  padding: 5px 10px;
+  margin: 0 auto;
+}
+.label {
+  width: 95%;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+.forgotPassword {
+  display: inline-block;
+  margin-left: 72%;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  font-weight: 700;
+}
+.loginButton {
+  display: block;
+  width: 380px;
+  height: 45px;
+  margin: 30px auto;
+  padding: 2px 30px;
+  background-color: #80558c;
+}
+
+.dividerContainer {
+  padding: 1rem 0;
+  margin: 0 auto;
+  display: table;
+  width: 100%;
+  max-width: 90%;
+}
+.subContainer {
+  display: table-row;
+  line-height: 1.5em;
+  font-size: 1.1em;
+  white-space: nowrap;
+}
+.divider {
+  font-size: inherit;
+  overflow: hidden;
+  display: table-cell;
+  vertical-align: middle;
+  width: 1px;
+  padding: 0 10px;
+}
+.spacer {
+  display: table-cell;
+}
+
+.spacer:after {
+  display: inline-block;
+  width: 100%;
+  content: ".";
+  font-size: 0;
+  color: transparent;
+  height: 1px;
+  background: #354259;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }

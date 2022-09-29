@@ -32,13 +32,18 @@ const CreateTodo = () => {
       </h2>
       <form onSubmit={handleSubmit} className="renameForm">
         <input
+          className={styles.textTodo}
           type="text"
           required
           placeholder="Enter task here!"
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
-        <input type="submit" value="+" className={styles.bigSubmitButton} />
+        <input
+          className={`${styles.bigSubmitButton} ${styles.submitForm}`}
+          type="submit"
+          value="+"
+        />
       </form>
     </div>
   );

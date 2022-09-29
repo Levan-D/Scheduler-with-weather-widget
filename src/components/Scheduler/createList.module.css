@@ -19,7 +19,7 @@
 .newListButton:active {
   filter: brightness(0.95);
 }
- h2 {
+.header {
   font-size: 23px;
   padding: 0;
   margin: 0;

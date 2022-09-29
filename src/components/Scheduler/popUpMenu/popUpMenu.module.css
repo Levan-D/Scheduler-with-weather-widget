@@ -28,11 +28,11 @@
   font-size: 0.9rem;
 }
 .confirmTabAc:hover {
-  filter: brightness(1.1);
   box-shadow: 0px 4px 4px 1px #f0f0f0;
   cursor: pointer;
 }
 .confirmTabAd:hover {
+  filter: brightness(1.1);
   box-shadow: 0px 4px 4px 1px #f0f0f0;
 }
 .confirmTabAc:active {
@@ -59,11 +59,11 @@
 .popUpButton:active {
   filter: brightness(0.95);
 }
-.nameChangeForm input[type="text"],
-.nameChangeForm input[type="submit"] {
+.nameChangeForm .textInput,
+.nameChangeForm .submitInput {
   user-select: auto;
   position: relative;
-  width: 92%;
+  width: 80%;
   height: 30px;
   margin: 5px 0;
   padding: 0 5px;
@@ -71,10 +71,10 @@
   border-radius: 10px;
   cursor: pointer;
 }
-.nameChangeForm input[type="text"] {
+.nameChangeForm .textInput {
   cursor: text;
 }
-.nameChangeForm input[type="submit"] {
+.nameChangeForm .submitInput {
   height: 40px;
   background-color: #80558c;
   color: white;
