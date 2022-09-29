@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./popUpMenu.css";
+import styles from "./popUpMenu.module.css";
 import { DELETE_LIST } from "../todoSlice";
 import { POPUPVISIBILITY, CHANGE_LISTINDEX } from "../indexingSlice";
 import { resetState } from "./popupMenuSlice";
@@ -12,7 +12,7 @@ const Delete = () => {
 
   return (
     <>
-      <div className="confirmTab confirmTabAc">
+      <div className={`${styles.confirmTab} ${styles.confirmTabAc}`}>
         <div
           onClick={() => {
             if (todosRedux.length > 1) {

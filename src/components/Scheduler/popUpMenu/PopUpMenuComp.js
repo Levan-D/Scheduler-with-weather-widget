@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import "./popUpMenu.css";
+import styles from "./popUpMenu.module.css";
 import colorPalette from "../pictures/colorPallete.png";
 import pencil from "../pictures/pencil.png";
 import trashcan from "../pictures/trashcan.png";
@@ -39,7 +39,7 @@ function PopUpMenuComp() {
 
   return (
     <div
-      className="popUpMenu"
+      className={styles.popUpMenu}
       ref={refOne}
       onMouseLeave={(x) => {
         mouseEvent = setTimeout(() => {
@@ -55,48 +55,48 @@ function PopUpMenuComp() {
         left: indexingData.popUpCoords.x + "px",
       }}
     >
-      <div className="popUpWrapper">
+      <div className={styles.popUpWrapper}>
         <div
-          className="popUpButton"
+          className={styles.popUpButton}
           onClick={() => {
             dispatch(resetState());
             dispatch(setRename(!subMenu.confN));
           }}
         >
-          <div className="icon-pencil">
+          <div className={styles[`icon-pencil`]}>
             <img src={pencil} alt="" />
           </div>
         </div>
         <div
-          className="popUpButton"
+          className={styles.popUpButton}
           onClick={() => {
             dispatch(resetState());
             dispatch(setCalendar(!subMenu.confCal));
           }}
         >
-          <div className="icon-calendar">
+          <div className={styles[`icon-calendar`]}>
             <img src={calendar} alt="" />
           </div>
         </div>
         <div
-          className="popUpButton"
+          className={styles.popUpButton}
           onClick={() => {
             dispatch(resetState());
             dispatch(setColor(!subMenu.confC));
           }}
         >
-          <div className="icon-palette">
+          <div className={styles[`icon-palette`]}>
             <img src={colorPalette} alt="color palette logo"></img>
           </div>
         </div>
         <div
-          className="popUpButton deleteButton"
+          className={`${styles.popUpButton} ${styles.deleteButton}`}
           onClick={() => {
             dispatch(resetState());
             dispatch(setDelete(!subMenu.confD));
           }}
         >
-          <div className="icon-trash">
+          <div className={styles[`icon-trash`]}>
             <img src={trashcan} alt="" />
           </div>
         </div>

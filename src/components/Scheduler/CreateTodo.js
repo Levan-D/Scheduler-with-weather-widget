@@ -2,6 +2,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ADD_TODO } from "./todoSlice";
+import styles from "./createTodo.module.css";
 
 const CreateTodo = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const CreateTodo = () => {
 
   return (
     <div>
-      <h2>
+      <h2 className={styles.header}>
         Add a new task below! ({taskProgressData.tasksComplete}/
         {taskProgressData.tasksTotal})
         <ProgressBar
@@ -37,7 +38,7 @@ const CreateTodo = () => {
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
-        <input type="submit" value="+" className="bigSubmitButton" />
+        <input type="submit" value="+" className={styles.bigSubmitButton} />
       </form>
     </div>
   );

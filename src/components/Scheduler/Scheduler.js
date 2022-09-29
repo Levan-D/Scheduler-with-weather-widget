@@ -1,6 +1,5 @@
 /** @format */
-import "./SchedulerRight.css";
-import "./SchedulerLeft.css";
+import styles from "./Scheduler.module.css";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Todo from "./Todo";
@@ -16,7 +15,7 @@ import {
   SET_CONFETTIBOOM,
   SET_OPACITY,
 } from "./taskProgressSlice";
-
+localStorage.clear();
 function Scheduler() {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
@@ -75,9 +74,9 @@ function Scheduler() {
       dispatch(SET_OPACITY({ opa: 1 }));
     }
   }, [taskProgressData]);
-
+console.log('indexingData.listIndex:', indexingData.listIndex);
   return (
-    <div className="schedulerWrapper">
+    <div className={styles.schedulerWrapper}>
       {taskProgressData.confettiBoom && (
         <Confetti
           width={window.innerWidth}
@@ -85,9 +84,9 @@ function Scheduler() {
           opacity={taskProgressData.opacity}
         />
       )}
-      <div className="leftSide">
+      <div className={styles.leftSide}>
         <CreateList />
-        <div className="listWrapper">
+        <div>
           {typeof todosRedux === "object" &&
             todosRedux.map((x) => {
               return (
@@ -102,10 +101,11 @@ function Scheduler() {
             })}
         </div>
       </div>
-      <div className="rightSide">
+      <div className={styles.rightSide}>
         <CreateTodo />
-        <div className="todoWrapper">
+        <div className={styles.todoWrapper}>
           {typeof todosRedux &&
+            typeof indexingData.listIndex === "number" &&
             todosRedux[indexingData.listIndex].todoArray.map((x) => {
               return <Todo key={x.id} todo={x} name={x.id} />;
             })}

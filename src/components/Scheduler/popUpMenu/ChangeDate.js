@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./popUpMenu.css";
+import styles from "./popUpMenu.module.css";
 import { ADD_DATE_LIST } from "../todoSlice";
 import { resetState, setCalendarMenu } from "./popupMenuSlice";
 import Calendar from "react-calendar";
@@ -40,7 +40,7 @@ const ChangeDate = () => {
   return (
     <>
       <div
-        className="confirmTab confirmTabAd"
+        className={`${styles.confirmTab} ${styles.confirmTabAd}`}
         style={{
           height: `auto`,
           padding: `10px 0px`,
@@ -49,7 +49,7 @@ const ChangeDate = () => {
       >
         <div>
           <div
-            className="todaysDateButton"
+            className={styles.todaysDateButton}
             onClick={() => {
               dispatch(
                 ADD_DATE_LIST({
@@ -65,7 +65,7 @@ const ChangeDate = () => {
           </div>
 
           <div
-            className="pickDateButton"
+            className={styles.pickDateButton}
             onClick={() => {
               dispatch(setCalendarMenu(!subMenu.confCalM));
             }}
@@ -73,7 +73,7 @@ const ChangeDate = () => {
             Pick a date
           </div>
           <div
-            className="clearDateButton"
+            className={styles.clearDateButton}
             onClick={() => {
               dispatch(
                 ADD_DATE_LIST({
@@ -88,7 +88,7 @@ const ChangeDate = () => {
             Clear Date
           </div>
           {subMenu.confCalM && (
-            <div className="calendar">
+            <div className={styles.calendar}>
               <Calendar onChange={setCalendarPick} value={calendarPick} />
             </div>
           )}

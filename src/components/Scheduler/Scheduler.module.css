@@ -1,0 +1,66 @@
+/** @format */
+
+.schedulerWrapper {
+  width: 730px;
+  margin: 2rem auto;
+  display: flex;
+}
+
+.leftSide {
+  min-width: 200px;
+  max-width: 200px;
+  padding: 25px 15px;
+  height: 750px;
+  background-color: #354259;
+  border-radius: 1rem 0 0 1rem;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.rightSide {
+  max-width: 500px;
+  height: 800px;
+  background-color: #c4d7e0;
+  border-radius: 0 1rem 1rem 0;
+  box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
+}
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #b2c8df;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #6e85b7;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #445479;
+}
+/* scrollbar */
+
+.todoWrapper {
+  width: 450px;
+  height: 560px;
+  margin: 20px auto;
+  padding-top: 20px;
+  border-radius: 20px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  background-color: rgba(53, 66, 89, 0.2);
+  overflow-y: scroll;
+}
+
+.todoWrapper::-webkit-scrollbar-track {
+  background: #b2c8df;
+  border-radius: 5px;
+  margin: 0.9rem 0;
+}

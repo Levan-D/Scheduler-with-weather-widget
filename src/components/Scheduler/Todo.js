@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import saveIcon from "./pictures/saveIcon.png";
+import styles from "./todo.module.css";
 import {
   RENAME_TODO,
   TOGGLE_TODO,
@@ -93,7 +94,7 @@ function Todo({ todo, name }) {
 
   return (
     <div
-      className="todoBackground"
+      className={styles.todoBackground}
       onDragOver={(e) => {
         e.preventDefault();
         dispatch(NEWTODOID(todo.id));
@@ -105,10 +106,10 @@ function Todo({ todo, name }) {
           indexingData.newtodoid &&
           indexingData.TodoDragging &&
           indexingData.newtodoid === name
-            ? "afterGlowTodo"
+            ? styles.afterGlowTodo
             : ""
         } 
-          todoContainer`}
+          ${styles.todoContainer}`}
         onClick={() => {
           dispatch(
             CHANGE_TODOINDEX({
@@ -164,13 +165,13 @@ function Todo({ todo, name }) {
                 setIsHovering(false);
                 clearTimeout(hoverEvent);
               }}
-              className={`todo ${
-                todo.complete ? "todoComplete" : "todoNotComplete"
+              className={`${styles.todo} ${
+                todo.complete ? styles.todoComplete : styles.todoNotComplete
               }`}
             >
               {todo.taskName}
               {isHovering && !dragging && (
-                <div className="hoverDoubleClick">
+                <div className={styles.hoverDoubleClick}>
                   Double click to edit <br /> or drag {`&`} drop
                 </div>
               )}
@@ -180,7 +181,10 @@ function Todo({ todo, name }) {
           {indexingData.taskRename.show && (
             <div>
               {todo.id === indexingData.taskRename.id ? (
-                <form className="editTodoForm" onSubmit={handleRenameTodo}>
+                <form
+                  className={styles.editTodoForm}
+                  onSubmit={handleRenameTodo}
+                >
                   <label>
                     <textarea
                       autoFocus={
@@ -188,7 +192,7 @@ function Todo({ todo, name }) {
                       }
                       ref={refOne}
                       value={indexingData.taskRename.rename}
-                      className="textArea"
+                      className={styles.textArea}
                       onKeyDown={handleKeyDown}
                       onKeyPress={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
@@ -206,9 +210,9 @@ function Todo({ todo, name }) {
                       }
                     />
                   </label>
-                  <label className="submitContainer">
+                  <label className={styles.submitContainer}>
                     <div
-                      className="miniSubmit"
+                      className={styles.miniSubmit}
                       onClick={(e) => {
                         handleRenameTodo(e);
                       }}
@@ -226,8 +230,8 @@ function Todo({ todo, name }) {
                       show: true,
                     });
                   }}
-                  className={`todo ${
-                    todo.complete ? "todoComplete" : "todoNotComplete"
+                  className={`${styles.todo} ${
+                    todo.complete ? styles.todoComplete : styles.todoNotComplete
                   }`}
                 >
                   {todo.taskName}
@@ -236,9 +240,9 @@ function Todo({ todo, name }) {
             </div>
           )}
         </div>
-        <div className="todoButtonsFlex">
+        <div className={styles.todoButtonsFlex}>
           <div
-            className="todoCheck"
+            className={styles.todoCheck}
             onClick={() => {
               dispatch(
                 TOGGLE_TODO({
@@ -252,7 +256,7 @@ function Todo({ todo, name }) {
             &#10004;
           </div>
           <div
-            className="todoDelete"
+            className={styles.todoDelete}
             onClick={() => {
               dispatch(
                 DELETE_TODO({ id: todo.id, index: indexingData.listIndex })
@@ -261,8 +265,8 @@ function Todo({ todo, name }) {
           >
             &#8211;
           </div>
-          <div className="timeStampWrapper">
-            <div className="stampWrapper">
+          <div className={styles.timeStampWrapper}>
+            <div className={styles.stampWrapper}>
               <div>
                 {dataObject[4].value.slice(0, 5)} <br />
                 {dataObject[0].value}&nbsp;
@@ -272,14 +276,14 @@ function Todo({ todo, name }) {
             </div>
           </div>
           <div
-            className="markedStampWrapper"
+            className={styles.markedStampWrapper}
             style={
               todo.complete
                 ? { backgroundColor: "#92ba92", color: "#f0f0f0" }
                 : { backgroundColor: `#f0f0f0` }
             }
           >
-            <div className="stampWrapper">
+            <div className={styles.stampWrapper}>
               {todo.complete && (
                 <div>
                   {markedDate[4].value.slice(0, 5)} <br />

@@ -3,6 +3,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Dots } from "./pictures/dots.svg";
+import styles from "./list.module.css";
 
 import {
   CHANGE_LISTINDEX,
@@ -99,7 +100,6 @@ function List({ name, nameShow, color, date }) {
 
   return (
     <div
-      className="wrapperOfList"
       onClick={(e) => {
         handleList(e);
       }}
@@ -121,15 +121,15 @@ function List({ name, nameShow, color, date }) {
         ref={refTwo}
         className={`${
           name === todosRedux[indexingData.listIndex].listName
-            ? "selectedList"
+            ? styles.selectedList
             : ""
         } ${
           indexingData.onDragOverListName &&
           indexingData.ListDragging &&
           indexingData.onDragOverListName === name
-            ? "afterGlowList"
+            ? styles.afterGlowList
             : ""
-        }  containerList`}
+        }  ${styles.containerList}`}
         style={{
           color:
             color !== "default"
@@ -155,7 +155,7 @@ function List({ name, nameShow, color, date }) {
           setDragging(false);
         }}
       >
-        <div className={`${name} nameList`}>
+        <div className={`${name} ${styles.nameList}`}>
           {date !== "" ? date : ""}
           {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
         </div>
@@ -163,13 +163,13 @@ function List({ name, nameShow, color, date }) {
           !indexingData.popUpVisibility &&
           !dragging &&
           nameShow.length > 26 && (
-            <div className="hoverName">
+            <div className={styles.hoverName}>
               {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
             </div>
           )}
         {name === todosRedux[indexingData.listIndex].listName && (
           <div
-            className="tripleDot"
+            className={styles.tripleDot}
             onClick={(e) => {
               dispatch(NEWLISTNAME(""));
               dispatch(POPUPCOORDS({ x: e.clientX, y: e.clientY }));
@@ -178,7 +178,7 @@ function List({ name, nameShow, color, date }) {
           >
             <div>
               <Dots
-                className="dotdot"
+                className={`${styles.dotdot}`}
                 fill={
                   color !== "default"
                     ? invertColor(color.substring(1), `bw`)

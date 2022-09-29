@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./popUpMenu.css";
+import styles from "./popUpMenu.module.css";
 import { RENAME_LIST } from "../todoSlice";
 import { resetState } from "./popupMenuSlice";
 import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice";
@@ -12,7 +12,7 @@ const ChangeName = () => {
   return (
     <>
       <div
-        className="confirmTab confirmTabAd"
+        className={`${styles.confirmTab} ${styles.confirmTabAd}`}
         style={{
           height: `auto`,
           padding: `10px 0px`,
@@ -21,7 +21,7 @@ const ChangeName = () => {
       >
         <div>
           <form
-            className="nameChangeForm"
+            className={styles.nameChangeForm}
             onSubmit={(e) => {
               e.preventDefault();
               dispatch(

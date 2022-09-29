@@ -21,7 +21,9 @@ const indexingSlice = createSlice({
   initialState: initialState,
   reducers: {
     CHANGE_LISTINDEX: (state, action) => {
-      state.data.listIndex = action.payload;
+      if (typeof action.payload === "number" && action.payload >= 0) {
+        state.data.listIndex = action.payload;
+      }
     },
     CHANGE_TODOINDEX: (state, action) => {
       state.data.todoIndex = action.payload;

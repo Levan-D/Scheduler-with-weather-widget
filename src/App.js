@@ -2,7 +2,7 @@
 
 import Scheduler from "./components/Scheduler/Scheduler";
 import { Routes, Route, Link } from "react-router-dom";
-import Login from "./components/Scheduler/login/Login";
+import Login from "./components/Login/Login";
 
 function App() {
   return (

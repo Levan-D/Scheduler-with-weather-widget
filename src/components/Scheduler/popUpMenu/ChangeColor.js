@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./popUpMenu.css";
+import styles from "./popUpMenu.module.css";
 import { CHANGE_LIST_COLOR } from "../todoSlice";
 
 const ChangeColor = () => {
@@ -49,11 +49,13 @@ const ChangeColor = () => {
 
   return (
     <>
-      <div className="colorBox confirmTab confirmTabAd">
+      <div
+        className={`${styles.colorBox} ${styles.confirmTab} ${styles.confirmTabAd}`}
+      >
         {colors.map((x, i) => {
           return (
             <div
-              className="colorCircle popUpButton"
+              className={`${styles.colorCircle} ${styles.popUpButton}`}
               onClick={() =>
                 dispatch(
                   CHANGE_LIST_COLOR({
