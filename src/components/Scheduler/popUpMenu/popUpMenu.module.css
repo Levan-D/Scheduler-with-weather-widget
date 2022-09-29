@@ -63,7 +63,7 @@
 .nameChangeForm .submitInput {
   user-select: auto;
   position: relative;
-  width: 80%;
+  width: 85%;
   height: 30px;
   margin: 5px 0;
   padding: 0 5px;
@@ -73,6 +73,7 @@
 }
 .nameChangeForm .textInput {
   cursor: text;
+  width: 76%;
 }
 .nameChangeForm .submitInput {
   height: 40px;
@@ -120,7 +121,7 @@
   display: flex;
   flex-wrap: wrap;
   height: auto;
-  padding: 10px 8px 10px 11px;
+  padding: 10px 6px 10px 9px;
 }
 
 .icon-pencil > * {
