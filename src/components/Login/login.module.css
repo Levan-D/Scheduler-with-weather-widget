@@ -40,6 +40,17 @@
   margin: 1rem;
   font-weight: 700;
 }
+.paragraph {
+  text-align: center;
+  font-size: 1rem;
+  margin: 1rem;
+}
+.passwordParagraph {
+  font-size: 0.7rem;
+  width: 95%;
+  font-weight: 500;
+  margin: 0 auto;
+}
 .inputText {
   height: 25px;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -76,15 +87,36 @@
 }
 
 .dividerContainer {
-  padding: 1rem 0;
+  padding: 0.8rem 0;
   margin: 0 auto;
   display: table;
   width: 100%;
   max-width: 90%;
 }
+.showPasswordIcon {
+  position: absolute;
+  translate: 350px 49px;
+}
+.showPasswordIconSignUp {
+  translate: 350px 67px;
+}
+.showPasswordIcon img {
+  width: 22px;
+  padding: 2px;
+  border-radius: 100%;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.showPasswordIcon img:hover {
+  background-color: #b2c8df;
+}
+.showPasswordIcon img:active {
+  background-color: #6e85b7;
+}
 .subContainer {
   display: table-row;
-  line-height: 1.5em;
+  line-height: 1rem;
   font-size: 1.1em;
   white-space: nowrap;
 }
@@ -111,4 +143,30 @@
   vertical-align: middle;
   position: relative;
   top: -1px;
+}
+
+.passwordForget {
+  padding: 1rem 0 4rem 0;
+}
+.resendCode {
+  display: flex;
+  justify-content: center;
+}
+.resendCode > * {
+  margin: 0;
+  font-size: 1rem;
+}
+.backBtn {
+  position: absolute;
+  cursor: pointer;
+  translate: -10px -10px;
+}
+.backBtn:hover {
+  filter: brightness(1.2);
+}
+.backBtn:active {
+  filter: brightness(0.95);
+}
+.backBtn img {
+  width: 30px;
 }
