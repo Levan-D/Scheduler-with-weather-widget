@@ -5,44 +5,35 @@ import { useNavigate } from "react-router-dom";
 import show from "../pictures/show.png";
 import hide from "../pictures/hide.png";
 import { isValidEmail, isValidPassword } from "./Validator";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "./loginSlice";
 
 const LoginSection = () => {
+  const dispatch = useDispatch();
   const [error, setError] = useState({ email: false, password: false });
   const [validator, setValidator] = useState({
     email: "",
     password: "",
   });
-  const [passwordShown, setPasswordShown] = useState(false);
+    const [passwordShown, setPasswordShown] = useState(false);
+   const userState = useSelector((store) => store.authentication);
   const togglePassword = () => {
     setPasswordShown((pass) => !pass);
   };
 
-  const [isSubmitted, setIsSubmitted] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!error.email && !error.password) {
-      componentDidMount();
-      // navigate("/scheduler");
+      dispatch(
+        registerUser({
+          email: validator.email.toLowerCase(),
+          password: validator.password,
+        })
+      );
     }
   };
-
-  function componentDidMount() {
-    // POST request using axios with set headers
-    const input = {
-      email: validator.email,
-      password: validator.password,
-    };
-    const headers = {
-      Authorization: "Bearer my-token",
-      "My-Custom-Header": "foobar",
-    };
-    axios
-      .post("http://todo.sns.ge/api/v1/auth/login", input, { headers })
-      .then((response) => console.log(response));
-  }
 
   function handleUseInfo(type, event) {
     switch (type) {

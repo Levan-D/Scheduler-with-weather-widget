@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import backBtn from "../pictures/back.png";
 import show from "../pictures/show.png";
 import hide from "../pictures/hide.png";
 import { isValidEmail, isValidName, isValidPassword } from "./Validator";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, resetUserData } from "./loginSlice";
+import racoon from "../pictures/racoon.png";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassword = () => {
     setPasswordShown((pass) => !pass);
   };
+  const userState = useSelector((store) => store.authentication);
+  useEffect(() => {
+    if (userState.success) {
+      dispatch(resetUserData());
+      console.log("resetUserData:", userState);
+      setTimeout(() => {
+        navigate("/");
+      }, 4000);
+    }
+  }, [userState]);
+  console.log("resetUserData:", userState);
   const [error, setError] = useState({
     email: false,
     name: false,
@@ -37,7 +52,14 @@ const SignUp = () => {
       !error.password &&
       !error.passwordConf
     ) {
-      navigate("/scheduler");
+      dispatch(
+        registerUser({
+          email: validator.email.toLowerCase(),
+          first_name: validator.name,
+          last_name: validator.lastName,
+          password: validator.password,
+        })
+      );
     }
   };
   function handleUseInfo(type, event) {
@@ -98,6 +120,53 @@ const SignUp = () => {
         }
         break;
     }
+  }
+
+  if (userState.Loading) {
+    return (
+      <div className={styles.container} style={{ height: "700px" }}>
+        <div
+          className={styles.backBtn}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <img src={backBtn} alt="back button" />
+        </div>
+        <h2 className={styles.header}>Loading</h2>
+      </div>
+    );
+  }
+
+  if (userState.success) {
+    return (
+      <div className={styles.container} style={{ height: "700px" }}>
+        <div
+          className={styles.backBtn}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <img src={backBtn} alt="back button" />
+        </div>
+        <h2 className={styles.header}>Registration Sucessful</h2>
+        <div style={{ textAlign: "center", fontSize: "0.6rem" }}>
+          <img
+            src={racoon}
+            alt="racoon waving"
+            style={{
+              width: "220px",
+              margin: " 8rem auto 0 auto",
+              display: "block",
+            }}
+          />
+          <a href="https://www.freepik.com/free-vector/cute-cartoon-raccoon-sitting-white-background_24780205.htm#query=raccoon%20clipart&position=2&from_view=keyword">
+            Image by brgfx
+          </a>
+          on Freepik
+        </div>
+      </div>
+    );
   }
 
   return (
