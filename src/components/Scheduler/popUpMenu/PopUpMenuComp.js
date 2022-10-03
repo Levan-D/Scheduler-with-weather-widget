@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./popUpMenu.module.css";
-import colorPalette from "../pictures/colorPallete.png";
-import pencil from "../pictures/pencil.png";
-import trashcan from "../pictures/trashcan.png";
-import calendar from "../pictures/calendar.png";
+import colorPalette from "../../pictures/colorPallete.png";
+import pencil from "../../pictures/pencil.png";
+import trashcan from "../../pictures/trashcan.png";
+import calendar from "../../pictures/calendar.png";
 import Delete from "./Delete";
 import ChangeName from "./ChangeName";
 import ChangeColor from "./ChangeColor";

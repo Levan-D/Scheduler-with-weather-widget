@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import show from "../Scheduler/pictures/show.png";
-import hide from "../Scheduler/pictures/hide.png";
+import show from "../pictures/show.png";
+import hide from "../pictures/hide.png";
 import { isValidEmail, isValidPassword } from "./Validator";
+import axios from "axios";
 
 const LoginSection = () => {
   const [error, setError] = useState({ email: false, password: false });
@@ -23,9 +24,25 @@ const LoginSection = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!error.email && !error.password) {
-      navigate("/scheduler");
+      componentDidMount();
+      // navigate("/scheduler");
     }
   };
+
+  function componentDidMount() {
+    // POST request using axios with set headers
+    const input = {
+      email: validator.email,
+      password: validator.password,
+    };
+    const headers = {
+      Authorization: "Bearer my-token",
+      "My-Custom-Header": "foobar",
+    };
+    axios
+      .post("http://todo.sns.ge/api/v1/auth/login", input, { headers })
+      .then((response) => console.log(response));
+  }
 
   function handleUseInfo(type, event) {
     switch (type) {

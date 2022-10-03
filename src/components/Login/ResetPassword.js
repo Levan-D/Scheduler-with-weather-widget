@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
-import show from "../Scheduler/pictures/show.png";
-import hide from "../Scheduler/pictures/hide.png";
+import show from "../pictures/show.png";
+import hide from "../pictures/hide.png";
 import { isValidPassword } from "./Validator";
 const ResetPassword = () => {
   const [passwordShown, setPasswordShown] = useState(false);

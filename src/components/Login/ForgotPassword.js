@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
-import backBtn from "../Scheduler/pictures/back.png";
-import racoon from "../Scheduler/pictures/racoon.png";
+import backBtn from "../pictures/back.png";
+import racoon from "../pictures/racoon.png";
 import { isValidEmail } from "./Validator";
 const ForgotPassword = () => {
   const [error, setError] = useState(false);

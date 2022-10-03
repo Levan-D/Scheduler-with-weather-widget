@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import saveIcon from "./pictures/saveIcon.png";
+import saveIcon from "../pictures/saveIcon.png";
 import styles from "./todo.module.css";
 import {
   RENAME_TODO,

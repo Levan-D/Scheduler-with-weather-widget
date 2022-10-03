@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
-import backBtn from "../Scheduler/pictures/back.png";
-import show from "../Scheduler/pictures/show.png";
-import hide from "../Scheduler/pictures/hide.png";
+import backBtn from "../pictures/back.png";
+import show from "../pictures/show.png";
+import hide from "../pictures/hide.png";
 import { isValidEmail, isValidName, isValidPassword } from "./Validator";
 
 const SignUp = () => {

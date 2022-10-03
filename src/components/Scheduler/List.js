@@ -2,7 +2,7 @@
 import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ReactComponent as Dots } from "./pictures/dots.svg";
+import { ReactComponent as Dots } from "../pictures/dots.svg";
 import styles from "./list.module.css";
 
 import {

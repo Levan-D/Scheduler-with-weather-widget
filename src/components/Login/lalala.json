@@ -1,6 +1,12 @@
-{
+[{
   "email": "boris@johnson.com",
   "first_name": "boris",
   "last_name": "johnson",
   "password": "Boris69!"
-}
+},
+
+
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdXVpZCI6IjFiMWQ4NTU1LTlmNWUtNGY4ZS1hNGEyLTYxOWE0ZGQ5YTM0OSIsImF1dGhvcml6ZWQiOnRydWUsImV4cCI6MTY2ODM5NTc1NSwidXNlcl9pZCI6Ijk0ZmU1ZDdmLWIwMzktNGM3OC1hMjUwLWU1N2U2NzI1MmRjNiJ9.X4am0r86ZIajMkIsQwNILDlSKoAsErlUS_sOzNxSnbw",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAzNDc3NTUsInJlZnJlc2hfdXVpZCI6IjFiMWQ4NTU1LTlmNWUtNGY4ZS1hNGEyLTYxOWE0ZGQ5YTM0OSsrOTRmZTVkN2YtYjAzOS00Yzc4LWEyNTAtZTU3ZTY3MjUyZGM2IiwidXNlcl9pZCI6Ijk0ZmU1ZDdmLWIwMzktNGM3OC1hMjUwLWU1N2U2NzI1MmRjNiJ9.tCSrRqMpiL2X8HBW3fQ8dt5uX_0ky3sB32MgSDgwS3k"
+}]
