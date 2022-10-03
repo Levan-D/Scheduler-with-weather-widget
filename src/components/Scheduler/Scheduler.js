@@ -74,7 +74,7 @@ function Scheduler() {
       dispatch(SET_OPACITY({ opa: 1 }));
     }
   }, [taskProgressData]);
-  console.log("indexingData.listIndex:", indexingData.listIndex);
+
   return (
     <div className={styles.schedulerWrapper}>
       {taskProgressData.confettiBoom && (

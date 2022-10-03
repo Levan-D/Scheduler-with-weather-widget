@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import backBtn from "../Scheduler/pictures/back.png";
 import racoon from "../Scheduler/pictures/racoon.png";
-
+import { isValidEmail } from "./Validator";
 const ForgotPassword = () => {
   const [error, setError] = useState(false);
   const [validator, setValidator] = useState("");
@@ -15,9 +15,14 @@ const ForgotPassword = () => {
       setIsSubmitted(true);
     }
   };
-  function isValidEmail(email) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-  }
+  useEffect(() => {
+    if (isSubmitted) {
+      setTimeout(() => {
+        navigate("/reset");
+      }, 5000);
+    }
+  }, [isSubmitted]);
+
   const handleChangeEmail = (event) => {
     if (!isValidEmail(event.target.value)) {
       setError(true);
@@ -29,14 +34,6 @@ const ForgotPassword = () => {
   if (isSubmitted) {
     return (
       <div className={styles.container} style={{ height: "500px" }}>
-        <div
-          className={styles.backBtn}
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          <img src={backBtn} alt="back button" />
-        </div>
         <h2 className={styles.header}>Confirm Code</h2>
         <p className={styles.paragraph}>
           We've send you a recovery code to your email
@@ -45,17 +42,25 @@ const ForgotPassword = () => {
         <div style={{ textAlign: "center", fontSize: "0.6rem" }}>
           <img
             src={racoon}
-            alt=""
+            alt="racoon waving"
             style={{
               width: "220px",
-              margin: " 2rem auto 0 auto",
+              margin: " 1rem auto 0 auto",
               display: "block",
             }}
           />
           <a href="https://www.freepik.com/free-vector/cute-cartoon-raccoon-sitting-white-background_24780205.htm#query=raccoon%20clipart&position=2&from_view=keyword">
             Image by brgfx
-          </a>{" "}
+          </a>
           on Freepik
+        </div>
+        <div
+          className={styles.backBtnWide}
+          onClick={() => {
+            navigate("/reset");
+          }}
+        >
+          Reset Password
         </div>
       </div>
     );

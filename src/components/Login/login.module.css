@@ -161,12 +161,29 @@
   cursor: pointer;
   translate: -10px -10px;
 }
-.backBtn:hover {
+.backBtn:hover,
+.backBtnWide:hover {
   filter: brightness(1.2);
 }
-.backBtn:active {
+.backBtn:active,
+.backBtnWide:active {
   filter: brightness(0.95);
 }
 .backBtn img {
   width: 30px;
+}
+
+.backBtnWide {
+  cursor: pointer;
+  translate: -10px -10px;
+  background-color: #354259;
+  width: 200px;
+  height: 45px;
+  margin: 1.5rem auto;
+  border-radius: 1rem;
+  color: white;
+  font: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 40px;
 }

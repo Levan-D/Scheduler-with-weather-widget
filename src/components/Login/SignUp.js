@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import backBtn from "../Scheduler/pictures/back.png";
 import show from "../Scheduler/pictures/show.png";
 import hide from "../Scheduler/pictures/hide.png";
+import { isValidEmail, isValidName, isValidPassword } from "./Validator";
 
 const SignUp = () => {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -14,15 +15,15 @@ const SignUp = () => {
     email: false,
     name: false,
     lastName: false,
-    password1: false,
-    password2: false,
+    password: false,
+    passwordConf: false,
   });
   const [validator, setValidator] = useState({
     email: "",
     name: "",
     lastName: "",
-    password1: "",
-    password2: "",
+    password: "",
+    passwordConf: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -33,77 +34,71 @@ const SignUp = () => {
       !error.email &&
       !error.name &&
       !error.lastName &&
-      !error.password1 &&
-      !error.password2
+      !error.password &&
+      !error.passwordConf
     ) {
       navigate("/scheduler");
     }
   };
-  function isValidEmail(email) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  function handleUseInfo(type, event) {
+    switch (type) {
+      case "email":
+        if (!isValidEmail(event.target.value)) {
+          setError({ ...error, email: true });
+        } else {
+          setError({ ...error, email: false });
+        }
+        setValidator({
+          ...validator,
+          email: event.target.value,
+        });
+        break;
+      case "name":
+        if (!isValidName(event.target.value)) {
+          setError({ ...error, name: true });
+        } else {
+          setError({ ...error, name: false });
+        }
+        setValidator({
+          ...validator,
+          name: event.target.value,
+        });
+        break;
+      case "lastName":
+        if (!isValidName(event.target.value)) {
+          setError({ ...error, lastName: true });
+        } else {
+          setError({ ...error, lastName: false });
+        }
+        setValidator({
+          ...validator,
+          lastName: event.target.value,
+        });
+        break;
+      case "password":
+        if (!isValidPassword(event.target.value)) {
+          setError({ ...error, password: true });
+        } else {
+          setError({ ...error, password: false });
+        }
+        setValidator({
+          ...validator,
+          password: event.target.value,
+        });
+        break;
+      case "comparePass":
+        setValidator({
+          ...validator,
+          passwordConf: event.target.value,
+        });
+        if (event.target.value === validator.password) {
+          setError({ ...error, passwordConf: false });
+        } else {
+          setError({ ...error, passwordConf: true });
+        }
+        break;
+    }
   }
-  function isValidName(name) {
-    return /^[-'a-zA-ZÀ-ÖØ-öø-ſ]{3,64}$/u.test(name);
-  }
-  function isValidPassword(pass) {
-    return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,64}$/.test(pass);
-  }
-
-  const handleChangeEmail = (event) => {
-    if (!isValidEmail(event.target.value)) {
-      setError({ ...error, email: true });
-    } else {
-      setError({ ...error, email: false });
-    }
-    setValidator({
-      ...validator,
-      email: event.target.value,
-    });
-  };
-  const handleChangeName = (event) => {
-    if (!isValidName(event.target.value)) {
-      setError({ ...error, name: true });
-    } else {
-      setError({ ...error, name: false });
-    }
-    setValidator({
-      ...validator,
-      name: event.target.value,
-    });
-  };
-  const handleChangeLastName = (event) => {
-    if (!isValidName(event.target.value)) {
-      setError({ ...error, lastName: true });
-    } else {
-      setError({ ...error, lastName: false });
-    }
-    setValidator({
-      ...validator,
-      lastName: event.target.value,
-    });
-  };
-  const handleChangePass = (event) => {
-    if (!isValidPassword(event.target.value)) {
-      setError({ ...error, password1: true });
-    } else {
-      setError({ ...error, password1: false });
-    }
-    setValidator({
-      ...validator,
-      password1: event.target.value,
-    });
-  };
-  const handleComparePass = (event) => {
-    setValidator({
-      ...validator,
-      password2: event.target.value,
-    });
-    if (event.target.value === validator.password1) {
-      setError({ ...error, password2: false });
-    } else {
-      setError({ ...error, password2: true });
-    }
-  };
 
   return (
     <div className={styles.container} style={{ height: "700px" }}>
@@ -126,7 +121,9 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.email}
-            onChange={handleChangeEmail}
+            onChange={(e) => {
+              handleUseInfo("email", e);
+            }}
             placeholder="JimmyJones@hotmail.com"
             required
           />
@@ -150,7 +147,9 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.name}
-            onChange={handleChangeName}
+            onChange={(e) => {
+              handleUseInfo("name", e);
+            }}
             placeholder="Jimmy"
             required
           />
@@ -174,7 +173,9 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.lastName}
-            onChange={handleChangeLastName}
+            onChange={(e) => {
+              handleUseInfo("lastName", e);
+            }}
             placeholder="Jones"
             required
           />
@@ -200,8 +201,10 @@ const SignUp = () => {
             className={styles.inputText}
             type={passwordShown ? "text" : "password"}
             name="pass"
-            value={validator.password1}
-            onChange={handleChangePass}
+            value={validator.password}
+            onChange={(e) => {
+              handleUseInfo("password", e);
+            }}
             placeholder="********"
             required
           />
@@ -214,7 +217,7 @@ const SignUp = () => {
           <p
             className={styles.label}
             style={{
-              color: `${error.password1 ? "red" : "#c4d7e0"}`,
+              color: `${error.password ? "red" : "#c4d7e0"}`,
               padding: "0",
               fontSize: "0.7rem",
               fontWeight: "500",
@@ -229,15 +232,17 @@ const SignUp = () => {
             className={styles.inputText}
             type={passwordShown ? "text" : "password"}
             name="pass"
-            value={validator.password2}
-            onChange={handleComparePass}
+            value={validator.passwordConf}
+            onChange={(e) => {
+              handleUseInfo("comparePass", e);
+            }}
             placeholder="********"
             required
           />
           <p
             className={styles.label}
             style={{
-              color: `${error.password2 ? "red" : "#c4d7e0"}`,
+              color: `${error.passwordConf ? "red" : "#c4d7e0"}`,
               padding: "0",
               fontSize: "0.7rem",
               fontWeight: "500",

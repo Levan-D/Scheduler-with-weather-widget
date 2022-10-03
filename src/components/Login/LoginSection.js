@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import show from "../Scheduler/pictures/show.png";
 import hide from "../Scheduler/pictures/hide.png";
+import { isValidEmail, isValidPassword } from "./Validator";
 
 const LoginSection = () => {
   const [error, setError] = useState({ email: false, password: false });
@@ -26,35 +27,33 @@ const LoginSection = () => {
     }
   };
 
-  function isValidEmail(email) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-  }
-  function isValidPassword(pass) {
-    return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(pass);
-  }
+  function handleUseInfo(type, event) {
+    switch (type) {
+      case "email":
+        if (!isValidEmail(event.target.value)) {
+          setError({ ...error, email: true });
+        } else {
+          setError({ ...error, email: false });
+        }
+        setValidator({
+          ...validator,
+          email: event.target.value,
+        });
+        break;
 
-  const handleChangeEmail = (event) => {
-    if (!isValidEmail(event.target.value)) {
-      setError({ ...error, email: true });
-    } else {
-      setError({ ...error, email: false });
+      case "password":
+        if (!isValidPassword(event.target.value)) {
+          setError({ ...error, password: true });
+        } else {
+          setError({ ...error, password: false });
+        }
+        setValidator({
+          ...validator,
+          password: event.target.value,
+        });
+        break;
     }
-    setValidator({
-      ...validator,
-      email: event.target.value,
-    });
-  };
-  const handleChangePass = (event) => {
-    if (!isValidPassword(event.target.value)) {
-      setError({ ...error, password: true });
-    } else {
-      setError({ ...error, password: false });
-    }
-    setValidator({
-      ...validator,
-      password: event.target.value,
-    });
-  };
+  }
 
   return (
     <>
@@ -69,7 +68,9 @@ const LoginSection = () => {
             type="text"
             name="email"
             value={validator.email}
-            onChange={handleChangeEmail}
+            onChange={(e) => {
+              handleUseInfo("email", e);
+            }}
             placeholder="JimmyJones@hotmail.com"
             required
           />
@@ -93,7 +94,9 @@ const LoginSection = () => {
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.password}
-            onChange={handleChangePass}
+            onChange={(e) => {
+              handleUseInfo("password", e);
+            }}
             placeholder="********"
             required
           />
