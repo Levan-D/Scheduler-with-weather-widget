@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -6,28 +6,36 @@ import show from "../pictures/show.png";
 import hide from "../pictures/hide.png";
 import { isValidEmail, isValidPassword } from "./Validator";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "./loginSlice";
+import { loginUser, resetUser } from "./authSlice";
 
 const LoginSection = () => {
+  const userState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log("userState:", userState);
   const [error, setError] = useState({ email: false, password: false });
   const [validator, setValidator] = useState({
     email: "",
     password: "",
   });
-    const [passwordShown, setPasswordShown] = useState(false);
-   const userState = useSelector((store) => store.authentication);
+
+  const [passwordShown, setPasswordShown] = useState(false);
+
   const togglePassword = () => {
     setPasswordShown((pass) => !pass);
   };
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+  useEffect(() => {
+    if (userState.success) {
+      dispatch(resetUser());
+      navigate("/scheduler");
+    }
+  }, [userState]);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!error.email && !error.password) {
       dispatch(
-        registerUser({
+        loginUser({
           email: validator.email.toLowerCase(),
           password: validator.password,
         })
@@ -66,6 +74,12 @@ const LoginSection = () => {
   return (
     <>
       <h2 className={styles.header}>Login</h2>
+      <h3
+        className={styles.postError}
+        style={{ color: userState.error ? "red" : "#c4d7e0" }}
+      >
+        {userState.error} &nbsp;
+      </h3>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <div className={styles[`input-container`]}>
           <label className={styles.label}>Email </label>

@@ -4,24 +4,36 @@ import { useNavigate } from "react-router-dom";
 import backBtn from "../pictures/back.png";
 import racoon from "../pictures/racoon.png";
 import { isValidEmail } from "./Validator";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotUser, resetUser } from "./forgotPassSlice";
+
 const ForgotPassword = () => {
   const [error, setError] = useState(false);
+  const userState = useSelector((store) => store.forgot);
+  const dispatch = useDispatch();
   const [validator, setValidator] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!error) {
       setIsSubmitted(true);
+      dispatch(
+        forgotUser({
+          email: validator.toLowerCase(),
+        })
+      );
     }
   };
   useEffect(() => {
-    if (isSubmitted) {
+    if (isSubmitted && userState.success) {
       setTimeout(() => {
+        dispatch(resetUser());
         navigate("/reset");
       }, 5000);
     }
-  }, [isSubmitted]);
+  }, [isSubmitted, userState]);
 
   const handleChangeEmail = (event) => {
     if (!isValidEmail(event.target.value)) {
@@ -31,7 +43,7 @@ const ForgotPassword = () => {
     }
     setValidator(event.target.value);
   };
-  if (isSubmitted) {
+  if (isSubmitted && userState.success) {
     return (
       <div className={styles.container} style={{ height: "500px" }}>
         <h2 className={styles.header}>Confirm Code</h2>
@@ -70,12 +82,18 @@ const ForgotPassword = () => {
       <div
         className={styles.backBtn}
         onClick={() => {
-          navigate(-1);
+          navigate("/");
         }}
       >
         <img src={backBtn} alt="back button" />
       </div>
       <h2 className={styles.header}>Forgot Password</h2>
+      <h3
+        className={styles.postError}
+        style={{ color: userState.error ? "red" : "#c4d7e0" }}
+      >
+        {userState.error} &nbsp;
+      </h3>
 
       <p className={styles.paragraph}>Don't worry, this happens all the time</p>
       <p className={styles.paragraph}>Enter your email below</p>

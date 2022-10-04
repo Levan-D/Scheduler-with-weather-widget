@@ -26,9 +26,9 @@ function List({ name, nameShow, color, date }) {
   let hoverEvent;
 
   const refTwo = useRef(null);
-  useEffect(() => {
-    document.addEventListener("mousemove", handleClickOutside, true);
-  }, [refTwo]);
+  // useEffect(() => {
+  //   document.addEventListener("mousemove", handleClickOutside, true);
+  // }, [refTwo]);
 
   const handleClickOutside = (e) => {
     if (!refTwo.current.contains(e.target)) {

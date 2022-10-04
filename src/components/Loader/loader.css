@@ -1,0 +1,123 @@
+/** @format */
+
+:root {
+  /* 	Size is a variable for both - height and width dimensions of the circle  */
+  --size: 200px;
+  /* 	First Color Value */
+  --clrFirstSpin: #90c8ac;
+  /* 	Second Color Value */
+  --clrSecondSpin: #ff7878;
+  /* 	Third Color Value */
+  --clrThirdSpin: #354259;
+  /* 	Duration for text blinking animation  */
+  --displayingTextTime: 2500ms;
+  --spinnerFont: calc(var(--size) / 7);
+}
+.spinnerContainer {
+  margin: 160px 90px;
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size);
+  height: var(--size);
+  position: relative;
+}
+
+.spinner-area {
+  border: 15px solid transparent;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: rotate var(--duration) linear infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-third {
+  border-top-color: var(--clrThirdSpin);
+  --duration: 2.5s;
+}
+
+.spinner-second {
+  border-left-color: var(--clrSecondSpin);
+  --duration: 3s;
+}
+
+.spinner-first {
+  border-bottom-color: var(--clrFirstSpin);
+  --duration: 5s;
+}
+
+.spinner p {
+  font-size: var(--spinnerFont);
+  text-transform: none;
+  animation: displaying-text var(--displayingTextTime) ease-in-out infinite;
+  color: #fff;
+}
+
+@keyframes displaying-text {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.spinner:after {
+  content: "Come oon! who wrote this?";
+  text-align: center;
+  width: 100px;
+  padding: 5px 5px 15px 5px;
+  height: 70px;
+  display: block;
+  position: absolute;
+  top: -95px;
+  right: -50px;
+  background: white;
+  color: black;
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 75%,
+    42% 75%,
+    22% 100%,
+    22% 75%,
+    0% 75%
+  );
+  /* 	animation: displayMessage 2s linear 3s; */
+  animation-name: displayMessage;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: pause;
+  opacity: 0;
+}
+
+@keyframes displayMessage {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.85;
+    transform: rotate(15deg);
+  }
+}

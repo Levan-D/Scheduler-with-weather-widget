@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import LoginSection from "./LoginSection";
+import { useSelector } from "react-redux";
+import Loader from "../Loader/Loader";
 
 const Login = () => {
+  const userState = useSelector((state) => state.auth);
+
+  if (userState.loading) {
+    return (
+      <div className={styles.container}>
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <LoginSection />

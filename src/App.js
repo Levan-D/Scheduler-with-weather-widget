@@ -6,8 +6,21 @@ import Login from "./components/Login/Login";
 import ForgotPassword from "./components/Login/ForgotPassword";
 import SignUp from "./components/Login/SignUp";
 import ResetPassword from "./components/Login/ResetPassword";
-
+import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { resetUser as pass } from "./components/Login/forgotPassSlice";
+import { resetUser as auth } from "./components/Login/authSlice";
+import { resetUser as sign } from "./components/Login/signUpSlice";
 function App() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log(`ratatata`);
+    dispatch(pass());
+    dispatch(auth());
+    dispatch(sign());
+  }, [location]);
   return (
     <div className="App">
       <Routes>

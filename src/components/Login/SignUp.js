@@ -6,8 +6,9 @@ import show from "../pictures/show.png";
 import hide from "../pictures/hide.png";
 import { isValidEmail, isValidName, isValidPassword } from "./Validator";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser, resetUserData } from "./loginSlice";
 import racoon from "../pictures/racoon.png";
+import { signUpUser, resetUser } from "./signUpSlice";
+import Loader from "../Loader/Loader";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -15,17 +16,15 @@ const SignUp = () => {
   const togglePassword = () => {
     setPasswordShown((pass) => !pass);
   };
-  const userState = useSelector((store) => store.authentication);
+  const userState = useSelector((store) => store.signUp);
   useEffect(() => {
     if (userState.success) {
-      dispatch(resetUserData());
-      console.log("resetUserData:", userState);
       setTimeout(() => {
-        navigate("/");
+        navigate("/scheduler");
       }, 4000);
     }
   }, [userState]);
-  console.log("resetUserData:", userState);
+
   const [error, setError] = useState({
     email: false,
     name: false,
@@ -40,9 +39,16 @@ const SignUp = () => {
     password: "",
     passwordConf: "",
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userState.success) {
+      dispatch(resetUser());
+      navigate("/scheduler");
+    }
+  }, [userState]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -53,7 +59,7 @@ const SignUp = () => {
       !error.passwordConf
     ) {
       dispatch(
-        registerUser({
+        signUpUser({
           email: validator.email.toLowerCase(),
           first_name: validator.name,
           last_name: validator.lastName,
@@ -122,18 +128,18 @@ const SignUp = () => {
     }
   }
 
-  if (userState.Loading) {
+  if (userState.loading) {
     return (
       <div className={styles.container} style={{ height: "700px" }}>
         <div
           className={styles.backBtn}
           onClick={() => {
-            navigate(-1);
+            navigate("/");
           }}
         >
           <img src={backBtn} alt="back button" />
         </div>
-        <h2 className={styles.header}>Loading</h2>
+        <Loader />
       </div>
     );
   }
@@ -149,7 +155,7 @@ const SignUp = () => {
         >
           <img src={backBtn} alt="back button" />
         </div>
-        <h2 className={styles.header}>Registration Sucessful</h2>
+        <h2 className={styles.header}>Registration Successful</h2>
         <div style={{ textAlign: "center", fontSize: "0.6rem" }}>
           <img
             src={racoon}
@@ -180,6 +186,12 @@ const SignUp = () => {
         <img src={backBtn} alt="back button" />
       </div>
       <h2 className={styles.header}>Sign Up</h2>
+      <h3
+        className={styles.postError}
+        style={{ color: userState.error ? "red" : "#c4d7e0" }}
+      >
+        {userState.error} &nbsp;
+      </h3>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <div className={styles[`input-container`]}>
           <label className={styles.label}>Email </label>
