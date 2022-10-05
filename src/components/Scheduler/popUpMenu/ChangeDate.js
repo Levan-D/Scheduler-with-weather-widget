@@ -11,14 +11,17 @@ const ChangeDate = () => {
   const indexingData = useSelector((store) => store.indexing.data);
   const subMenu = useSelector((store) => store.subMenu.data);
   const [calendarPick, setCalendarPick] = useState(new Date());
+  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   useEffect(() => {
     if (subMenu.confCalM) {
-      dispatch(
-        ADD_DATE_LIST({
-          index: indexingData.listIndex,
-          newData: `${calendarPick.yyyymmdd()} `,
-        })
-      );
+      if (!isLoggedin) {
+        dispatch(
+          ADD_DATE_LIST({
+            index: indexingData.listIndex,
+            newData: `${calendarPick.yyyymmdd()} `,
+          })
+        );
+      }
       dispatch(resetState());
       dispatch(POPUPVISIBILITY(false));
     }
@@ -51,12 +54,14 @@ const ChangeDate = () => {
           <div
             className={styles.todaysDateButton}
             onClick={() => {
-              dispatch(
-                ADD_DATE_LIST({
-                  index: indexingData.listIndex,
-                  newData: `${new Date().yyyymmdd()} `,
-                })
-              );
+              if (!isLoggedin) {
+                dispatch(
+                  ADD_DATE_LIST({
+                    index: indexingData.listIndex,
+                    newData: `${new Date().yyyymmdd()} `,
+                  })
+                );
+              }
               dispatch(resetState());
               dispatch(POPUPVISIBILITY(false));
             }}
@@ -75,12 +80,14 @@ const ChangeDate = () => {
           <div
             className={styles.clearDateButton}
             onClick={() => {
-              dispatch(
-                ADD_DATE_LIST({
-                  index: indexingData.listIndex,
-                  newData: ``,
-                })
-              );
+              if (!isLoggedin) {
+                dispatch(
+                  ADD_DATE_LIST({
+                    index: indexingData.listIndex,
+                    newData: ``,
+                  })
+                );
+              }
               dispatch(resetState());
               dispatch(POPUPVISIBILITY(false));
             }}

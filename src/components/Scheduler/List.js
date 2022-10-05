@@ -1,6 +1,6 @@
 /** @format */
 import ProgressBar from "../ProgressBar/ProgressBar";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Dots } from "../pictures/dots.svg";
 import styles from "./list.module.css";
@@ -18,6 +18,7 @@ import {
 import { CHANGE_LIST_POSITION } from "./todoSlice";
 
 function List({ name, nameShow, color, date }) {
+  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   const dispatch = useDispatch();
   const indexingData = useSelector((store) => store.indexing.data);
   const todosRedux = useSelector((store) => store.todo.data);
@@ -68,34 +69,38 @@ function List({ name, nameShow, color, date }) {
   }
 
   function handleList(e) {
-    const regex = /^(List)+[0-9]*/gi;
-    if (regex.test(e.target.classList[0])) {
-      dispatch(
-        CHANGE_LISTINDEX(
-          todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
-        )
-      );
+    if (!isLoggedin) {
+      const regex = /^(List)+[0-9]*/gi;
+      if (regex.test(e.target.classList[0])) {
+        dispatch(
+          CHANGE_LISTINDEX(
+            todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
+          )
+        );
+      }
     }
   }
 
   function rearrangeList() {
-    dispatch(
-      CHANGE_LISTINDEX(
-        todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragOverListName)
-      )
-    );
-    dispatch(
-      CHANGE_LIST_POSITION({
-        todoIndex: todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragStartListName),
-        newPositionIndex: todosRedux
-          .map((x) => x.listName)
-          .indexOf(indexingData.onDragOverListName),
-      })
-    );
+    if (!isLoggedin) {
+      dispatch(
+        CHANGE_LISTINDEX(
+          todosRedux
+            .map((x) => x.listName)
+            .indexOf(indexingData.onDragOverListName)
+        )
+      );
+      dispatch(
+        CHANGE_LIST_POSITION({
+          todoIndex: todosRedux
+            .map((x) => x.listName)
+            .indexOf(indexingData.onDragStartListName),
+          newPositionIndex: todosRedux
+            .map((x) => x.listName)
+            .indexOf(indexingData.onDragOverListName),
+        })
+      );
+    }
   }
 
   return (
@@ -132,9 +137,7 @@ function List({ name, nameShow, color, date }) {
         }  ${styles.containerList}`}
         style={{
           color:
-            color !== "default"
-              ? invertColor(color.substring(1), `bw`)
-              : "#354259",
+            color !== null ? invertColor(color.substring(1), `bw`) : "#354259",
           backgroundColor: color !== "default" ? color : "",
           border:
             name === todosRedux[indexingData.listIndex].listName
@@ -150,16 +153,22 @@ function List({ name, nameShow, color, date }) {
           }
         }}
         onDragEnd={() => {
-          rearrangeList();
+          if (!isLoggedin) {
+            rearrangeList();
+          }
           dispatch(LISTDRAGGING(false));
           setDragging(false);
         }}
       >
         <div className={`${name} ${styles.nameList}`}>
-          {date !== "" ? date : ""}
-          {nameShow !== "" ? nameShow : name.replace(/_/, " ")}
+          {date} {name}
+          {
+            (!isLoggedin && date !== "" ? date : "",
+            nameShow !== "" ? nameShow : name.replace(/_/, " "))
+          }
         </div>
-        {isHovering &&
+        {!isLoggedin &&
+          isHovering &&
           !indexingData.popUpVisibility &&
           !dragging &&
           nameShow.length > 26 && (
@@ -189,8 +198,7 @@ function List({ name, nameShow, color, date }) {
           </div>
         )}
       </div>
-
-      <ProgressBar
+      {/* <ProgressBar
         tasksComplete={
           todosRedux[
             todosRedux.map((x) => x.listName).indexOf(name)
@@ -203,7 +211,7 @@ function List({ name, nameShow, color, date }) {
         width={170}
         height={3}
         background={`#6e85b7`}
-      />
+      /> */}
     </div>
   );
 }

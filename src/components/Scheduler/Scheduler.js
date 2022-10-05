@@ -15,6 +15,8 @@ import {
   SET_CONFETTIBOOM,
   SET_OPACITY,
 } from "./taskProgressSlice";
+import { ISLOGGEDIN } from "./indexingSlice";
+import { getList } from "./todoGetListApiSlice";
 
 function Scheduler() {
   const dispatch = useDispatch();
@@ -22,56 +24,74 @@ function Scheduler() {
   const isInitialData = useSelector((store) => store.todo.isInitialData);
   const taskProgressData = useSelector((store) => store.taskProgress.data);
   const indexingData = useSelector((store) => store.indexing.data);
+  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
+  const listData = useSelector((store) => store.listApi);
 
   useEffect(() => {
-    if (!isInitialData) {
-      localStorage.setItem("todoData", JSON.stringify(todosRedux));
-    }
-    if (isInitialData) {
-      dispatch(FETCH_TODODATA());
+    dispatch(getList());
+    console.log('get list')
+  }, []);
+
+  if (localStorage.getItem("accessToken") !== null) {
+    dispatch(ISLOGGEDIN(true));
+  }
+
+  useEffect(() => {
+    if (!isLoggedin) {
+      console.log("isLoggedin:", isLoggedin);
+      if (!isInitialData) {
+        localStorage.setItem("todoData", JSON.stringify(todosRedux));
+      }
+      if (isInitialData) {
+        dispatch(FETCH_TODODATA());
+      }
     }
   }, [todosRedux, indexingData.newListName]);
 
   useEffect(() => {
-    dispatch(
-      SET_TASKSCOMPLETE({
-        tasksComplete: todosRedux[indexingData.listIndex].todoArray.filter(
-          (x) => x.complete === true
-        ).length,
-      })
-    );
-    dispatch(
-      SET_TASKSTOTAL({
-        tasksTotal: todosRedux[indexingData.listIndex].todoArray.length,
-      })
-    );
+    if (!isLoggedin) {
+      dispatch(
+        SET_TASKSCOMPLETE({
+          tasksComplete: todosRedux[indexingData.listIndex].todoArray.filter(
+            (x) => x.complete === true
+          ).length,
+        })
+      );
+      dispatch(
+        SET_TASKSTOTAL({
+          tasksTotal: todosRedux[indexingData.listIndex].todoArray.length,
+        })
+      );
+    }
   }, [todosRedux, indexingData.listIndex]);
 
   useEffect(() => {
-    if (
-      taskProgressData.tasksComplete === taskProgressData.tasksTotal &&
-      taskProgressData.tasksTotal > 0 &&
-      taskProgressData.confettiBoom === false &&
-      taskProgressData.triggered === false
-    ) {
-      dispatch(SET_CONFETTIBOOM({ confettiBoom: true, triggered: true }));
+    if (!isLoggedin) {
+      if (
+        taskProgressData.tasksComplete === taskProgressData.tasksTotal &&
+        taskProgressData.tasksTotal > 0 &&
+        taskProgressData.confettiBoom === false &&
+        taskProgressData.triggered === false
+      ) {
+        dispatch(SET_CONFETTIBOOM({ confettiBoom: true, triggered: true }));
 
-      for (let i = 1, j = 1; i >= 0, j < 6; i = i - 0.2, j++) {
-        setTimeout(() => {
-          dispatch(SET_OPACITY({ opa: i }));
-        }, j * 1000);
-        if (j === 5) {
+        for (let i = 1, j = 1; i >= 0, j < 6; i = i - 0.2, j++) {
           setTimeout(() => {
-            dispatch(
-              SET_CONFETTIBOOM({ confettiBoom: false, triggered: true })
-            );
+            dispatch(SET_OPACITY({ opa: i }));
           }, j * 1000);
+          if (j === 5) {
+            setTimeout(() => {
+              dispatch(
+                SET_CONFETTIBOOM({ confettiBoom: false, triggered: true })
+              );
+            }, j * 1000);
+          }
         }
       }
-    }
-    if (taskProgressData.tasksComplete !== taskProgressData.tasksTotal) {
-      dispatch(SET_CONFETTIBOOM({ confettiBoom: false, triggered: false }));
-      dispatch(SET_OPACITY({ opa: 1 }));
+      if (taskProgressData.tasksComplete !== taskProgressData.tasksTotal) {
+        dispatch(SET_CONFETTIBOOM({ confettiBoom: false, triggered: false }));
+        dispatch(SET_OPACITY({ opa: 1 }));
+      }
     }
   }, [taskProgressData]);
 
@@ -88,6 +108,7 @@ function Scheduler() {
         <CreateList />
         <div>
           {typeof todosRedux === "object" &&
+            !isLoggedin &&
             todosRedux.map((x) => {
               return (
                 <List
@@ -99,6 +120,18 @@ function Scheduler() {
                 />
               );
             })}
+          {typeof listData === "object" &&
+            isLoggedin &&
+            listData.data.map((list) => {
+              return (
+                <List
+                  key={list.id}
+                  name={list.title}
+                  color={list.color}
+                  date={list.reminder_at}
+                />
+              );
+            })}
         </div>
       </div>
       <div className={styles.rightSide}>
@@ -106,6 +139,7 @@ function Scheduler() {
         <div className={styles.todoWrapper}>
           {typeof todosRedux &&
             typeof indexingData.listIndex === "number" &&
+            !isLoggedin &&
             todosRedux[indexingData.listIndex].todoArray.map((x) => {
               return <Todo key={x.id} todo={x} name={x.id} />;
             })}

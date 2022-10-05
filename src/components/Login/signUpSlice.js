@@ -2,11 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import request from "../../app/api/Request";
 
 export const signUpUser = createAsyncThunk(
-  "user/register",
+  "register/fetchRegister",
   async ({ email, first_name, last_name, password }, { rejectWithValue }) => {
     try {
       const body = { email, first_name, last_name, password };
-
       const res = await request("POST", "/auth/sign-up", body, false);
 
       if (res.access_token !== "" && res.refresh_token !== "") {
@@ -24,7 +23,6 @@ export const signUpUser = createAsyncThunk(
 
 const initialState = {
   loading: false,
-  userInfo: {},
   acessToken: null,
   refreshToken: null,
   error: null,
@@ -37,7 +35,6 @@ const userSignUpSlice = createSlice({
   reducers: {
     resetUser: (state) => {
       state.loading = false;
-      state.userInfo = {};
       state.acessToken = null;
       state.refreshToken = null;
       state.error = null;

@@ -15,7 +15,7 @@ const initialState = {
         date: "",
         name: "",
       },
-      color: "default",
+      color: null,
       todoArray: [],
     },
   ],

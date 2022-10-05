@@ -5,6 +5,7 @@ import { ADD_TODO } from "./todoSlice";
 import styles from "./createTodo.module.css";
 
 const CreateTodo = () => {
+  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   const dispatch = useDispatch();
   const taskProgressData = useSelector((store) => store.taskProgress.data);
   const indexingData = useSelector((store) => store.indexing.data);
@@ -13,7 +14,9 @@ const CreateTodo = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }));
+    if (!isLoggedin) {
+      dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }));
+    }
     setTaskName("");
   }
 

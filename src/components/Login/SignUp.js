@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import racoon from "../pictures/racoon.png";
 import { signUpUser, resetUser } from "./signUpSlice";
 import Loader from "../Loader/Loader";
+import { ISLOGGEDIN } from "../Scheduler/indexingSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const SignUp = () => {
           password: validator.password,
         })
       );
+      dispatch(ISLOGGEDIN(true));
     }
   };
   function handleUseInfo(type, event) {

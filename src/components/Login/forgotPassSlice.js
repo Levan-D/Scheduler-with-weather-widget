@@ -2,13 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import request from "../../app/api/Request";
 
 export const forgotUser = createAsyncThunk(
-  "user/forgot",
+  "forgot/fetchForgot",
   async ({ email }, { rejectWithValue }) => {
     try {
       const body = { email };
-
       const res = await request("POST", "/auth/forgot", body, false);
-
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -37,7 +35,7 @@ const userForgotSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    [forgotUser.fulfilled]: (state, { payload }) => {
+    [forgotUser.fulfilled]: (state) => {
       state.loading = false;
       state.success = true;
     },

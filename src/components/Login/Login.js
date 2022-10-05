@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import LoginSection from "./LoginSection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
+import { ISLOGGEDIN } from "../Scheduler/indexingSlice";
 
 const Login = () => {
   const userState = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   if (userState.loading) {
     return (
@@ -29,7 +31,13 @@ const Login = () => {
       <Link to="/signUp" className={styles.guestButton}>
         Sign Up
       </Link>
-      <Link to="/scheduler" className={styles.guestButton}>
+      <Link
+        to="/scheduler"
+        className={styles.guestButton}
+        onClick={() => {
+          dispatch(ISLOGGEDIN(false));
+        }}
+      >
         Continue as Guest
       </Link>
     </div>

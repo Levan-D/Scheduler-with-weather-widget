@@ -13,6 +13,7 @@ const initialState = {
     popUpCoords: { x: 0, y: 0 },
     ListDragging: false,
     TodoDragging: false,
+    isLoggedIn: false,
   },
 };
 
@@ -55,6 +56,9 @@ const indexingSlice = createSlice({
     TODODRAGGING: (state, action) => {
       state.data.TodoDragging = action.payload;
     },
+    ISLOGGEDIN: (state, action) => {
+      state.data.isLoggedIn = action.payload;
+    },
   },
 });
 
@@ -70,5 +74,6 @@ export const {
   POPUPCOORDS,
   LISTDRAGGING,
   TODODRAGGING,
+  ISLOGGEDIN,
 } = indexingSlice.actions;
 export default indexingSlice.reducer;
