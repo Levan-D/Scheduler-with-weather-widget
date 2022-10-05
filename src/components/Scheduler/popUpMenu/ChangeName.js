@@ -7,7 +7,6 @@ import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice";
 
 const ChangeName = () => {
   const dispatch = useDispatch();
-  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   const indexingData = useSelector((store) => store.indexing.data);
 
   return (
@@ -25,14 +24,12 @@ const ChangeName = () => {
             className={styles.nameChangeForm}
             onSubmit={(e) => {
               e.preventDefault();
-              if (!isLoggedin) {
-                dispatch(
-                  RENAME_LIST({
-                    index: indexingData.listIndex,
-                    newListName: indexingData.newListName,
-                  })
-                );
-              }
+              dispatch(
+                RENAME_LIST({
+                  index: indexingData.listIndex,
+                  newListName: indexingData.newListName,
+                })
+              );
               dispatch(resetState());
               dispatch(POPUPVISIBILITY(false));
             }}

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import request from "../../app/api/Request";
 
 export const loginUser = createAsyncThunk(
-  "auth/fetchAuth",
+  "user/auth",
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const body = { email, password };
@@ -24,6 +24,7 @@ export const loginUser = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  userInfo: {},
   acessToken: null,
   refreshToken: null,
   error: null,
@@ -36,6 +37,7 @@ const userLoginSlice = createSlice({
   reducers: {
     resetUser: (state) => {
       state.loading = false;
+      state.userInfo = {};
       state.acessToken = null;
       state.refreshToken = null;
       state.success = false;

@@ -6,8 +6,6 @@ import subMenuReducer from "../components/Scheduler/popUpMenu/popupMenuSlice";
 import userReducer from "../components/Login/authSlice";
 import signUpReducer from "../components/Login/signUpSlice";
 import forgotReducer from "../components/Login/forgotPassSlice";
-import listApiReducer from "../components/Scheduler/todoGetListApiSlice";
-import createListApiReducer from "../components/Scheduler/todoCreateListApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +16,5 @@ export const store = configureStore({
     auth: userReducer,
     signUp: signUpReducer,
     forgot: forgotReducer,
-    listApi: listApiReducer,
-    createListApi: createListApiReducer,
   },
 });

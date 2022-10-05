@@ -9,7 +9,6 @@ const Delete = () => {
   const dispatch = useDispatch();
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
-  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
 
   return (
     <>
@@ -20,14 +19,12 @@ const Delete = () => {
               if (indexingData.listIndex !== 0) {
                 dispatch(CHANGE_LISTINDEX(indexingData.listIndex - 1));
               }
-              if (!isLoggedin) {
-                dispatch(
-                  DELETE_LIST({
-                    index: indexingData.listIndex,
-                    zeName: todosRedux[indexingData.listIndex].listName,
-                  })
-                );
-              }
+              dispatch(
+                DELETE_LIST({
+                  index: indexingData.listIndex,
+                  zeName: todosRedux[indexingData.listIndex].listName,
+                })
+              );
             }
             dispatch(resetState());
             dispatch(POPUPVISIBILITY(false));

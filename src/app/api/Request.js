@@ -7,10 +7,9 @@ const request = async (method, url, data, isAuthenticated = false) => {
     // }
 
     let headers;
-
     if (isAuthenticated) {
       headers = {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       };
     }
 

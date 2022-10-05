@@ -4,7 +4,6 @@ import styles from "./popUpMenu.module.css";
 import { CHANGE_LIST_COLOR } from "../todoSlice";
 
 const ChangeColor = () => {
-  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   const dispatch = useDispatch();
 
   const indexingData = useSelector((store) => store.indexing.data);
@@ -57,16 +56,14 @@ const ChangeColor = () => {
           return (
             <div
               className={`${styles.colorCircle} ${styles.popUpButton}`}
-              onClick={() => {
-                if (!isLoggedin) {
-                  dispatch(
-                    CHANGE_LIST_COLOR({
-                      index: indexingData.listIndex,
-                      color: colors[i],
-                    })
-                  );
-                }
-              }}
+              onClick={() =>
+                dispatch(
+                  CHANGE_LIST_COLOR({
+                    index: indexingData.listIndex,
+                    color: colors[i],
+                  })
+                )
+              }
               style={{ backgroundColor: x }}
               key={i}
             ></div>

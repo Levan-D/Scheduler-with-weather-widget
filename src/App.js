@@ -12,26 +12,11 @@ import { useDispatch } from "react-redux";
 import { resetUser as pass } from "./components/Login/forgotPassSlice";
 import { resetUser as auth } from "./components/Login/authSlice";
 import { resetUser as sign } from "./components/Login/signUpSlice";
-import { ISLOGGEDIN } from "./components/Scheduler/indexingSlice";
-
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (location.pathname !== "/scheduler") {
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("accessToken");
-      if (localStorage.getItem("accessToken") === null) {
-        dispatch(ISLOGGEDIN(false));
-      }
-    }
-    if (localStorage.getItem("accessToken") !== null) {
-      dispatch(ISLOGGEDIN(true));
-    }
-  }, [location]);
-
-  useEffect(() => {
+    console.log(`ratatata`);
     dispatch(pass());
     dispatch(auth());
     dispatch(sign());

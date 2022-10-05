@@ -7,12 +7,12 @@ import hide from "../pictures/hide.png";
 import { isValidEmail, isValidPassword } from "./Validator";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, resetUser } from "./authSlice";
-import { ISLOGGEDIN } from "../Scheduler/indexingSlice";
 
 const LoginSection = () => {
   const userState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log("userState:", userState);
   const [error, setError] = useState({ email: false, password: false });
   const [validator, setValidator] = useState({
     email: "",
@@ -40,7 +40,6 @@ const LoginSection = () => {
           password: validator.password,
         })
       );
-      dispatch(ISLOGGEDIN(true));
     }
   };
 

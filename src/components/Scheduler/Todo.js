@@ -19,7 +19,6 @@ import {
 } from "./indexingSlice";
 
 function Todo({ todo, name }) {
-  const isLoggedin = useSelector((store) => store.indexing.data.isLoggedIn);
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
   const dispatch = useDispatch();
@@ -70,31 +69,27 @@ function Todo({ todo, name }) {
 
   function handleRenameTodo(e) {
     e.preventDefault();
-    if (!isLoggedin) {
-      dispatch(
-        RENAME_TODO({
-          taskRename: indexingData.taskRename.rename,
-          todoIndex: indexingData.todoIndex.todoIndex,
-          index: indexingData.listIndex,
-        })
-      );
-      dispatch(TASK_RENAME({ rename: "", id: "", show: false }));
-    }
+    dispatch(
+      RENAME_TODO({
+        taskRename: indexingData.taskRename.rename,
+        todoIndex: indexingData.todoIndex.todoIndex,
+        index: indexingData.listIndex,
+      })
+    );
+    dispatch(TASK_RENAME({ rename: "", id: "", show: false }));
   }
 
   function rearrange() {
-    if (!isLoggedin) {
-      let newPosition = todosRedux[indexingData.listIndex].todoArray
-        .map((x) => x.id)
-        .indexOf(indexingData.newtodoid);
-      dispatch(
-        CHANGE_TODO_POSITION({
-          index: indexingData.listIndex,
-          todoIndex: indexingData.todoIndex.todoIndex,
-          newPositionIndex: newPosition,
-        })
-      );
-    }
+    let newPosition = todosRedux[indexingData.listIndex].todoArray
+      .map((x) => x.id)
+      .indexOf(indexingData.newtodoid);
+    dispatch(
+      CHANGE_TODO_POSITION({
+        index: indexingData.listIndex,
+        todoIndex: indexingData.todoIndex.todoIndex,
+        newPositionIndex: newPosition,
+      })
+    );
   }
 
   return (
@@ -144,9 +139,7 @@ function Todo({ todo, name }) {
           );
         }}
         onDragEnd={() => {
-          if (!isLoggedin) {
-            rearrange();
-          }
+          rearrange();
           dispatch(TODODRAGGING(false));
           setDragging(false);
         }}
@@ -251,15 +244,13 @@ function Todo({ todo, name }) {
           <div
             className={styles.todoCheck}
             onClick={() => {
-              if (!isLoggedin) {
-                dispatch(
-                  TOGGLE_TODO({
-                    id: todo.id,
-                    index: indexingData.listIndex,
-                    todoIndex: indexingData.todoIndex.todoIndex,
-                  })
-                );
-              }
+              dispatch(
+                TOGGLE_TODO({
+                  id: todo.id,
+                  index: indexingData.listIndex,
+                  todoIndex: indexingData.todoIndex.todoIndex,
+                })
+              );
             }}
           >
             &#10004;
@@ -267,11 +258,9 @@ function Todo({ todo, name }) {
           <div
             className={styles.todoDelete}
             onClick={() => {
-              if (!isLoggedin) {
-                dispatch(
-                  DELETE_TODO({ id: todo.id, index: indexingData.listIndex })
-                );
-              }
+              dispatch(
+                DELETE_TODO({ id: todo.id, index: indexingData.listIndex })
+              );
             }}
           >
             &#8211;
