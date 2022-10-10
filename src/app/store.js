@@ -1,7 +1,7 @@
 /** @format */
 
 import { configureStore } from "@reduxjs/toolkit";
-import todoReducer from "../components/Scheduler/todoSlice";
+import todoReducer from "../components/Scheduler/Todo/todoSlice";
 import taskProgressReducer from "../components/Scheduler/taskProgressSlice";
 import indexingReducer from "../components/Scheduler/indexingSlice";
 import subMenuReducer from "../components/Scheduler/popUpMenu/popupMenuSlice";

@@ -3,7 +3,7 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styles from "./popUpMenu.module.css"
-import { CHANGE_LIST_COLOR } from "../todoSlice"
+import { CHANGE_LIST_COLOR } from "../Todo/todoSlice"
 
 const colors = [
   `#f0f0f0`,

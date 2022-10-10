@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./popUpMenu.module.css";
-import { DELETE_LIST } from "../todoSlice";
+import { DELETE_LIST } from "../Todo/todoSlice";
 import { POPUPVISIBILITY, CHANGE_LISTINDEX } from "../indexingSlice";
 import { resetState } from "./popupMenuSlice";
 import { deleteList } from "../apiScheduler/deleteListSlice";
@@ -16,8 +16,7 @@ const Delete = () => {
   const listData = useSelector((store) => store.getList.data);
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const deleteListData = useSelector((store) => store.deleteList);
-  const deleteListId = listData[indexingData.listIndex].id;
-  console.log(listData);
+  const deleteListId = isLoggedIn ? listData[indexingData.listIndex].id : null;
 
   const handleDelete = () => {
     if (!isLoggedIn) {

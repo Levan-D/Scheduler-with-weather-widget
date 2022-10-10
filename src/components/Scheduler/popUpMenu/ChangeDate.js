@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styles from "./popUpMenu.module.css"
-import { ADD_DATE_LIST } from "../todoSlice"
+import { ADD_DATE_LIST } from "../Todo/todoSlice"
 import { resetState, setCalendarMenu } from "./popupMenuSlice"
 import Calendar from "react-calendar"
 import { POPUPVISIBILITY } from "../indexingSlice"

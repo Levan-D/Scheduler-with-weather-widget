@@ -2,13 +2,13 @@
 import styles from "./Scheduler.module.css";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Todo from "./Todo";
+import Todo from "./Todo/Todo";
 import List from "./List";
 import CreateTodo from "./CreateTodo";
 import Confetti from "react-confetti";
 import PopUpMenuComp from "./popUpMenu/PopUpMenuComp";
 import CreateList from "./CreateList";
-import { FETCH_TODODATA } from "./todoSlice";
+import { FETCH_TODODATA } from "./Todo/todoSlice";
 import {
   SET_TASKSCOMPLETE,
   SET_TASKSTOTAL,
@@ -28,8 +28,7 @@ function Scheduler() {
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const listData = useSelector((store) => store.getList);
   const todoData = useSelector((store) => store.getTodo);
-  console.log("listData:", listData);
-  console.log("listData:", todoData);
+
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
       dispatch(ISLOGGEDIN(true));
@@ -72,7 +71,9 @@ function Scheduler() {
   }, [todosRedux, indexingData.newListName, indexingData.listIndex]);
 
   useEffect(() => {
-    dispatch(getList());
+    if (isLoggedIn) {
+      dispatch(getList());
+    }
   }, []);
 
   useEffect(() => {

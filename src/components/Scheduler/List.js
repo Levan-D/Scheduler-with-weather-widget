@@ -16,7 +16,7 @@ import {
   LISTDRAGGING,
 } from "./indexingSlice";
 
-import { CHANGE_LIST_POSITION } from "./todoSlice";
+import { CHANGE_LIST_POSITION } from "./Todo/todoSlice";
 
 function List({ name, nameShow, color, date, position }) {
   const dispatch = useDispatch();

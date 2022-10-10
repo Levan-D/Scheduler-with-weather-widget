@@ -3,7 +3,7 @@
 import ProgressBar from "../ProgressBar/ProgressBar";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ADD_TODO } from "./todoSlice";
+import { ADD_TODO } from "./Todo/todoSlice";
 import styles from "./createTodo.module.css";
 import { createTodo } from "./apiScheduler/createTodoSlice";
 import { pushNewTodo } from "./apiScheduler/getTodoSlice";

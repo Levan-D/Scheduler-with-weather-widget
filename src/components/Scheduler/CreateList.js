@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_LIST } from "./todoSlice";
+import { ADD_LIST } from "./Todo/todoSlice";
 import styles from "./createList.module.css";
 import { createList } from "./apiScheduler/createListSlice";
 import { pushNewList } from "./apiScheduler/getListSlice";

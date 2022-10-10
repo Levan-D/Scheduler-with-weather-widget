@@ -3,7 +3,7 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styles from "./popUpMenu.module.css"
-import { RENAME_LIST } from "../todoSlice"
+import { RENAME_LIST } from "../Todo/todoSlice"
 import { resetState } from "./popupMenuSlice"
 import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice"
 
