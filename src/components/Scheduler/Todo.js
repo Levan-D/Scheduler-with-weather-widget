@@ -1,147 +1,192 @@
 /** @format */
 
-import React, { useRef, useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import saveIcon from "../pictures/saveIcon.png"
-import styles from "./todo.module.css"
-import { RENAME_TODO, TOGGLE_TODO, DELETE_TODO, CHANGE_TODO_POSITION } from "./todoSlice"
+import React, { useRef, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import saveIcon from "../pictures/saveIcon.png";
+import styles from "./todo.module.css";
+import {
+  RENAME_TODO,
+  TOGGLE_TODO,
+  DELETE_TODO,
+  CHANGE_TODO_POSITION,
+} from "./todoSlice";
 
-import { TASK_RENAME, CHANGE_TODOINDEX, NEWTODOID, TODODRAGGING } from "./indexingSlice"
+import {
+  TASK_RENAME,
+  CHANGE_TODOINDEX,
+  NEWTODOID,
+  TODODRAGGING,
+} from "./indexingSlice";
 
-function Todo({ todo, name }) {
-  const todosRedux = useSelector(store => store.todo.data)
-  const indexingData = useSelector(store => store.indexing.data)
-  const dispatch = useDispatch()
-  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
+function Todo({ todo, name, date }) {
+  const todosRedux = useSelector((store) => store.todo.data);
+  const indexingData = useSelector((store) => store.indexing.data);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
+  const [edit, setEdit] = useState(false);
 
-  let markedDate
+  let markedDate;
   if (!isLoggedIn) {
-    markedDate = todo.completeDate.split(" ").map((str, index) => ({
+    let marked = todo.completeDate.split(" ").map((str, index) => ({
       value: str,
       id: index + 1,
-    }))
+    }));
+    markedDate = (
+      <>
+        {marked[4].value.slice(0, 5)} <br />
+        {marked[0].value}&nbsp;
+        {marked[1].value}&nbsp;
+        {marked[2].value}{" "}
+      </>
+    );
   }
 
-  const [isHovering, setIsHovering] = useState(false)
-  let hoverEvent
-  const [dragging, setDragging] = useState(false)
+  const [isHovering, setIsHovering] = useState(false);
+  let hoverEvent;
+  const [dragging, setDragging] = useState(false);
 
-  let dataObject
+  let dataObject;
   if (!isLoggedIn) {
-    dataObject = todo.time.split(" ").map((str, index) => ({
+    let dateArray = todo.time.split(" ").map((str, index) => ({
       value: str,
       id: index + 1,
-    }))
+    }));
+    dataObject = (
+      <>
+        {dateArray[4].value.slice(0, 5)} <br /> {dateArray[0].value}&nbsp;
+        {dateArray[1].value} {dateArray[2].value}
+      </>
+    );
   }
-  const handleKeyDown = e => {
-    e.target.style.height = "25px"
-    e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`
-  }
+  const handleKeyDown = (e) => {
+    e.target.style.height = "25px";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`;
+  };
 
-  const refOne = useRef(null)
+  const refOne = useRef(null);
 
   useEffect(() => {
     if (refOne.current) {
-      refOne.current.style.height = "25px"
-      refOne.current.style.height = `${Math.min(refOne.current.scrollHeight, 250)}px`
+      refOne.current.style.height = "25px";
+      refOne.current.style.height = `${Math.min(
+        refOne.current.scrollHeight,
+        250
+      )}px`;
     }
-  }, [indexingData.taskRename.show, indexingData.taskRename])
+  }, [indexingData.taskRename.show, indexingData.taskRename]);
 
-  const refTwo = useRef(null)
+  const refTwo = useRef(null);
   useEffect(() => {
-    document.addEventListener("mousemove", handleClickOutside, true)
-  }, [refTwo])
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
 
-  const handleClickOutside = e => {
+  const handleClickOutside = (e) => {
     if (refTwo !== null && dragging === true) {
       if (!refTwo.current.contains(e.target)) {
-        setIsHovering(false)
+        setIsHovering(false);
       }
     }
-  }
+  };
 
-  const handleRenameTodo = e => {
-    e.preventDefault()
+  const handleRenameTodo = (e) => {
+    e.preventDefault();
     dispatch(
       RENAME_TODO({
         taskRename: indexingData.taskRename.rename,
         todoIndex: indexingData.todoIndex.todoIndex,
         index: indexingData.listIndex,
       })
-    )
-    dispatch(TASK_RENAME({ rename: "", id: "", show: false }))
-  }
+    );
+    editTodo("", "", false);
+  };
 
   const rearrange = () => {
     let newPosition = todosRedux[indexingData.listIndex].todoArray
-      .map(x => x.id)
-      .indexOf(indexingData.newtodoid)
+      .map((x) => x.id)
+      .indexOf(indexingData.newtodoid);
     dispatch(
       CHANGE_TODO_POSITION({
         index: indexingData.listIndex,
         todoIndex: indexingData.todoIndex.todoIndex,
         newPositionIndex: newPosition,
       })
-    )
-  }
+    );
+  };
 
   const handleChangeTodoIndex = () => {
     dispatch(
       CHANGE_TODOINDEX({
         todoId: todo.id,
         todoIndex: todosRedux[indexingData.listIndex].todoArray
-          .map(x => x.id)
+          .map((x) => x.id)
           .indexOf(todo.id),
       })
-    )
-  }
-  const handleOnDragOver = e => {
-    e.preventDefault()
-    dispatch(NEWTODOID(todo.id))
-  }
+    );
+  };
+  const handleOnDragOver = (e) => {
+    e.preventDefault();
+    dispatch(NEWTODOID(todo.id));
+  };
 
   const handleOnDragStart = () => {
     if (!dragging) {
-      dispatch(TODODRAGGING(true))
-      setDragging(true)
+      dispatch(TODODRAGGING(true));
+      setDragging(true);
     }
 
     dispatch(
       CHANGE_TODOINDEX({
         todoId: todo.id,
         todoIndex: todosRedux[indexingData.listIndex].todoArray
-          .map(x => x.id)
+          .map((x) => x.id)
           .indexOf(todo.id),
       })
-    )
-  }
+    );
+  };
   const handleOnDragEnd = () => {
-    rearrange()
-    dispatch(TODODRAGGING(false))
-    setDragging(false)
-  }
-
-  const editTodo = () => {
-    dispatch(
-      TASK_RENAME({
-        rename: todo.taskName.replace(/\s\s+/g, " "),
-        id: todo.id,
-        show: true,
-      })
-    )
-  }
-
+    rearrange();
+    dispatch(TODODRAGGING(false));
+    setDragging(false);
+  };
+  const toggleTodo = () => {
+    if (!isLoggedIn) {
+      dispatch(
+        TOGGLE_TODO({
+          id: todo.id,
+          index: indexingData.listIndex,
+          todoIndex: indexingData.todoIndex.todoIndex,
+        })
+      );
+    } else if (isLoggedIn) {
+    }
+  };
+  const editTodo = (rename, id, show) => {
+    if (!isLoggedIn) {
+      dispatch(
+        TASK_RENAME({
+          rename: rename,
+          id: id,
+          show: show,
+        })
+      );
+    } else if (isLoggedIn) {
+      setEdit((x) => !x);
+    }
+  };
+  console.log(edit);
   const todoClassName = `
   ${
-    indexingData.newtodoid && indexingData.TodoDragging && indexingData.newtodoid === name
+    indexingData.newtodoid &&
+    indexingData.TodoDragging &&
+    indexingData.newtodoid === name
       ? styles.afterGlowTodo
       : ""
   } 
-    ${styles.todoContainer}`
+    ${styles.todoContainer}`;
 
   const todoComplete = `${styles.todo} ${
     todo.complete ? styles.todoComplete : styles.todoNotComplete
-  }`
+  }`;
 
   return (
     <div className={styles.todoBackground} onDragOver={handleOnDragOver}>
@@ -157,19 +202,21 @@ function Todo({ todo, name }) {
         <div>
           {!indexingData.taskRename.show && (
             <div
-              onDoubleClick={editTodo}
-              onMouseEnter={x => {
+              onDoubleClick={() =>
+                editTodo(todo.taskName.replace(/\s\s+/g, " "), todo.id, true)
+              }
+              onMouseEnter={() => {
                 hoverEvent = setTimeout(() => {
-                  setIsHovering(true)
-                }, 1000)
+                  setIsHovering(true);
+                }, 1000);
               }}
-              onMouseLeave={x => {
-                setIsHovering(false)
-                clearTimeout(hoverEvent)
+              onMouseLeave={() => {
+                setIsHovering(false);
+                clearTimeout(hoverEvent);
               }}
               className={todoComplete}
             >
-              {todo.taskName}
+              {!isLoggedIn && todo.taskName} {isLoggedIn && name}
               {isHovering && !dragging && (
                 <div className={styles.hoverDoubleClick}>
                   Double click to edit <br /> or drag {`&`} drop
@@ -181,35 +228,32 @@ function Todo({ todo, name }) {
           {indexingData.taskRename.show && (
             <div>
               {todo.id === indexingData.taskRename.id ? (
-                <form className={styles.editTodoForm} onSubmit={handleRenameTodo}>
+                <form
+                  className={styles.editTodoForm}
+                  onSubmit={handleRenameTodo}
+                >
                   <label>
                     <textarea
-                      autoFocus={todo.id === indexingData.taskRename.id ? true : false}
+                      autoFocus={
+                        todo.id === indexingData.taskRename.id ? true : false
+                      }
                       ref={refOne}
                       value={indexingData.taskRename.rename}
                       className={styles.textArea}
                       onKeyDown={handleKeyDown}
-                      onKeyPress={e => {
+                      onKeyPress={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
-                          handleRenameTodo(e)
+                          handleRenameTodo(e);
                         }
                       }}
-                      onChange={e =>
-                        dispatch(
-                          TASK_RENAME({
-                            rename: e.target.value,
-                            id: todo.id,
-                            show: true,
-                          })
-                        )
-                      }
+                      onChange={(e) => editTodo(e.target.value, todo.id, true)}
                     />
                   </label>
                   <label className={styles.submitContainer}>
                     <div
                       className={styles.miniSubmit}
-                      onClick={e => {
-                        handleRenameTodo(e)
+                      onClick={(e) => {
+                        handleRenameTodo(e);
                       }}
                     >
                       <img src={saveIcon} alt="save icon" />
@@ -218,13 +262,7 @@ function Todo({ todo, name }) {
                 </form>
               ) : (
                 <div
-                  onDoubleClick={() => {
-                    TASK_RENAME({
-                      rename: todo.taskName,
-                      id: todo.id,
-                      show: true,
-                    })
-                  }}
+                  onDoubleClick={() => editTodo(todo.taskName, todo.id, true)}
                   className={todoComplete}
                 >
                   {todo.taskName}
@@ -234,24 +272,15 @@ function Todo({ todo, name }) {
           )}
         </div>
         <div className={styles.todoButtonsFlex}>
-          <div
-            className={styles.todoCheck}
-            onClick={() => {
-              dispatch(
-                TOGGLE_TODO({
-                  id: todo.id,
-                  index: indexingData.listIndex,
-                  todoIndex: indexingData.todoIndex.todoIndex,
-                })
-              )
-            }}
-          >
+          <div className={styles.todoCheck} onClick={toggleTodo}>
             &#10004;
           </div>
           <div
             className={styles.todoDelete}
             onClick={() => {
-              dispatch(DELETE_TODO({ id: todo.id, index: indexingData.listIndex }))
+              dispatch(
+                DELETE_TODO({ id: todo.id, index: indexingData.listIndex })
+              );
             }}
           >
             &#8211;
@@ -259,14 +288,8 @@ function Todo({ todo, name }) {
           <div className={styles.timeStampWrapper}>
             <div className={styles.stampWrapper}>
               <div>
-                {!isLoggedIn && (
-                  <>
-                    {dataObject[4].value.slice(0, 5)} <br />
-                    {dataObject[0].value}&nbsp;
-                    {dataObject[1].value}&nbsp;
-                    {dataObject[2].value}
-                  </>
-                )}
+                {!isLoggedIn && dataObject}
+                {isLoggedIn && date}
               </div>
             </div>
           </div>
@@ -279,14 +302,7 @@ function Todo({ todo, name }) {
             }
           >
             <div className={styles.stampWrapper}>
-              {todo.complete && (
-                <div>
-                  {markedDate[4].value.slice(0, 5)} <br />
-                  {markedDate[0].value}&nbsp;
-                  {markedDate[1].value}&nbsp;
-                  {markedDate[2].value}
-                </div>
-              )}
+              {todo.complete && markedDate}
               {!todo.complete && (
                 <div>
                   Not <br /> Complete
@@ -297,7 +313,7 @@ function Todo({ todo, name }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Todo
+export default Todo;
