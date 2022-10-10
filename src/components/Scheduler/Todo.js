@@ -173,7 +173,7 @@ function Todo({ todo, name, date }) {
       setEdit((x) => !x);
     }
   };
-  console.log(edit);
+
   const todoClassName = `
   ${
     indexingData.newtodoid &&
