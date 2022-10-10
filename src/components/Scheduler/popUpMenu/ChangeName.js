@@ -1,14 +1,27 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import styles from "./popUpMenu.module.css";
-import { RENAME_LIST } from "../todoSlice";
-import { resetState } from "./popupMenuSlice";
-import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice";
+/** @format */
+
+import React from "react"
+import { useSelector, useDispatch } from "react-redux"
+import styles from "./popUpMenu.module.css"
+import { RENAME_LIST } from "../todoSlice"
+import { resetState } from "./popupMenuSlice"
+import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice"
 
 const ChangeName = () => {
-  const dispatch = useDispatch();
-  const indexingData = useSelector((store) => store.indexing.data);
+  const dispatch = useDispatch()
+  const indexingData = useSelector(store => store.indexing.data)
 
+  const handleSubmit = e => {
+    e.preventDefault()
+    dispatch(
+      RENAME_LIST({
+        index: indexingData.listIndex,
+        newListName: indexingData.newListName,
+      })
+    )
+    dispatch(resetState())
+    dispatch(POPUPVISIBILITY(false))
+  }
   return (
     <>
       <div
@@ -20,20 +33,7 @@ const ChangeName = () => {
         }}
       >
         <div>
-          <form
-            className={styles.nameChangeForm}
-            onSubmit={(e) => {
-              e.preventDefault();
-              dispatch(
-                RENAME_LIST({
-                  index: indexingData.listIndex,
-                  newListName: indexingData.newListName,
-                })
-              );
-              dispatch(resetState());
-              dispatch(POPUPVISIBILITY(false));
-            }}
-          >
+          <form className={styles.nameChangeForm} onSubmit={handleSubmit}>
             <input
               className={styles.textInput}
               type="text"
@@ -42,18 +42,14 @@ const ChangeName = () => {
               required
               placeholder="Enter task here!"
               value={indexingData.newListName}
-              onChange={(e) => dispatch(NEWLISTNAME(e.target.value))}
+              onChange={e => dispatch(NEWLISTNAME(e.target.value))}
             />
-            <input
-              className={styles.submitInput}
-              type="submit"
-              value="Rename"
-            />
+            <input className={styles.submitInput} type="submit" value="Rename" />
           </form>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ChangeName;
+export default ChangeName

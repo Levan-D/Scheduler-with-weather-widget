@@ -1,21 +1,42 @@
-import ProgressBar from "../ProgressBar/ProgressBar";
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { ADD_TODO } from "./todoSlice";
-import styles from "./createTodo.module.css";
+/** @format */
+
+import ProgressBar from "../ProgressBar/ProgressBar"
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { ADD_TODO } from "./todoSlice"
+import styles from "./createTodo.module.css"
+import { createTodo } from "./apiScheduler/createTodoSlice"
+import { pushNewTodo } from "./apiScheduler/getTodoSlice"
 
 const CreateTodo = () => {
-  const dispatch = useDispatch();
-  const taskProgressData = useSelector((store) => store.taskProgress.data);
-  const indexingData = useSelector((store) => store.indexing.data);
+  const dispatch = useDispatch()
+  const taskProgressData = useSelector(store => store.taskProgress.data)
+  const indexingData = useSelector(store => store.indexing.data)
+  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
+  const listData = useSelector(store => store.getList)
+  const createTodoData = useSelector(store => store.createTodo)
+  const todoData = useSelector(store => store.getTodo.data)
+  const [taskName, setTaskName] = useState("")
 
-  const [taskName, setTaskName] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }));
-    setTaskName("");
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (!isLoggedIn) {
+      dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }))
+    } else if (isLoggedIn) {
+      dispatch(
+        createTodo({ title: taskName, listId: listData.data[indexingData.listIndex].id })
+      )
+    }
+    setTaskName("")
   }
+  console.log(createTodoData.data.id)
+  useEffect(() => {
+    if (createTodoData.success && !createTodoData.loading) {
+      if (todoData.find(todo => todo.position === createTodoData.data.position)) {
+        return
+      } else dispatch(pushNewTodo(createTodoData.data))
+    }
+  }, [createTodoData.loading])
 
   return (
     <div>
@@ -37,7 +58,7 @@ const CreateTodo = () => {
           required
           placeholder="Enter task here!"
           value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
+          onChange={e => setTaskName(e.target.value)}
         />
         <input
           className={`${styles.bigSubmitButton} ${styles.submitForm}`}
@@ -46,7 +67,7 @@ const CreateTodo = () => {
         />
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateTodo;
+export default CreateTodo

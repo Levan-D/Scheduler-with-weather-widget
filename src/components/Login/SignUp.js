@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from "react";
-import styles from "./login.module.css";
-import { useNavigate } from "react-router-dom";
-import backBtn from "../pictures/back.png";
-import show from "../pictures/show.png";
-import hide from "../pictures/hide.png";
-import { isValidEmail, isValidName, isValidPassword } from "./Validator";
-import { useDispatch, useSelector } from "react-redux";
-import racoon from "../pictures/racoon.png";
-import { signUpUser, resetUser } from "./signUpSlice";
-import Loader from "../Loader/Loader";
+/** @format */
+
+import React, { useState, useEffect } from "react"
+import styles from "./login.module.css"
+import { useNavigate } from "react-router-dom"
+import backBtn from "../pictures/back.png"
+import show from "../pictures/show.png"
+import hide from "../pictures/hide.png"
+import { isValidEmail, isValidName, isValidPassword } from "./Validator"
+import { useDispatch, useSelector } from "react-redux"
+import racoon from "../pictures/racoon.png"
+import { signUpUser, resetUser } from "./signUpSlice"
+import Loader from "../Loader/Loader"
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-  const [passwordShown, setPasswordShown] = useState(false);
+  const dispatch = useDispatch()
+  const [passwordShown, setPasswordShown] = useState(false)
   const togglePassword = () => {
-    setPasswordShown((pass) => !pass);
-  };
-  const userState = useSelector((store) => store.signUp);
+    setPasswordShown(pass => !pass)
+  }
+  const userState = useSelector(store => store.signUp)
   useEffect(() => {
     if (userState.success) {
       setTimeout(() => {
-        navigate("/scheduler");
-      }, 4000);
+        navigate("/scheduler")
+      }, 4000)
     }
-  }, [userState]);
+  }, [userState])
 
   const [error, setError] = useState({
     email: false,
@@ -31,26 +33,26 @@ const SignUp = () => {
     lastName: false,
     password: false,
     passwordConf: false,
-  });
+  })
   const [validator, setValidator] = useState({
     email: "",
     name: "",
     lastName: "",
     password: "",
     passwordConf: "",
-  });
+  })
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (userState.success) {
-      dispatch(resetUser());
-      navigate("/scheduler");
+      dispatch(resetUser())
+      navigate("/scheduler")
     }
-  }, [userState]);
+  }, [userState])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault()
     if (
       !error.email &&
       !error.name &&
@@ -65,66 +67,66 @@ const SignUp = () => {
           last_name: validator.lastName,
           password: validator.password,
         })
-      );
+      )
     }
-  };
-  function handleUseInfo(type, event) {
+  }
+  const handleUseInfo = (type, event) => {
     switch (type) {
       case "email":
         if (!isValidEmail(event.target.value)) {
-          setError({ ...error, email: true });
+          setError({ ...error, email: true })
         } else {
-          setError({ ...error, email: false });
+          setError({ ...error, email: false })
         }
         setValidator({
           ...validator,
           email: event.target.value,
-        });
-        break;
+        })
+        break
       case "name":
         if (!isValidName(event.target.value)) {
-          setError({ ...error, name: true });
+          setError({ ...error, name: true })
         } else {
-          setError({ ...error, name: false });
+          setError({ ...error, name: false })
         }
         setValidator({
           ...validator,
           name: event.target.value,
-        });
-        break;
+        })
+        break
       case "lastName":
         if (!isValidName(event.target.value)) {
-          setError({ ...error, lastName: true });
+          setError({ ...error, lastName: true })
         } else {
-          setError({ ...error, lastName: false });
+          setError({ ...error, lastName: false })
         }
         setValidator({
           ...validator,
           lastName: event.target.value,
-        });
-        break;
+        })
+        break
       case "password":
         if (!isValidPassword(event.target.value)) {
-          setError({ ...error, password: true });
+          setError({ ...error, password: true })
         } else {
-          setError({ ...error, password: false });
+          setError({ ...error, password: false })
         }
         setValidator({
           ...validator,
           password: event.target.value,
-        });
-        break;
+        })
+        break
       case "comparePass":
         setValidator({
           ...validator,
           passwordConf: event.target.value,
-        });
+        })
         if (event.target.value === validator.password) {
-          setError({ ...error, passwordConf: false });
+          setError({ ...error, passwordConf: false })
         } else {
-          setError({ ...error, passwordConf: true });
+          setError({ ...error, passwordConf: true })
         }
-        break;
+        break
     }
   }
 
@@ -134,14 +136,14 @@ const SignUp = () => {
         <div
           className={styles.backBtn}
           onClick={() => {
-            navigate("/");
+            navigate("/")
           }}
         >
           <img src={backBtn} alt="back button" />
         </div>
         <Loader />
       </div>
-    );
+    )
   }
 
   if (userState.success) {
@@ -150,7 +152,7 @@ const SignUp = () => {
         <div
           className={styles.backBtn}
           onClick={() => {
-            navigate(-1);
+            navigate(-1)
           }}
         >
           <img src={backBtn} alt="back button" />
@@ -172,7 +174,7 @@ const SignUp = () => {
           on Freepik
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -180,7 +182,7 @@ const SignUp = () => {
       <div
         className={styles.backBtn}
         onClick={() => {
-          navigate(-1);
+          navigate(-1)
         }}
       >
         <img src={backBtn} alt="back button" />
@@ -202,8 +204,8 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.email}
-            onChange={(e) => {
-              handleUseInfo("email", e);
+            onChange={e => {
+              handleUseInfo("email", e)
             }}
             placeholder="JimmyJones@hotmail.com"
             required
@@ -228,8 +230,8 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.name}
-            onChange={(e) => {
-              handleUseInfo("name", e);
+            onChange={e => {
+              handleUseInfo("name", e)
             }}
             placeholder="Jimmy"
             required
@@ -254,8 +256,8 @@ const SignUp = () => {
             type="text"
             name="uname"
             value={validator.lastName}
-            onChange={(e) => {
-              handleUseInfo("lastName", e);
+            onChange={e => {
+              handleUseInfo("lastName", e)
             }}
             placeholder="Jones"
             required
@@ -275,16 +277,15 @@ const SignUp = () => {
         <div className={`${styles[`input-container`]} ${styles.signUpForm}`}>
           <label className={styles.label}>Password </label>
           <p className={styles.passwordParagraph}>
-            8 to 15 characters which contain at least one number &amp; a special
-            character
+            8 to 15 characters which contain at least one number &amp; a special character
           </p>
           <input
             className={styles.inputText}
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.password}
-            onChange={(e) => {
-              handleUseInfo("password", e);
+            onChange={e => {
+              handleUseInfo("password", e)
             }}
             placeholder="********"
             required
@@ -314,8 +315,8 @@ const SignUp = () => {
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.passwordConf}
-            onChange={(e) => {
-              handleUseInfo("comparePass", e);
+            onChange={e => {
+              handleUseInfo("comparePass", e)
             }}
             placeholder="********"
             required
@@ -342,7 +343,7 @@ const SignUp = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

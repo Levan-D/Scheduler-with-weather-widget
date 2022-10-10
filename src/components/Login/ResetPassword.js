@@ -1,55 +1,58 @@
-import React, { useState } from "react";
-import styles from "./login.module.css";
-import { useNavigate } from "react-router-dom";
-import show from "../pictures/show.png";
-import hide from "../pictures/hide.png";
-import { isValidPassword } from "./Validator";
+/** @format */
+
+import React, { useState } from "react"
+import styles from "./login.module.css"
+import { useNavigate } from "react-router-dom"
+import show from "../pictures/show.png"
+import hide from "../pictures/hide.png"
+import { isValidPassword } from "./Validator"
+
 const ResetPassword = () => {
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(false)
   const togglePassword = () => {
-    setPasswordShown((pass) => !pass);
-  };
+    setPasswordShown(pass => !pass)
+  }
   const [error, setError] = useState({
     password: false,
     passwordConf: false,
-  });
+  })
   const [validator, setValidator] = useState({
     password: "",
     passwordConf: "",
-  });
+  })
 
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const navigate = useNavigate()
+  const handleSubmit = e => {
+    e.preventDefault()
     if (!error.password && !error.passwordConf) {
-      navigate("/");
+      navigate("/")
     }
-  };
+  }
 
-  function handleUseInfo(type, event) {
+  const handleUseInfo = (type, event) => {
     switch (type) {
       case "password":
         if (!isValidPassword(event.target.value)) {
-          setError({ ...error, password: true });
+          setError({ ...error, password: true })
         } else {
-          setError({ ...error, password: false });
+          setError({ ...error, password: false })
         }
         setValidator({
           ...validator,
           password: event.target.value,
-        });
-        break;
+        })
+        break
       case "comparePass":
         setValidator({
           ...validator,
           passwordConf: event.target.value,
-        });
+        })
         if (event.target.value === validator.password) {
-          setError({ ...error, passwordConf: false });
+          setError({ ...error, passwordConf: false })
         } else {
-          setError({ ...error, passwordConf: true });
+          setError({ ...error, passwordConf: true })
         }
-        break;
+        break
     }
   }
   return (
@@ -60,16 +63,15 @@ const ResetPassword = () => {
         <div className={`${styles[`input-container`]} ${styles.signUpForm}`}>
           <label className={styles.label}>Password </label>
           <p className={styles.passwordParagraph}>
-            8 to 15 characters which contain at least one number &amp; a special
-            character
+            8 to 15 characters which contain at least one number &amp; a special character
           </p>
           <input
             className={styles.inputText}
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.password}
-            onChange={(e) => {
-              handleUseInfo("password", e);
+            onChange={e => {
+              handleUseInfo("password", e)
             }}
             placeholder="********"
             required
@@ -99,8 +101,8 @@ const ResetPassword = () => {
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.passwordConf}
-            onChange={(e) => {
-              handleUseInfo("comparePass", e);
+            onChange={e => {
+              handleUseInfo("comparePass", e)
             }}
             placeholder="********"
             required
@@ -119,15 +121,15 @@ const ResetPassword = () => {
         </div>
         <div
           className={styles.guestButton}
-          onClick={(e) => {
-            handleSubmit(e);
+          onClick={e => {
+            handleSubmit(e)
           }}
         >
           Reset Password
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

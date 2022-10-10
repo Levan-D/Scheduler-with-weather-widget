@@ -1,16 +1,17 @@
-import axios from "axios";
-import errorHandling from "./Response";
+/** @format */
+
+import axios from "axios"
+import errorHandling from "./Response"
 
 const request = async (method, url, data, isAuthenticated = false) => {
   try {
-    // if (method == "POST" || method == "PUT" || method == "PATCH") {
-    // }
+    console.log(data,url)
+    let headers
 
-    let headers;
     if (isAuthenticated) {
       headers = {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      };
+      }
     }
 
     const res = await axios({
@@ -19,22 +20,22 @@ const request = async (method, url, data, isAuthenticated = false) => {
       data: data,
       headers: headers,
       validateStatus: function (status) {
-        return status >= 200 && status < 500;
+        return status >= 200 && status < 500
       },
-    });
+    })
 
     if (res.status >= 200 && res.status < 300) {
-      return res.data;
+      return res.data
     } else {
-      throw res.data;
+      throw res.data
     }
   } catch (error) {
     if (error.locale != "") {
-      throw errorHandling(error.locale);
+      throw errorHandling(error.locale)
     } else {
-      throw error;
+      throw error
     }
   }
-};
+}
 
-export default request;
+export default request

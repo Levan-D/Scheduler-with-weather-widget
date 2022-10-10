@@ -1,15 +1,15 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import request from "../../app/api/Request"
+import request from "../../../app/api/Request"
 
-export const forgotUser = createAsyncThunk(
-  "user/forgot",
-  async ({ email }, { rejectWithValue }) => {
+export const createList = createAsyncThunk(
+  "list/create",
+  async (title, rejectWithValue) => {
     try {
-      const body = { email }
+      const body = title
 
-      const res = await request("POST", "/auth/forgot", body, false)
+      const res = await request("POST", "/lists", body, true)
 
       return res
     } catch (error) {
@@ -20,34 +20,38 @@ export const forgotUser = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  data: [],
   error: null,
   success: false,
 }
 
-const userForgotSlice = createSlice({
-  name: "forgot",
+const createListSlice = createSlice({
+  name: "createList",
   initialState,
   reducers: {
     resetUser: state => {
       state.loading = false
-      state.error = null
+      state.data = []
       state.success = false
+      state.error = null
     },
   },
   extraReducers: {
-    [forgotUser.pending]: state => {
+    [createList.pending]: state => {
       state.loading = true
       state.error = null
     },
-    [forgotUser.fulfilled]: state => {
+    [createList.fulfilled]: (state, action) => {
       state.loading = false
+      state.data = action.payload
+
       state.success = true
     },
-    [forgotUser.rejected]: (state, { payload }) => {
+    [createList.rejected]: (state, { payload }) => {
       state.loading = false
       state.error = payload
     },
   },
 })
-export const { resetUser } = userForgotSlice.actions
-export default userForgotSlice.reducer
+
+export default createListSlice.reducer
