@@ -72,9 +72,10 @@ function Scheduler() {
 
   useEffect(() => {
     if (isLoggedIn) {
+      console.log(`bonjorno`);
       dispatch(getList());
     }
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isLoggedIn && listData.success && listData.data.length > 0) {
