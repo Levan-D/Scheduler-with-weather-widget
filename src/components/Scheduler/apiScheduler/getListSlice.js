@@ -39,6 +39,15 @@ const getListSlice = createSlice({
     deleteListInter: (state, action) => {
       state.data.splice(action.payload, 1);
     },
+    renameListInter: (state, action) => {
+      state.data[action.payload.index].title = action.payload.data;
+    },
+    changeListColorInter: (state, action) => {
+      state.data[action.payload.index].color = action.payload.data;
+    },
+    changeListDateInter: (state, action) => {
+      state.data[action.payload.index].reminder_at = action.payload.data;
+    },
   },
   extraReducers: {
     [getList.pending]: (state) => {
@@ -58,5 +67,12 @@ const getListSlice = createSlice({
   },
 });
 
-export const { resetUser, pushNewList, deleteListInter } = getListSlice.actions;
+export const {
+  resetUser,
+  pushNewList,
+  deleteListInter,
+  renameListInter,
+  changeListColorInter,
+  changeListDateInter,
+} = getListSlice.actions;
 export default getListSlice.reducer;

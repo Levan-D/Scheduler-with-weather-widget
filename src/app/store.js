@@ -13,7 +13,8 @@ import createListReduer from "../components/Scheduler/apiScheduler/createListSli
 import getTodoReducer from "../components/Scheduler/apiScheduler/getTodoSlice";
 import createTodoReduer from "../components/Scheduler/apiScheduler/createTodoSlice";
 import deleteListReducer from "../components/Scheduler/apiScheduler/deleteListSlice";
-import renameListReducer from "../components/Scheduler/apiScheduler/renameListSlice";
+import patchListReducer from "../components/Scheduler/apiScheduler/patchListSlice";
+import getHealthReducer from "../components/Login/checkHealthSlice";
 
 export const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ export const store = configureStore({
     deleteList: deleteListReducer,
     getTodo: getTodoReducer,
     createTodo: createTodoReduer,
-    renameList: renameListReducer,
+    patchList: patchListReducer,
+    checkHealth: getHealthReducer,
   },
 });

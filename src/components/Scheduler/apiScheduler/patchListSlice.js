@@ -3,8 +3,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import request from "../../../app/api/Request";
 
-export const renameList = createAsyncThunk(
-  "list/rename",
+export const patchList = createAsyncThunk(
+  "list/patch",
   async (payload, rejectWithValue) => {
     try {
       const body = payload.data;
@@ -25,8 +25,8 @@ const initialState = {
   success: false,
 };
 
-const renameListSlice = createSlice({
-  name: "renameList",
+const patchListSlice = createSlice({
+  name: "patchList",
   initialState,
   reducers: {
     resetUser: (state) => {
@@ -37,22 +37,22 @@ const renameListSlice = createSlice({
     },
   },
   extraReducers: {
-    [renameList.pending]: (state) => {
+    [patchList.pending]: (state) => {
       state.loading = true;
       state.error = null;
     },
-    [renameList.fulfilled]: (state, action) => {
+    [patchList.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload;
 
       state.success = true;
     },
-    [renameList.rejected]: (state, { payload }) => {
+    [patchList.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
   },
 });
 
-export const { resetUser } = renameListSlice.actions;
-export default renameListSlice.reducer;
+export const { resetUser } = patchListSlice.actions;
+export default patchListSlice.reducer;

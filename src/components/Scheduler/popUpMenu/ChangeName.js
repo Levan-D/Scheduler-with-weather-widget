@@ -6,16 +6,17 @@ import styles from "./popUpMenu.module.css";
 import { RENAME_LIST } from "../Todo/todoSlice";
 import { resetState } from "./popupMenuSlice";
 import { POPUPVISIBILITY, NEWLISTNAME } from "../indexingSlice";
-import { renameList } from "../apiScheduler/renameListSlice";
+import { patchList } from "../apiScheduler/patchListSlice";
+import { renameListInter } from "../apiScheduler/getListSlice";
 
 const ChangeName = () => {
   const dispatch = useDispatch();
   const indexingData = useSelector((store) => store.indexing.data);
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
-  const asdf = useSelector((store) => store.renameList);
+  const asdf = useSelector((store) => store.patchList);
   const listData = useSelector((store) => store.getList.data);
-  const deleteListId = isLoggedIn ? listData[indexingData.listIndex].id : null;
-  console.log("asdf:", asdf, deleteListId);
+  const currentListId = isLoggedIn ? listData[indexingData.listIndex].id : null;
+  console.log("asdf:", listData);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isLoggedIn) {
@@ -27,9 +28,15 @@ const ChangeName = () => {
       );
     } else if (isLoggedIn) {
       dispatch(
-        renameList({
-          title: deleteListId,
+        patchList({
+          title: currentListId,
           data: { title: indexingData.newListName },
+        })
+      );
+      dispatch(
+        renameListInter({
+          index: indexingData.listIndex,
+          data: indexingData.newListName,
         })
       );
     }

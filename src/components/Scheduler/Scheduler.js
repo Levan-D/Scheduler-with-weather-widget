@@ -28,7 +28,7 @@ function Scheduler() {
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const listData = useSelector((store) => store.getList);
   const todoData = useSelector((store) => store.getTodo);
-
+console.log('listData:', listData.data);
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
       dispatch(ISLOGGEDIN(true));

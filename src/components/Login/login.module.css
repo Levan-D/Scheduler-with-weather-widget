@@ -34,6 +34,9 @@
 .guestButton:active {
   filter: brightness(0.95);
 }
+.btnDisabled {
+  opacity: 0.5;
+}
 .header {
   text-align: center;
   font-size: 2.5rem;

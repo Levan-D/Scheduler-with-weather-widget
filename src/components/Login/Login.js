@@ -2,11 +2,31 @@ import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import LoginSection from "./LoginSection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
+import { getHealth } from "./checkHealthSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const [status, setStatus] = useState(null);
   const userState = useSelector((state) => state.auth);
+  const serverHealth = useSelector((store) => store.checkHealth);
+
+  useEffect(() => {
+    if (!serverHealth.loading && serverHealth.success === null) {
+      dispatch(getHealth());
+    }
+    if (serverHealth.success) {
+      setStatus(<> Server: &#10004; </>);
+    } else if (!serverHealth.success) {
+      setStatus(
+        <>
+          Server:<span style={{ fontWeight: "bold" }}> &#x2715;</span> <br />
+          <span style={{ fontSize: "0.8rem" }}>Login as guest</span>
+        </>
+      );
+    }
+  }, [serverHealth.success]);
 
   if (userState.loading) {
     return (
@@ -18,6 +38,14 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
+      <div
+        style={{
+          position: "absolute",
+          color: serverHealth.success ? "#528352" : "#FF7878",
+        }}
+      >
+        {status}
+      </div>
       <LoginSection />
       <header className={styles.dividerContainer}>
         <div className={styles.subContainer}>
@@ -26,7 +54,12 @@ const Login = () => {
           <span className={styles.spacer}></span>
         </div>
       </header>
-      <Link to="/signUp" className={styles.guestButton}>
+      <Link
+        to={serverHealth.success ? "/signUp" : "#"}
+        className={`${styles.guestButton} ${
+          !serverHealth.success && styles.btnDisabled
+        }`}
+      >
         Sign Up
       </Link>
       <Link to="/scheduler" className={styles.guestButton}>

@@ -177,7 +177,7 @@ function List({ name, nameShow, color, date, position }) {
         )}
         {isLoggedIn && (
           <div className={`${name} ${styles.nameList}`}>
-            {date !== null && date}
+            {date !== null && date.slice(2, 10)} &nbsp;
             {name}
           </div>
         )}
