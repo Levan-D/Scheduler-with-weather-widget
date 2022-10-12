@@ -65,7 +65,7 @@ const TodoTask = ({ todo, name, dragging }) => {
       })
     );
   };
-  console.log(todoData);
+
   const handleRenameTodo = (e) => {
     e.preventDefault();
     if (!isLoggedIn) {
