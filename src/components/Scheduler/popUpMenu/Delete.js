@@ -14,9 +14,10 @@ const Delete = () => {
   const todosRedux = useSelector((store) => store.todo.data);
   const indexingData = useSelector((store) => store.indexing.data);
   const listData = useSelector((store) => store.getList.data);
+
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
-  const deleteListData = useSelector((store) => store.deleteList);
   const deleteListId = isLoggedIn ? listData[indexingData.listIndex].id : null;
+  const deleteListData = useSelector((store) => store.deleteList);
 
   const handleDelete = () => {
     if (!isLoggedIn) {

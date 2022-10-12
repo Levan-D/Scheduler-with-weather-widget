@@ -34,14 +34,23 @@ function Todo({ todo, name, date }) {
   };
 
   const handleChangeTodoIndex = () => {
-    dispatch(
-      CHANGE_TODOINDEX({
-        todoId: todo.id,
-        todoIndex: todosRedux[indexingData.listIndex].todoArray
-          .map((x) => x.id)
-          .indexOf(todo.id),
-      })
-    );
+    if (!isLoggedIn) {
+      dispatch(
+        CHANGE_TODOINDEX({
+          todoId: todo.id,
+          todoIndex: todosRedux[indexingData.listIndex].todoArray
+            .map((x) => x.id)
+            .indexOf(todo.id),
+        })
+      );
+    } else if (isLoggedIn) {
+      dispatch(
+        CHANGE_TODOINDEX({
+          todoId: todo.id,
+          todoIndex: null,
+        })
+      );
+    }
   };
   const handleOnDragOver = (e) => {
     e.preventDefault();
@@ -84,6 +93,7 @@ function Todo({ todo, name, date }) {
       <div
         className={todoClassName}
         onClick={handleChangeTodoIndex}
+        onMouseEnter={handleChangeTodoIndex}
         style={{ filter: dragging ? "brightness(0.7)" : "brightness(1)" }}
         draggable="true"
         onDragStart={handleOnDragStart}

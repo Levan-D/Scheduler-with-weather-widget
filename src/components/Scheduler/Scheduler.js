@@ -28,7 +28,7 @@ function Scheduler() {
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const listData = useSelector((store) => store.getList);
   const todoData = useSelector((store) => store.getTodo);
-console.log('listData:', listData.data);
+
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
       dispatch(ISLOGGEDIN(true));
@@ -167,6 +167,7 @@ console.log('listData:', listData.data);
               return <Todo key={x.id} todo={x} name={x.id} />;
             })}
           {isLoggedIn &&
+            listData.data.length > 0 &&
             typeof indexingData.listIndex === "number" &&
             todoData.data.map((x) => {
               return (

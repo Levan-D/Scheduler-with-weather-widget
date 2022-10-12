@@ -22,7 +22,7 @@ const CreateTodo = () => {
     e.preventDefault();
     if (!isLoggedIn) {
       dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }));
-    } else if (isLoggedIn) {
+    } else if (isLoggedIn && listData.data.length > 0) {
       dispatch(
         createTodo({
           title: taskName,

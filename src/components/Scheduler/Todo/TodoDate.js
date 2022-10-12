@@ -19,6 +19,13 @@ const TodoDate = ({ todo, date }) => {
         {marked[2].value}{" "}
       </>
     );
+  } else if (isLoggedIn && todo.updated_at) {
+    markedDate = (
+      <span>
+        {todo.updated_at.slice(11, 16)} <br />
+        {todo.updated_at.slice(2, 10)}
+      </span>
+    );
   }
 
   let dataObject;
@@ -33,32 +40,38 @@ const TodoDate = ({ todo, date }) => {
         {dateArray[1].value} {dateArray[2].value}
       </>
     );
+  } else if (isLoggedIn) {
+    dataObject = (
+      <span>
+        {date.slice(11, 16)} <br />
+        {date.slice(2, 10)}
+      </span>
+    );
   }
 
   return (
     <>
       <div className={styles.timeStampWrapper}>
         <div className={styles.stampWrapper}>
-          <div>
-            {!isLoggedIn && dataObject}
-            {isLoggedIn && date}
-          </div>
+          <div>{dataObject}</div>
         </div>
       </div>
+
       <div
         className={styles.markedStampWrapper}
         style={
-          todo.complete
+          todo.complete || todo.is_completed
             ? { backgroundColor: "#92ba92", color: "#f0f0f0" }
             : { backgroundColor: `#f0f0f0` }
         }
       >
         <div className={styles.stampWrapper}>
-          {todo.complete && markedDate}
-          {!todo.complete && (
-            <div>
+          {todo.complete || todo.is_completed ? (
+            markedDate
+          ) : (
+            <span>
               Not <br /> Complete
-            </div>
+            </span>
           )}
         </div>
       </div>

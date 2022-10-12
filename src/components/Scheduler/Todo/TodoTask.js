@@ -4,15 +4,26 @@ import { TASK_RENAME } from "../indexingSlice";
 import saveIcon from "../../pictures/saveIcon.png";
 import styles from "./todo.module.css";
 import { RENAME_TODO } from "./todoSlice";
+import { patchTodo } from "../apiScheduler/patchTodoSlice";
+import { renameTodoInter } from "../apiScheduler/getTodoSlice";
 
 const TodoTask = ({ todo, name, dragging }) => {
   const indexingData = useSelector((store) => store.indexing.data);
+  const listData = useSelector((store) => store.getList.data);
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const dispatch = useDispatch();
-  const [edit, setEdit] = useState(false);
+  const complete = isLoggedIn ? todo.is_completed : todo.complete;
   const todoComplete = `${styles.todo} ${
-    todo.complete ? styles.todoComplete : styles.todoNotComplete
+    complete ? styles.todoComplete : styles.todoNotComplete
   }`;
+  const todoData = useSelector((store) => store.getTodo);
+  const todoInex = todoData.data.findIndex((todo) => {
+    return todo.id === indexingData.todoIndex.todoId;
+  });
+  const deleteListId =
+    isLoggedIn && listData.length > 0
+      ? listData[indexingData.listIndex].id
+      : null;
   let hoverEvent;
   const [isHovering, setIsHovering] = useState(false);
 
@@ -46,44 +57,68 @@ const TodoTask = ({ todo, name, dragging }) => {
     }
   };
   const editTodo = (rename, id, show) => {
+    dispatch(
+      TASK_RENAME({
+        rename: rename,
+        id: id,
+        show: show,
+      })
+    );
+  };
+  console.log(todoData);
+  const handleRenameTodo = (e) => {
+    e.preventDefault();
     if (!isLoggedIn) {
       dispatch(
+        RENAME_TODO({
+          taskRename: indexingData.taskRename.rename,
+          todoIndex: indexingData.todoIndex.todoIndex,
+          index: indexingData.listIndex,
+        })
+      );
+      dispatch(
         TASK_RENAME({
-          rename: rename,
-          id: id,
-          show: show,
+          rename: "",
+          id: "",
+          show: false,
         })
       );
     } else if (isLoggedIn) {
-      setEdit((x) => !x);
+      dispatch(
+        patchTodo({
+          data: {
+            description: indexingData.taskRename.rename,
+          },
+          listId: deleteListId,
+          todoId: indexingData.todoIndex.todoId,
+        })
+      );
+      dispatch(
+        renameTodoInter({
+          index: todoInex,
+          data: indexingData.taskRename.rename,
+        })
+      );
+      dispatch(
+        TASK_RENAME({
+          rename: "",
+          id: "",
+          show: false,
+        })
+      );
     }
   };
-
-  const handleRenameTodo = (e) => {
-    e.preventDefault();
-    dispatch(
-      RENAME_TODO({
-        taskRename: indexingData.taskRename.rename,
-        todoIndex: indexingData.todoIndex.todoIndex,
-        index: indexingData.listIndex,
-      })
-    );
-    dispatch(
-      TASK_RENAME({
-        rename: "",
-        id: "",
-        show: false,
-      })
-    );
-  };
-
   return (
     <div ref={refTwo}>
       {!indexingData.taskRename.show && (
         <div
-          onDoubleClick={() =>
-            editTodo(todo.taskName.replace(/\s\s+/g, " "), todo.id, true)
-          }
+          onDoubleClick={() => {
+            if (!isLoggedIn) {
+              editTodo(todo.taskName.replace(/\s\s+/g, " "), todo.id, true);
+            } else if (isLoggedIn) {
+              editTodo(name.replace(/\s\s+/g, " "), todo.id, true);
+            }
+          }}
           onMouseEnter={() => {
             hoverEvent = setTimeout(() => {
               setIsHovering(true);
@@ -96,7 +131,7 @@ const TodoTask = ({ todo, name, dragging }) => {
           className={todoComplete}
         >
           {!isLoggedIn && todo.taskName} {isLoggedIn && name}
-          {isHovering && !dragging && (
+          {isHovering && !dragging && !isLoggedIn && (
             <div className={styles.hoverDoubleClick}>
               Double click to edit <br /> or drag {`&`} drop
             </div>

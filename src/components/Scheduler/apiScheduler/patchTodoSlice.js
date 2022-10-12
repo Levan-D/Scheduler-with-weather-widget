@@ -3,13 +3,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import request from "../../../app/api/Request";
 
-export const deleteList = createAsyncThunk(
-  "list/delete",
-  async (title, rejectWithValue) => {
+export const patchTodo = createAsyncThunk(
+  "list/patch",
+  async (payload, rejectWithValue) => {
     try {
-      const body = null;
+      const body = payload.data;
 
-      const res = await request("DELETE", `/lists/${title}`, body, true);
+      const res = await request(
+        "PATCH",
+        `/lists/${payload.listId}/tasks/${payload.todoId}`,
+        body,
+        true
+      );
 
       return res;
     } catch (error) {
@@ -20,36 +25,39 @@ export const deleteList = createAsyncThunk(
 
 const initialState = {
   loading: false,
+  data: [],
   error: null,
   success: false,
 };
 
-const deleteListSlice = createSlice({
-  name: "createList",
+const patchTodoSlice = createSlice({
+  name: "patchTodo",
   initialState,
   reducers: {
     resetUser: (state) => {
       state.loading = false;
+      state.data = [];
       state.success = false;
       state.error = null;
     },
   },
   extraReducers: {
-    [deleteList.pending]: (state) => {
+    [patchTodo.pending]: (state) => {
       state.loading = true;
       state.error = null;
     },
-    [deleteList.fulfilled]: (state, action) => {
+    [patchTodo.fulfilled]: (state, action) => {
       state.loading = false;
       state.data = action.payload;
 
       state.success = true;
     },
-    [deleteList.rejected]: (state, { payload }) => {
+    [patchTodo.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
   },
 });
 
-export default deleteListSlice.reducer;
+export const { resetUser } = patchTodoSlice.actions;
+export default patchTodoSlice.reducer;
