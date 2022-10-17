@@ -7,7 +7,7 @@ import backBtn from "../pictures/back.png"
 import racoon from "../pictures/racoon.png"
 import { isValidEmail } from "./Validator"
 import { useDispatch, useSelector } from "react-redux"
-import { forgotUser, resetUser } from "./forgotPassSlice"
+import { forgotUser, resetUser } from "./apiLogin/forgotPassSlice"
 
 const ForgotPassword = () => {
   const [error, setError] = useState(false)

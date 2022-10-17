@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import LoginSection from "./LoginSection";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
-import { getHealth } from "./checkHealthSlice";
+import { getHealth } from "./apiLogin/checkHealthSlice";
 
 const Login = () => {
   const dispatch = useDispatch();

@@ -1,15 +1,15 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import request from "../../app/api/Request"
+import request from "../../../app/api/Request"
 
-export const signUpUser = createAsyncThunk(
-  "user/register",
-  async ({ email, first_name, last_name, password }, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk(
+  "user/auth",
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const body = { email, first_name, last_name, password }
+      const body = { email, password }
 
-      const res = await request("POST", "/auth/sign-up", body, false)
+      const res = await request("POST", "/auth/login", body, false)
 
       if (res.access_token !== "" && res.refresh_token !== "") {
         localStorage.setItem("accessToken", res.access_token)
@@ -32,34 +32,34 @@ const initialState = {
   success: false,
 }
 
-const userSignUpSlice = createSlice({
-  name: "signUp",
+const userLoginSlice = createSlice({
+  name: "login",
   initialState,
   reducers: {
     resetUser: state => {
       state.loading = false
       state.acessToken = null
       state.refreshToken = null
-      state.error = null
       state.success = false
+      state.error = null
     },
   },
   extraReducers: {
-    [signUpUser.pending]: state => {
+    [loginUser.pending]: state => {
       state.loading = true
       state.error = null
     },
-    [signUpUser.fulfilled]: (state, action) => {
+    [loginUser.fulfilled]: (state, action) => {
       state.loading = false
       state.acessToken = action.payload.access_token
       state.refreshToken = action.payload.refresh_token
       state.success = true
     },
-    [signUpUser.rejected]: (state, { payload }) => {
+    [loginUser.rejected]: (state, { payload }) => {
       state.loading = false
       state.error = payload
     },
   },
 })
-export const { resetUser } = userSignUpSlice.actions
-export default userSignUpSlice.reducer
+export const { resetUser } = userLoginSlice.actions
+export default userLoginSlice.reducer

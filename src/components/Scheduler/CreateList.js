@@ -1,43 +1,39 @@
 /** @format */
 
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ADD_LIST } from "./Todo/todoSlice";
-import styles from "./createList.module.css";
-import { createList } from "./apiScheduler/createListSlice";
-import { pushNewList } from "./apiScheduler/getListSlice";
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { ADD_LIST } from "./Todo/todoSlice"
+import styles from "./createList.module.css"
+import { createList } from "./apiScheduler/createListSlice"
+import { pushNewList } from "./apiScheduler/getListSlice"
 
 const CreateList = () => {
-  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
-  const listData = useSelector((store) => store.getList.data);
-  const createListData = useSelector((store) => store.createList);
-  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
+  const listData = useSelector(store => store.getList.data)
+  const createListData = useSelector(store => store.createList)
+  const dispatch = useDispatch()
 
   const handleAddList = () => {
     if (!isLoggedIn && !createListData.loading) {
-      dispatch(ADD_LIST());
+      dispatch(ADD_LIST())
     } else if (isLoggedIn) {
       dispatch(
         createList({
           title: `List ${listData.length}`,
         })
-      );
+      )
     }
-  };
+  }
 
   useEffect(() => {
-    if (
-      createListData.success &&
-      !createListData.loading &&
-      createListData.data.id
-    ) {
-      if (listData.find((list) => list.id === createListData.data.id)) {
-        return;
+    if (createListData.success && !createListData.loading && createListData.data.id) {
+      if (listData.find(list => list.id === createListData.data.id)) {
+        return
       } else {
-        dispatch(pushNewList(createListData.data));
+        dispatch(pushNewList(createListData.data))
       }
     }
-  }, [createListData.loading]);
+  }, [createListData.loading])
 
   return (
     <div>
@@ -46,7 +42,7 @@ const CreateList = () => {
         +
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateList;
+export default CreateList

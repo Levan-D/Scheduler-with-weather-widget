@@ -5,7 +5,7 @@ import errorHandling from "./Response"
 
 const request = async (method, url, data, isAuthenticated = false) => {
   try {
-    console.log(data,url)
+    console.log(data, url)
     let headers
 
     if (isAuthenticated) {

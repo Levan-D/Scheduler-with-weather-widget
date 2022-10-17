@@ -9,7 +9,7 @@ import hide from "../pictures/hide.png";
 import { isValidEmail, isValidName, isValidPassword } from "./Validator";
 import { useDispatch, useSelector } from "react-redux";
 import racoon from "../pictures/racoon.png";
-import { signUpUser, resetUser } from "./signUpSlice";
+import { signUpUser, resetUser } from "./apiLogin/signUpSlice";
 import Loader from "../Loader/Loader";
 
 const SignUp = () => {

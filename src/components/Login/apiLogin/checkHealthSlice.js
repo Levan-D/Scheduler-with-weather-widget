@@ -1,7 +1,7 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import request from "../../app/api/Request";
+import request from "../../../app/api/Request";
 
 export const getHealth = createAsyncThunk(
   "user/forgot",

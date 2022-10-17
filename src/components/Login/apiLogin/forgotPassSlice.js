@@ -1,7 +1,7 @@
 /** @format */
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import request from "../../app/api/Request"
+import request from "../../../app/api/Request"
 
 export const forgotUser = createAsyncThunk(
   "user/forgot",
@@ -25,7 +25,7 @@ const initialState = {
 }
 
 const userForgotSlice = createSlice({
-  name: "forgot",
+  name: "forgotPassword",
   initialState,
   reducers: {
     resetUser: state => {
