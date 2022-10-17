@@ -1,11 +1,11 @@
 /** @format */
 
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import styles from "./popUpMenu.module.css";
-import { CHANGE_LIST_COLOR } from "../Todo/todoSlice";
-import { patchList } from "../apiScheduler/patchListSlice";
-import { changeListColorInter } from "../apiScheduler/getListSlice";
+import React from "react"
+import { useSelector, useDispatch } from "react-redux"
+import styles from "./popUpMenu.module.css"
+import { CHANGE_LIST_COLOR } from "../Todo/todoSlice"
+import { patchList } from "../apiScheduler/patchListSlice"
+import { changeListColorInter } from "../apiScheduler/getListSlice"
 
 const colors = [
   `#f0f0f0`,
@@ -44,59 +44,57 @@ const colors = [
   `#D45079`,
   `#C84361`,
   `#42032C`,
-];
+]
 
 const ChangeColor = () => {
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
-  const indexingData = useSelector((store) => store.indexing.data);
-  const listData = useSelector((store) => store.getList.data);
-  const currentListId = isLoggedIn ? listData[indexingData.listIndex].id : null;
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
+  const indexingData = useSelector(store => store.indexing.data)
+  const listData = useSelector(store => store.getList.data)
+  const currentListId = isLoggedIn ? listData[indexingData.listIndex].id : null
 
-  const handleChangeColor = (i) => {
+  const handleChangeColor = i => {
     if (!isLoggedIn) {
       dispatch(
         CHANGE_LIST_COLOR({
           index: indexingData.listIndex,
           color: colors[i],
         })
-      );
+      )
     } else if (isLoggedIn) {
       dispatch(
         patchList({
           title: currentListId,
           data: { color: colors[i] },
         })
-      );
+      )
       dispatch(
         changeListColorInter({
           index: indexingData.listIndex,
           data: colors[i],
         })
-      );
+      )
     }
-  };
+  }
 
   return (
     <>
-      <div
-        className={`${styles.colorBox} ${styles.confirmTab} ${styles.confirmTabAd}`}
-      >
+      <div className={`${styles.colorBox} ${styles.confirmTab} ${styles.confirmTabAd}`}>
         {colors.map((x, i) => {
           return (
             <div
               className={`${styles.colorCircle} ${styles.popUpButton}`}
               onClick={() => {
-                handleChangeColor(i);
+                handleChangeColor(i)
               }}
               style={{ backgroundColor: x }}
               key={i}
             ></div>
-          );
+          )
         })}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ChangeColor;
+export default ChangeColor

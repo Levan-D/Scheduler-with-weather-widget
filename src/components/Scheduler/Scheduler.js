@@ -28,7 +28,6 @@ function Scheduler() {
   const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
   const listData = useSelector(store => store.getList)
   const todoData = useSelector(store => store.getTodo)
-  console.log(listData)
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -50,8 +49,19 @@ function Scheduler() {
           tasksTotal: todosRedux[indexingData.listIndex].todoArray.length,
         })
       )
+    } else if (isLoggedIn) {
+      dispatch(
+        SET_TASKSCOMPLETE({
+          tasksComplete: todoData.data.filter(x => x.is_completed === true).length,
+        })
+      )
+      dispatch(
+        SET_TASKSTOTAL({
+          tasksTotal: todoData.data.length,
+        })
+      )
     }
-  }, [todosRedux, indexingData.newListName, indexingData.listIndex])
+  }, [todosRedux, indexingData.newListName, indexingData.listIndex, todoData.data])
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -123,15 +133,15 @@ function Scheduler() {
               )
             })}
           {isLoggedIn &&
-            listData.data.map(x => {
+            listData.data.map(list => {
               return (
                 <List
-                  key={x.created_at}
-                  id={x.id}
-                  name={x.title}
-                  color={x.color}
-                  position={x.position}
-                  date={x.reminder_at}
+                  key={list.created_at}
+                  id={list.id}
+                  name={list.title}
+                  color={list.color}
+                  position={list.position}
+                  date={list.reminder_at}
                 />
               )
             })}

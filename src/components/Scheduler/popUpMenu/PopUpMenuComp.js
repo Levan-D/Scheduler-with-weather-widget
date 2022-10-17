@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useRef, useEffect } from "react"
+import React from "react"
 import styles from "./popUpMenu.module.css"
 import colorPalette from "../../pictures/colorPallete.png"
 import pencil from "../../pictures/pencil.png"
@@ -20,16 +20,6 @@ function PopUpMenuComp() {
   const indexingData = useSelector(store => store.indexing.data)
 
   const subMenu = useSelector(store => store.subMenu.data)
-  const refOne = useRef(null)
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true)
-  }, [refOne])
-
-  const handleClickOutside = e => {
-    if (!refOne.current.contains(e.target)) {
-      dispatch(POPUPVISIBILITY(false))
-    }
-  }
 
   let mouseEvent
 
@@ -49,7 +39,6 @@ function PopUpMenuComp() {
   return (
     <div
       className={styles.popUpMenu}
-      ref={refOne}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={handleMouseEnter}
       style={menuStyle}
