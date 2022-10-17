@@ -1,45 +1,48 @@
 /** @format */
 
-import ProgressBar from "../../ProgressBar/ProgressBar"
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { ADD_TODO } from "./todoSlice"
-import styles from "./createTodo.module.css"
-import { createTodo } from "../apiScheduler/createTodoSlice"
-import { pushNewTodo } from "../apiScheduler/getTodoSlice"
+import ProgressBar from "../../ProgressBar/ProgressBar";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ADD_TODO } from "./todoSlice";
+import styles from "./createTodo.module.css";
+import { createTodo } from "../apiScheduler/createTodoSlice";
+import { pushNewTodo } from "../apiScheduler/getTodoSlice";
 
 const CreateTodo = () => {
-  const dispatch = useDispatch()
-  const taskProgressData = useSelector(store => store.taskProgress.data)
-  const indexingData = useSelector(store => store.indexing.data)
-  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
-  const listData = useSelector(store => store.getList)
-  const createTodoData = useSelector(store => store.createTodo)
-  const todoData = useSelector(store => store.getTodo.data)
-  const [taskName, setTaskName] = useState("")
+  const dispatch = useDispatch();
+  const taskProgressData = useSelector((store) => store.taskProgress.data);
+  const indexingData = useSelector((store) => store.indexing.data);
+  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
+  const listData = useSelector((store) => store.getList);
+  const createTodoData = useSelector((store) => store.createTodo);
+  const todoData = useSelector((store) => store.getTodo.data);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
+  const [taskName, setTaskName] = useState("");
 
-  const handleSubmit = e => {
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!isLoggedIn) {
-      dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }))
+      dispatch(ADD_TODO({ taskName: taskName, index: indexingData.listIndex }));
     } else if (isLoggedIn && listData.data.length > 0) {
       dispatch(
         createTodo({
           title: taskName,
           listId: listData.data[indexingData.listIndex].id,
         })
-      )
+      );
     }
-    setTaskName("")
-  }
+    setTaskName("");
+  };
 
   useEffect(() => {
     if (createTodoData.success && !createTodoData.loading) {
-      if (todoData.find(todo => todo.position === createTodoData.data.position)) {
-        return
-      } else dispatch(pushNewTodo(createTodoData.data))
+      if (
+        todoData.find((todo) => todo.position === createTodoData.data.position)
+      ) {
+        return;
+      } else dispatch(pushNewTodo(createTodoData.data));
     }
-  }, [createTodoData.loading])
+  }, [createTodoData.loading]);
 
   return (
     <div>
@@ -61,16 +64,18 @@ const CreateTodo = () => {
           required
           placeholder="Enter task here!"
           value={taskName}
-          onChange={e => setTaskName(e.target.value)}
+          onChange={(e) => setTaskName(e.target.value)}
         />
         <input
-          className={`${styles.bigSubmitButton} ${styles.submitForm}`}
+          className={`${styles.bigSubmitButton} ${styles.submitForm} ${
+            isLoading && "isLoading"
+          }`}
           type="submit"
           value="+"
         />
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateTodo
+export default CreateTodo;

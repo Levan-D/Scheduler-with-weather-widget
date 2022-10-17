@@ -12,3 +12,7 @@ body {
   background-color: rgb(98, 97, 134);
   overflow-x: hidden;
 }
+
+.isLoading {
+  cursor: progress !important;
+}

@@ -9,6 +9,7 @@ const TodoToggle = ({ todo }) => {
   const indexingData = useSelector((store) => store.indexing.data);
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const listData = useSelector((store) => store.getList.data);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
   const todoData = useSelector((store) => store.getTodo);
   const todoInex = todoData.data.findIndex((todo) => {
     return todo.id === indexingData.todoIndex.todoId;
@@ -41,7 +42,10 @@ const TodoToggle = ({ todo }) => {
     }
   };
   return (
-    <div className={styles.todoCheck} onClick={toggleTodo}>
+    <div
+      className={`${isLoading && "isLoading"} ${styles.todoCheck}`}
+      onClick={toggleTodo}
+    >
       &#10004;
     </div>
   );

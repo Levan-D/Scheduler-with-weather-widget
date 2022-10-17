@@ -1,55 +1,58 @@
 /** @format */
 
-import React, { useState, useEffect } from "react"
-import styles from "./login.module.css"
-import { useNavigate } from "react-router-dom"
-import backBtn from "../pictures/back.png"
-import racoon from "../pictures/racoon.png"
-import { isValidEmail } from "./Validator"
-import { useDispatch, useSelector } from "react-redux"
-import { forgotUser, resetUser } from "./apiLogin/forgotPassSlice"
+import React, { useState, useEffect } from "react";
+import styles from "./login.module.css";
+import { useNavigate } from "react-router-dom";
+import backBtn from "../pictures/back.png";
+import racoon from "../pictures/racoon.png";
+import { isValidEmail } from "./Validator";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotUser, resetUser } from "./apiLogin/forgotPassSlice";
 
 const ForgotPassword = () => {
-  const [error, setError] = useState(false)
-  const userState = useSelector(store => store.forgot)
-  const dispatch = useDispatch()
-  const [validator, setValidator] = useState("")
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const navigate = useNavigate()
+  const [error, setError] = useState(false);
+  const userState = useSelector((store) => store.forgot);
+  const dispatch = useDispatch();
+  const [validator, setValidator] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
+  const navigate = useNavigate();
 
-  const handleSubmit = e => {
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!error) {
-      setIsSubmitted(true)
+      setIsSubmitted(true);
       dispatch(
         forgotUser({
           email: validator.toLowerCase(),
         })
-      )
+      );
     }
-  }
+  };
   useEffect(() => {
     if (isSubmitted && userState.success) {
       setTimeout(() => {
-        dispatch(resetUser())
-        navigate("/reset")
-      }, 5000)
+        dispatch(resetUser());
+        navigate("/reset");
+      }, 5000);
     }
-  }, [isSubmitted, userState])
+  }, [isSubmitted, userState]);
 
-  const handleChangeEmail = event => {
+  const handleChangeEmail = (event) => {
     if (!isValidEmail(event.target.value)) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
-    setValidator(event.target.value)
-  }
+    setValidator(event.target.value);
+  };
   if (isSubmitted && userState.success) {
     return (
       <div className={styles.container} style={{ height: "500px" }}>
         <h2 className={styles.header}>Confirm Code</h2>
-        <p className={styles.paragraph}>We've send you a recovery code to your email</p>
+        <p className={styles.paragraph}>
+          We've send you a recovery code to your email
+        </p>
         <p className={styles.paragraph}>&#40; check your spam &#41;</p>
         <div style={{ textAlign: "center", fontSize: "0.6rem" }}>
           <img
@@ -69,20 +72,20 @@ const ForgotPassword = () => {
         <div
           className={styles.backBtnWide}
           onClick={() => {
-            navigate("/reset")
+            navigate("/reset");
           }}
         >
           Reset Password
         </div>
       </div>
-    )
+    );
   }
   return (
     <div className={styles.container} style={{ height: "500px" }}>
       <div
         className={styles.backBtn}
         onClick={() => {
-          navigate("/")
+          navigate("/");
         }}
       >
         <img src={backBtn} alt="back button" />
@@ -98,7 +101,9 @@ const ForgotPassword = () => {
       <p className={styles.paragraph}>Don't worry, this happens all the time</p>
       <p className={styles.paragraph}>Enter your email below</p>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <div className={`${styles[`input-container`]} ${styles.passwordForget}`}>
+        <div
+          className={`${styles[`input-container`]} ${styles.passwordForget}`}
+        >
           <label className={styles.label}>Email </label>
           <input
             autoComplete="off"
@@ -128,12 +133,14 @@ const ForgotPassword = () => {
           <input
             type="submit"
             value="Continue"
-            className={`${styles.guestButton} ${styles.loginButton}`}
+            className={`${styles.guestButton} ${styles.loginButton} ${
+              isLoading && "isLoading"
+            }`}
           />
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default ForgotPassword
+export default ForgotPassword;

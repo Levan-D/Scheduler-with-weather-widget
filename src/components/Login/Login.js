@@ -5,12 +5,14 @@ import LoginSection from "./LoginSection";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
 import { getHealth } from "./apiLogin/checkHealthSlice";
+import indexingSlice from "../Scheduler/indexingSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [status, setStatus] = useState(null);
   const userState = useSelector((state) => state.auth);
   const serverHealth = useSelector((store) => store.checkHealth);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
 
   useEffect(() => {
     if (!serverHealth.loading && serverHealth.success === null) {
@@ -56,13 +58,16 @@ const Login = () => {
       </header>
       <Link
         to={serverHealth.success ? "/signUp" : "#"}
-        className={`${styles.guestButton} ${
+        className={`${styles.guestButton} ${isLoading && "isLoading"} ${
           !serverHealth.success && styles.btnDisabled
         }`}
       >
         Sign Up
       </Link>
-      <Link to="/scheduler" className={styles.guestButton}>
+      <Link
+        to="/scheduler"
+        className={`${styles.guestButton} ${isLoading && "isLoading"}`}
+      >
         Continue as Guest
       </Link>
     </div>

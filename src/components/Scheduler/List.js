@@ -1,10 +1,10 @@
 /** @format */
-import ProgressBar from "../ProgressBar/ProgressBar"
-import React, { useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { ReactComponent as Dots } from "../pictures/dots.svg"
-import styles from "./list.module.css"
-import invertColor from "./ColorInverter"
+import ProgressBar from "../ProgressBar/ProgressBar";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ReactComponent as Dots } from "../pictures/dots.svg";
+import styles from "./list.module.css";
+import invertColor from "./ColorInverter";
 
 import {
   CHANGE_LISTINDEX,
@@ -14,77 +14,125 @@ import {
   NEWLISTNAME,
   POPUPCOORDS,
   LISTDRAGGING,
-} from "./indexingSlice"
+} from "./indexingSlice";
 
-import { CHANGE_LIST_POSITION } from "./Todo/todoSlice"
+import { CHANGE_LIST_POSITION } from "./Todo/todoSlice";
+import { rearrange } from "./apiScheduler/rearrangeSlice";
+import { getList } from "./apiScheduler/getListSlice";
 
-function List({ name, nameShow, color, date, position }) {
-  const dispatch = useDispatch()
-  const indexingData = useSelector(store => store.indexing.data)
-  const todosRedux = useSelector(store => store.todo.data)
-  const [dragging, setDragging] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
-  const listData = useSelector(store => store.getList)
-  let hoverEvent
-  const currentIndex = listData.data.findIndex(x => {
-    return x.position === position
-  })
+function List({ name, nameShow, color, date, position, list }) {
+  const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState(false);
+  const indexingData = useSelector((store) => store.indexing.data);
+  const todosRedux = useSelector((store) => store.todo.data);
+  const [dragging, setDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
+  const listData = useSelector((store) => store.getList);
+  const rearrangeData = useSelector((store) => store.rearrange);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
+  let hoverEvent;
+  const currentIndex = listData.data.findIndex((x) => {
+    return x.position === position;
+  });
 
-  const handleList = e => {
+  const handleList = (e) => {
     if (!isLoggedIn) {
-      const regex = /^(List)+[0-9]*/gi
+      const regex = /^(List)+[0-9]*/gi;
       if (regex.test(e.target.classList[0])) {
         dispatch(
-          CHANGE_LISTINDEX(todosRedux.map(x => x.listName).indexOf(e.target.classList[0]))
-        )
+          CHANGE_LISTINDEX(
+            todosRedux.map((x) => x.listName).indexOf(e.target.classList[0])
+          )
+        );
       }
     } else if (isLoggedIn) {
-      dispatch(CHANGE_LISTINDEX(currentIndex))
-      dispatch(CHANGE_LISTINDEX(currentIndex))
+      dispatch(CHANGE_LISTINDEX(currentIndex));
+      dispatch(CHANGE_LISTINDEX(currentIndex));
     }
-  }
+  };
 
   const rearrangeList = () => {
     if (!isLoggedIn) {
-      dispatch(CHANGE_LISTINDEX(currentIndex))
+      dispatch(CHANGE_LISTINDEX(currentIndex));
       dispatch(
         CHANGE_LIST_POSITION({
           todoIndex: todosRedux
-            .map(x => x.listName)
+            .map((x) => x.listName)
             .indexOf(indexingData.onDragStartListName),
           newPositionIndex: todosRedux
-            .map(x => x.listName)
+            .map((x) => x.listName)
             .indexOf(indexingData.onDragOverListName),
         })
-      )
+      );
     }
-  }
+    if (isLoggedIn) {
+      if (
+        indexingData.onDragOverListName.id !==
+        indexingData.onDragStartListName.id
+      ) {
+        dispatch(
+          rearrange({
+            listId: {
+              current: indexingData.onDragStartListName.id,
+              replace: indexingData.onDragOverListName.id,
+            },
+            todoId: {
+              current: null,
+              replace: null,
+            },
+          })
+        );
+        setRefresh(true);
+      }
+    }
+  };
 
-  const handleOnDragOver = e => {
-    e.preventDefault()
-    dispatch(ONDRAGOVER(name))
-  }
+  useEffect(() => {
+    if (
+      refresh &&
+      isLoggedIn &&
+      !listData.loading &&
+      listData.success &&
+      !rearrangeData.loading
+    ) {
+      dispatch(getList());
+      setRefresh(false);
+    }
+  }, [refresh, rearrangeData]);
+
+  const handleOnDragOver = (e) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      dispatch(ONDRAGOVER(name));
+    } else if (isLoggedIn) {
+      dispatch(ONDRAGOVER(list));
+    }
+  };
 
   const handleOnDragStart = () => {
     if (!dragging) {
-      setDragging(true)
-      dispatch(LISTDRAGGING(true))
-      dispatch(ONDRAGSTART(name))
+      setDragging(true);
+      dispatch(LISTDRAGGING(true));
+      if (!isLoggedIn) {
+        dispatch(ONDRAGSTART(name));
+      } else if (isLoggedIn) {
+        dispatch(ONDRAGSTART(list));
+      }
     }
-  }
+  };
   const handleOnDragEnd = () => {
-    rearrangeList()
-    dispatch(LISTDRAGGING(false))
-    setDragging(false)
-  }
-  const handlePopUp = e => {
-    dispatch(NEWLISTNAME(""))
-    dispatch(POPUPCOORDS({ x: e.clientX, y: e.clientY }))
-    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility))
-  }
+    rearrangeList();
+    dispatch(LISTDRAGGING(false));
+    setDragging(false);
+  };
+  const handlePopUp = (e) => {
+    dispatch(NEWLISTNAME(""));
+    dispatch(POPUPCOORDS({ x: e.clientX, y: e.clientY }));
+    dispatch(POPUPVISIBILITY(!indexingData.popUpVisibility));
+  };
 
-  let listStyle = null
+  let listStyle = null;
 
   if (!isLoggedIn) {
     listStyle = {
@@ -94,7 +142,7 @@ function List({ name, nameShow, color, date, position }) {
         name === todosRedux[indexingData.listIndex].listName && color !== null
           ? `2px solid ${invertColor(color.substring(1), `bw`)}`
           : "",
-    }
+    };
   } else if (isLoggedIn) {
     listStyle = {
       color: color !== null ? invertColor(color.substring(1), `bw`) : "#354259",
@@ -103,31 +151,35 @@ function List({ name, nameShow, color, date, position }) {
         currentIndex === indexingData.listIndex && color !== null
           ? `2px solid ${invertColor(color.substring(1), `bw`)}`
           : "",
-    }
+    };
   }
 
-  let listClassName = null
+  let listClassName = null;
 
   if (!isLoggedIn) {
     listClassName = `${
-      name === todosRedux[indexingData.listIndex].listName ? styles.selectedList : ""
+      name === todosRedux[indexingData.listIndex].listName
+        ? styles.selectedList
+        : ""
     } ${
       indexingData.onDragOverListName &&
       indexingData.ListDragging &&
       indexingData.onDragOverListName === name
         ? styles.afterGlowList
         : ""
-    }  ${styles.containerList}`
+    }  ${styles.containerList}`;
   } else if (isLoggedIn) {
     listClassName = `${
-      currentIndex === indexingData.listIndex ? styles.selectedList : ""
+      list.id === listData.data[indexingData.listIndex].id
+        ? styles.selectedList
+        : ""
     } ${
       indexingData.onDragOverListName &&
       indexingData.ListDragging &&
-      indexingData.onDragOverListName === name
+      indexingData.onDragOverListName.id === list.id
         ? styles.afterGlowList
         : ""
-    }  ${styles.containerList}`
+    }  ${styles.containerList}`;
   }
 
   return (
@@ -135,14 +187,14 @@ function List({ name, nameShow, color, date, position }) {
       <div
         onMouseEnter={() => {
           hoverEvent = setTimeout(() => {
-            setIsHovering(true)
-          }, 1000)
+            setIsHovering(true);
+          }, 1000);
         }}
         onMouseLeave={() => {
-          setIsHovering(!true)
-          clearTimeout(hoverEvent)
+          setIsHovering(!true);
+          clearTimeout(hoverEvent);
         }}
-        className={listClassName}
+        className={`${listClassName} ${isLoading && "isLoading"}`}
         style={listStyle}
         draggable="true"
         onDragStart={handleOnDragStart}
@@ -184,7 +236,11 @@ function List({ name, nameShow, color, date, position }) {
             <div>
               <Dots
                 className={`${styles.dotdot}`}
-                fill={color !== null ? invertColor(color.substring(1), `bw`) : "#354259"}
+                fill={
+                  color !== null
+                    ? invertColor(color.substring(1), `bw`)
+                    : "#354259"
+                }
               />
             </div>
           </div>
@@ -194,7 +250,11 @@ function List({ name, nameShow, color, date, position }) {
             <div>
               <Dots
                 className={`${styles.dotdot}`}
-                fill={color !== null ? invertColor(color.substring(1), `bw`) : "#354259"}
+                fill={
+                  color !== null
+                    ? invertColor(color.substring(1), `bw`)
+                    : "#354259"
+                }
               />
             </div>
           </div>
@@ -204,12 +264,13 @@ function List({ name, nameShow, color, date, position }) {
       {!isLoggedIn && (
         <ProgressBar
           tasksComplete={
-            todosRedux[todosRedux.map(x => x.listName).indexOf(name)].todoArray.filter(
-              x => x.complete === true
-            ).length
+            todosRedux[
+              todosRedux.map((x) => x.listName).indexOf(name)
+            ].todoArray.filter((x) => x.complete === true).length
           }
           tasksTotal={
-            todosRedux[todosRedux.map(x => x.listName).indexOf(name)].todoArray.length
+            todosRedux[todosRedux.map((x) => x.listName).indexOf(name)]
+              .todoArray.length
           }
           width={170}
           height={3}
@@ -217,7 +278,7 @@ function List({ name, nameShow, color, date, position }) {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default List
+export default List;

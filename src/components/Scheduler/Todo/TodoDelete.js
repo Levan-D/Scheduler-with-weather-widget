@@ -7,11 +7,14 @@ import { deleteTodoInter } from "../apiScheduler/getTodoSlice";
 
 const TodoDelete = ({ todo }) => {
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
   const indexingData = useSelector((store) => store.indexing.data);
   const listData = useSelector((store) => store.getList.data);
   const todoData = useSelector((store) => store.getTodo);
   const deleteListId =
-    isLoggedIn && listData.length > 0 ? listData[indexingData.listIndex].id : null;
+    isLoggedIn && listData.length > 0
+      ? listData[indexingData.listIndex].id
+      : null;
 
   const dispatch = useDispatch();
 
@@ -35,7 +38,10 @@ const TodoDelete = ({ todo }) => {
     }
   };
   return (
-    <div className={styles.todoDelete} onClick={handleDelete}>
+    <div
+      className={`${isLoading && "isLoading"}  ${styles.todoDelete}`}
+      onClick={handleDelete}
+    >
       &#8211;
     </div>
   );

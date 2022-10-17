@@ -79,9 +79,17 @@ const ChangeDate = () => {
         );
       } else if (opt === "clear") {
         dispatch(
-          ADD_DATE_LIST({
+          patchList({
+            title: currentListId,
+            data: {
+              reminder_at: `0000-01-01T00:00:00+00:00`,
+            },
+          })
+        );
+        dispatch(
+          changeListDateInter({
             index: indexingData.listIndex,
-            newData: ``,
+            data: ``,
           })
         );
       } else if (opt === "calendar" && subMenu.confCalM) {

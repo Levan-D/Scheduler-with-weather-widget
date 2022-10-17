@@ -1,80 +1,81 @@
 /** @format */
 
-import React, { useState, useEffect } from "react"
-import styles from "./login.module.css"
-import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import show from "../pictures/show.png"
-import hide from "../pictures/hide.png"
-import { isValidEmail, isValidPassword } from "./Validator"
-import { useDispatch, useSelector } from "react-redux"
-import { loginUser, resetUser } from "./apiLogin/authSlice"
-import { ISLOGGEDIN } from "../Scheduler/indexingSlice"
+import React, { useState, useEffect } from "react";
+import styles from "./login.module.css";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import show from "../pictures/show.png";
+import hide from "../pictures/hide.png";
+import { isValidEmail, isValidPassword } from "./Validator";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, resetUser } from "./apiLogin/authSlice";
+import { ISLOGGEDIN } from "../Scheduler/indexingSlice";
 
 const LoginSection = () => {
-  const userState = useSelector(state => state.auth)
-  const serverHealth = useSelector(store => store.checkHealth)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [error, setError] = useState({ email: false, password: false })
+  const userState = useSelector((state) => state.auth);
+  const serverHealth = useSelector((store) => store.checkHealth);
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState({ email: false, password: false });
   const [validator, setValidator] = useState({
     email: "",
     password: "",
-  })
+  });
 
-  const [passwordShown, setPasswordShown] = useState(false)
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePassword = () => {
-    setPasswordShown(pass => !pass)
-  }
+    setPasswordShown((pass) => !pass);
+  };
 
   useEffect(() => {
     if (userState.success) {
-      dispatch(resetUser())
-      dispatch(ISLOGGEDIN(true))
-      navigate("/scheduler")
+      dispatch(resetUser());
+      dispatch(ISLOGGEDIN(true));
+      navigate("/scheduler");
     }
-  }, [userState])
-  
-  const handleSubmit = e => {
-    e.preventDefault()
+  }, [userState]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!error.email && !error.password && serverHealth.success) {
       dispatch(
         loginUser({
           email: validator.email.toLowerCase(),
           password: validator.password,
         })
-      )
+      );
     }
-  }
+  };
 
   const handleUseInfo = (type, event) => {
     switch (type) {
       case "email":
         if (!isValidEmail(event.target.value)) {
-          setError({ ...error, email: true })
+          setError({ ...error, email: true });
         } else {
-          setError({ ...error, email: false })
+          setError({ ...error, email: false });
         }
         setValidator({
           ...validator,
           email: event.target.value,
-        })
-        break
+        });
+        break;
 
       case "password":
         if (!isValidPassword(event.target.value)) {
-          setError({ ...error, password: true })
+          setError({ ...error, password: true });
         } else {
-          setError({ ...error, password: false })
+          setError({ ...error, password: false });
         }
         setValidator({
           ...validator,
           password: event.target.value,
-        })
-        break
+        });
+        break;
     }
-  }
+  };
 
   return (
     <>
@@ -95,8 +96,8 @@ const LoginSection = () => {
             type="text"
             name="email"
             value={validator.email}
-            onChange={e => {
-              handleUseInfo("email", e)
+            onChange={(e) => {
+              handleUseInfo("email", e);
             }}
             placeholder="JimmyJones@hotmail.com"
             required
@@ -121,8 +122,8 @@ const LoginSection = () => {
             type={passwordShown ? "text" : "password"}
             name="pass"
             value={validator.password}
-            onChange={e => {
-              handleUseInfo("password", e)
+            onChange={(e) => {
+              handleUseInfo("password", e);
             }}
             placeholder="********"
             required
@@ -144,7 +145,7 @@ const LoginSection = () => {
         </div>
         <Link
           to={serverHealth.success ? "/forgot" : "#"}
-          className={styles.forgotPassword}
+          className={`${styles.forgotPassword} ${isLoading && "isLoading"}`}
           style={{ position: "relative", top: "-20px" }}
         >
           Forgot password?
@@ -157,12 +158,14 @@ const LoginSection = () => {
           <input
             type="submit"
             value="Login"
-            className={`${styles.guestButton} ${styles.loginButton}`}
+            className={`${styles.guestButton} ${styles.loginButton} ${
+              isLoading && "isLoading"
+            }`}
           />
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default LoginSection
+export default LoginSection;

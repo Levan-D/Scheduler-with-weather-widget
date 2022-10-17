@@ -1,58 +1,64 @@
 /** @format */
 
-import React, { useState, useRef, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { TASK_RENAME } from "../indexingSlice"
-import saveIcon from "../../pictures/saveIcon.png"
-import styles from "./todo.module.css"
-import { RENAME_TODO } from "./todoSlice"
-import { patchTodo } from "../apiScheduler/patchTodoSlice"
-import { renameTodoInter } from "../apiScheduler/getTodoSlice"
+import React, { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { TASK_RENAME } from "../indexingSlice";
+import saveIcon from "../../pictures/saveIcon.png";
+import styles from "./todo.module.css";
+import { RENAME_TODO } from "./todoSlice";
+import { patchTodo } from "../apiScheduler/patchTodoSlice";
+import { renameTodoInter } from "../apiScheduler/getTodoSlice";
 
 const TodoTask = ({ todo, name, dragging }) => {
-  const indexingData = useSelector(store => store.indexing.data)
-  const listData = useSelector(store => store.getList.data)
-  const isLoggedIn = useSelector(store => store.indexing.data.isLoggedIn)
-  const dispatch = useDispatch()
-  const complete = isLoggedIn ? todo.is_completed : todo.complete
+  const indexingData = useSelector((store) => store.indexing.data);
+  const listData = useSelector((store) => store.getList.data);
+  const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((store) => store.indexing.data.isLoading);
+  const complete = isLoggedIn ? todo.is_completed : todo.complete;
   const todoComplete = `${styles.todo} ${
     complete ? styles.todoComplete : styles.todoNotComplete
-  }`
-  const todoData = useSelector(store => store.getTodo)
-  const todoInex = todoData.data.findIndex(todo => {
-    return todo.id === indexingData.todoIndex.todoId
-  })
+  }`;
+  const todoData = useSelector((store) => store.getTodo);
+  const todoInex = todoData.data.findIndex((todo) => {
+    return todo.id === indexingData.todoIndex.todoId;
+  });
   const deleteListId =
-    isLoggedIn && listData.length > 0 ? listData[indexingData.listIndex].id : null
-  let hoverEvent
-  const [isHovering, setIsHovering] = useState(false)
+    isLoggedIn && listData.length > 0
+      ? listData[indexingData.listIndex].id
+      : null;
+  let hoverEvent;
+  const [isHovering, setIsHovering] = useState(false);
 
-  const handleKeyDown = e => {
-    e.target.style.height = "25px"
-    e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`
-  }
+  const handleKeyDown = (e) => {
+    e.target.style.height = "25px";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 250)}px`;
+  };
 
-  const refOne = useRef(null)
+  const refOne = useRef(null);
 
   useEffect(() => {
     if (refOne.current) {
-      refOne.current.style.height = "25px"
-      refOne.current.style.height = `${Math.min(refOne.current.scrollHeight, 250)}px`
+      refOne.current.style.height = "25px";
+      refOne.current.style.height = `${Math.min(
+        refOne.current.scrollHeight,
+        250
+      )}px`;
     }
-  }, [indexingData.taskRename.show, indexingData.taskRename])
+  }, [indexingData.taskRename.show, indexingData.taskRename]);
 
-  const refTwo = useRef(null)
+  const refTwo = useRef(null);
   useEffect(() => {
-    document.addEventListener("mousemove", handleClickOutside, true)
-  }, [refTwo])
+    document.addEventListener("mousemove", handleClickOutside, true);
+  }, [refTwo]);
 
-  const handleClickOutside = e => {
+  const handleClickOutside = (e) => {
     if (refTwo !== null && dragging === true) {
       if (!refTwo.current.contains(e.target)) {
-        setIsHovering(false)
+        setIsHovering(false);
       }
     }
-  }
+  };
   const editTodo = (rename, id, show) => {
     dispatch(
       TASK_RENAME({
@@ -60,11 +66,11 @@ const TodoTask = ({ todo, name, dragging }) => {
         id: id,
         show: show,
       })
-    )
-  }
+    );
+  };
 
-  const handleRenameTodo = e => {
-    e.preventDefault()
+  const handleRenameTodo = (e) => {
+    e.preventDefault();
 
     if (!isLoggedIn) {
       dispatch(
@@ -73,14 +79,14 @@ const TodoTask = ({ todo, name, dragging }) => {
           todoIndex: indexingData.todoIndex.todoIndex,
           index: indexingData.listIndex,
         })
-      )
+      );
       dispatch(
         TASK_RENAME({
           rename: "",
           id: "",
           show: false,
         })
-      )
+      );
     } else if (isLoggedIn) {
       dispatch(
         patchTodo({
@@ -90,29 +96,29 @@ const TodoTask = ({ todo, name, dragging }) => {
           listId: deleteListId,
           todoId: indexingData.todoIndex.todoId,
         })
-      )
+      );
       dispatch(
         renameTodoInter({
           index: todoInex,
           data: indexingData.taskRename.rename,
         })
-      )
+      );
       dispatch(
         TASK_RENAME({
           rename: "",
           id: "",
           show: false,
         })
-      )
+      );
     }
-  }
+  };
   const handleDoubleClick = () => {
     if (!isLoggedIn) {
-      editTodo(todo.taskName.replace(/\s\s+/g, " "), todo.id, true)
+      editTodo(todo.taskName.replace(/\s\s+/g, " "), todo.id, true);
     } else if (isLoggedIn) {
-      editTodo(name.replace(/\s\s+/g, " "), todo.id, true)
+      editTodo(name.replace(/\s\s+/g, " "), todo.id, true);
     }
-  }
+  };
 
   return (
     <div ref={refTwo}>
@@ -121,14 +127,14 @@ const TodoTask = ({ todo, name, dragging }) => {
           onDoubleClick={handleDoubleClick}
           onMouseEnter={() => {
             hoverEvent = setTimeout(() => {
-              setIsHovering(true)
-            }, 1000)
+              setIsHovering(true);
+            }, 1000);
           }}
           onMouseLeave={() => {
-            setIsHovering(false)
-            clearTimeout(hoverEvent)
+            setIsHovering(false);
+            clearTimeout(hoverEvent);
           }}
-          className={todoComplete}
+          className={`${isLoading && "isLoading"} ${todoComplete}`}
         >
           {/* task Name */}
           {!isLoggedIn && todo.taskName} {isLoggedIn && name}
@@ -149,17 +155,19 @@ const TodoTask = ({ todo, name, dragging }) => {
             <form className={styles.editTodoForm} onSubmit={handleRenameTodo}>
               <label>
                 <textarea
-                  autoFocus={todo.id === indexingData.taskRename.id ? true : false}
+                  autoFocus={
+                    todo.id === indexingData.taskRename.id ? true : false
+                  }
                   ref={refOne}
                   value={indexingData.taskRename.rename}
-                  className={styles.textArea}
+                  className={`${isLoading && "isLoading"}  ${styles.textArea}`}
                   onKeyDown={handleKeyDown}
-                  onKeyPress={e => {
+                  onKeyPress={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
-                      handleRenameTodo(e)
+                      handleRenameTodo(e);
                     }
                   }}
-                  onChange={e => editTodo(e.target.value, todo.id, true)}
+                  onChange={(e) => editTodo(e.target.value, todo.id, true)}
                 />
               </label>
               <label className={styles.submitContainer}>
@@ -179,7 +187,7 @@ const TodoTask = ({ todo, name, dragging }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TodoTask
+export default TodoTask;
