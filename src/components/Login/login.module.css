@@ -225,8 +225,7 @@
     max-width: 80%;
   }
   .forgotPassword {
-    margin-left: auto;
-    margin-right: 30px;
+    margin: 5px 30px auto auto;
     display: block;
     text-align: end;
   }
