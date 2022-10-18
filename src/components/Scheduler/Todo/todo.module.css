@@ -211,3 +211,21 @@
       0 0 50px #528352, 0 0 60px #528352;
   }
 }
+
+@media (max-width: 480px) {
+ .todo {
+  padding: 0 20px;
+  max-width: 280px;
+  min-height: 35px;
+  max-height: 250px;
+  line-height: 34px;
+  border-radius: 15px;
+  box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.2);
+  color: #354259;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  z-index: 2;
+  cursor: pointer;
+}
+}

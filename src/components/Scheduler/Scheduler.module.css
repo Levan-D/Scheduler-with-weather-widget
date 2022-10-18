@@ -64,3 +64,23 @@
   border-radius: 5px;
   margin: 0.9rem 0;
 }
+
+@media (max-width: 480px) {
+  .todoWrapper {
+    max-width: 94%;
+    height: 100%;
+  }
+  .schedulerWrapper {
+    max-width: 100%;
+    display: block;
+  }
+  .leftSide {
+    display: none;
+  }
+  .rightSide {
+    max-width: 100%;
+
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

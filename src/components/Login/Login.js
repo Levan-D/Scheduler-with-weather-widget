@@ -45,6 +45,7 @@ const Login = () => {
           position: "absolute",
           color: serverHealth.success ? "#528352" : "#FF7878",
         }}
+        className={styles.healthStatus}
       >
         {status}
       </div>
