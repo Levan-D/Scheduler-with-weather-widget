@@ -223,6 +223,6 @@
     display: none;
   }
   .textArea {
-    width: inherit;
+    width: 100%;
   }
 }

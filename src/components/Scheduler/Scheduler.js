@@ -126,12 +126,14 @@ function Scheduler() {
           opacity={taskProgressData.opacity}
         />
       )}
+      {/* phone menu sidebar opener */}
       <div onClick={() => setLeftTab((x) => !x)}>
         <MenuIcon
           className={styles.leftSideButton}
-          fill={!leftTab ? "white" : "#354259"}
+          fill={leftTab ? "white" : "#354259"}
         />
       </div>
+      {/* phone menu sidebar opener */}
       <div className={`${styles.leftSide} ${!leftTab && styles.closeLeftSide}`}>
         <CreateList />
         <div>
