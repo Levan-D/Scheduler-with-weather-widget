@@ -219,4 +219,10 @@
   .todoBackground {
     padding: 0px 10px 15px 10px;
   }
+  .hoverDoubleClick {
+    display: none;
+  }
+  .textArea {
+    width: inherit;
+  }
 }

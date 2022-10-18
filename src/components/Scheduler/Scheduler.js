@@ -132,7 +132,7 @@ function Scheduler() {
           fill={!leftTab ? "white" : "#354259"}
         />
       </div>
-      <div className={`${styles.leftSide} ${leftTab && styles.closeLeftSide}`}>
+      <div className={`${styles.leftSide} ${!leftTab && styles.closeLeftSide}`}>
         <CreateList />
         <div>
           {typeof todosRedux === "object" &&
