@@ -80,6 +80,10 @@ const LoginSection = () => {
   return (
     <>
       <h2 className={styles.header}>Login</h2>
+      <p className={styles.warning}>
+        this app is meant to be used on a desktop <br /> functionality will be
+        limited on mobile <br /> have a good day :&#41;
+      </p>
       <h3
         className={styles.postError}
         style={{ color: userState.error ? "red" : "#c4d7e0" }}
