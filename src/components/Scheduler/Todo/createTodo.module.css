@@ -44,3 +44,14 @@
   font-weight: bold;
   transition: 0.3s;
 }
+
+@media (max-width: 480px) {
+  .textTodo {
+    width: 90%;
+    margin: 20px 5%;
+  }
+  .bigSubmitButton {
+    width: 90%;
+    margin: 0 5%;
+  }
+}

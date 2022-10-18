@@ -7,6 +7,7 @@
   border-radius: 10px;
   box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
   user-select: none;
+  z-index: 101;
 }
 .popUpWrapper {
   display: flex;
@@ -151,4 +152,10 @@
   position: relative;
   left: 9px;
   top: 5px;
+}
+@media (max-width: 480px) {
+  .popUpMenu {
+    translate: -250px;
+    scale: 2;
+  }
 }

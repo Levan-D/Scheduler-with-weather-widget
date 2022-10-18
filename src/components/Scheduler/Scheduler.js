@@ -1,6 +1,6 @@
 /** @format */
 import styles from "./Scheduler.module.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Todo from "./Todo/Todo";
 import List from "./List";
@@ -18,6 +18,7 @@ import {
 import { getList } from "./apiScheduler/getListSlice";
 import { CHANGE_LISTINDEX } from "./indexingSlice";
 import { getTodo } from "./apiScheduler/getTodoSlice";
+import { ReactComponent as MenuIcon } from "../pictures/icons-menu.svg";
 
 function Scheduler() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function Scheduler() {
   const isLoggedIn = useSelector((store) => store.indexing.data.isLoggedIn);
   const listData = useSelector((store) => store.getList);
   const todoData = useSelector((store) => store.getTodo);
+  const [leftTab, setLeftTab] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -124,7 +126,13 @@ function Scheduler() {
           opacity={taskProgressData.opacity}
         />
       )}
-      <div className={styles.leftSide}>
+      <div onClick={() => setLeftTab((x) => !x)}>
+        <MenuIcon
+          className={styles.leftSideButton}
+          fill={!leftTab ? "white" : "#354259"}
+        />
+      </div>
+      <div className={`${styles.leftSide} ${leftTab && styles.closeLeftSide}`}>
         <CreateList />
         <div>
           {typeof todosRedux === "object" &&
