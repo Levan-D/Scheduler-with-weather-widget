@@ -157,11 +157,12 @@
   .popUpMenu {
     position: absolute;
     width: 220px;
-    height: 800px;
+    height: 1050px;
     background-color: #6e85b7;
     right: 0px !important;
     top: 0 !important;
     padding: 12px 8px;
+    margin: 0;
     border-radius: 0;
     box-shadow: 4px 6px 4px 0px rgba(0, 0, 0, 0.2);
     user-select: none;
