@@ -221,12 +221,25 @@
   .hoverDoubleClick {
     display: none;
   }
+  .editTodoForm {
+    display: block;
+  }
   .textArea {
-    width: 120%;
-    padding: 0 45px 0 20px;
+    width: 100%;
+    padding: 0 20px 0 20px;
   }
   .miniSubmit {
-    top: -3px;
-    left: 10px;
+    text-align: center;
+    width: 100%;
+    margin: 0.5rem 0;
+    height: 30px;
+    position: static;
+    top: 30px;
+    right: -88%;
+    left: unset;
+    border: none;
+  }
+  .miniSubmit img {
+    margin: 0 auto;
   }
 }
