@@ -222,11 +222,11 @@
     display: none;
   }
   .textArea {
-    width: 125%;
+    width: 128%;
     padding: 0 25px 0 20px;
   }
   .miniSubmit {
     top: -3px;
-    left: -10px;
+    left: 5px;
   }
 }
