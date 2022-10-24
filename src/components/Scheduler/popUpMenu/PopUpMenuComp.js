@@ -13,6 +13,7 @@ import ChangeDate from "./ChangeDate";
 import "react-calendar/dist/Calendar.css";
 import { useSelector, useDispatch } from "react-redux";
 import { POPUPVISIBILITY } from "../indexingSlice";
+import back from "../../pictures/back.png";
 import {
   setDelete,
   setColor,
@@ -42,6 +43,12 @@ function PopUpMenuComp() {
   const handleMouseEnter = (e) => {
     clearTimeout(mouseEvent);
   };
+
+  const backBtn = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(POPUPVISIBILITY(false));
+  };
   return (
     <div
       className={styles.popUpMenu}
@@ -50,6 +57,10 @@ function PopUpMenuComp() {
       style={menuStyle}
     >
       <div className={styles.popUpWrapper}>
+        <div className={styles.phoneBack}>
+          <img src={back} onClick={backBtn} alt="back icon" />
+        </div>
+        <div className={styles.phoneBackBlur} onClick={backBtn}></div>
         <div
           className={styles.popUpButton}
           onClick={() => {

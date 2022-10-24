@@ -128,6 +128,7 @@ function Scheduler() {
       )}
       {/* phone menu sidebar opener */}
       <div onClick={() => setLeftTab((x) => !x)}>
+        {leftTab && <div className={styles.phoneBackBlurLeft}></div>}
         <MenuIcon
           className={styles.leftSideButton}
           fill={leftTab ? "white" : "#354259"}
